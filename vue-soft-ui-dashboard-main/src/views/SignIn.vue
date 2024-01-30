@@ -17,7 +17,7 @@
           <div class="row">
             <div class="mx-auto col-xl-4 col-lg-5 col-md-6 d-flex flex-column">
               <div class="mt-8 card card-plain">
-                <div class="pb-0 card-header text-start">
+                <div class="pb-0 card-header text-start" style="margin-top: 12%">
                   <h3 class="font-weight-bolder text-success text-gradient">
                     Welcome back
                   </h3>
@@ -63,7 +63,7 @@
                   <p class="mx-auto mb-4 text-sm">
                     <!-- Don't have an account? -->
                     <router-link
-                      :to="{ name: 'Sign Up' }"
+                      :to="{ name: 'AdminSign In' }"
                       class="text-success text-gradient font-weight-bold"
                       >Admin Sign In</router-link
                     >
@@ -238,5 +238,8 @@ export default {
     appearance: none;
     border-radius: 0.5rem;
     transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+#app > main > main > section > div > div > div > div:nth-child(2) > div > div{
+  transform: none;
 }
 </style>

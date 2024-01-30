@@ -17,7 +17,7 @@
             <div class="row">
               <div class="mx-auto col-xl-4 col-lg-5 col-md-6 d-flex flex-column">
                 <div class="mt-8 card card-plain">
-                  <div class="pb-0 card-header text-start">
+                  <div class="pb-0 card-header text-start" style="margin-top: 12%">
                     <h3 class="font-weight-bolder text-success text-gradient">
                       Welcome back to Admin Page
                     </h3>
@@ -75,6 +75,7 @@
               <div class="col-md-6">
                 <div
                   class="top-0 oblique position-absolute h-100 d-md-block d-none me-n8"
+                  
                 >
                   <div
                     class="bg-cover oblique-image position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
@@ -241,6 +242,9 @@
       appearance: none;
       border-radius: 0.5rem;
       transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  #app > main > main > section > div > div > div > div:nth-child(2) > div > div{
+    transform: none;
   }
   </style>
   
