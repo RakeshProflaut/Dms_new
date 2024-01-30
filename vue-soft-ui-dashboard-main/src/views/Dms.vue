@@ -39,6 +39,7 @@
                 <li v-for="tab in tabs" v-bind:key="tab.value" class="nav-item">
                   <a
                     class="px-0 py-1 mb-0 nav-link active"
+                    @click="selectedTab(tab.value)"
                     data-bs-toggle="tab"
                     href="javascript:;"
                     role="tab"
@@ -62,44 +63,71 @@
         </div>
       </div>
     </div>
-    <div class="py-4 container-fluid">
+    <div class="container-fluid">
       <div class="mt-3 row"></div>
       <div class="mt-4 row">
         <div class="col-12">
+          <!-- 
           <div class="mb-4 card">
-            <div class="p-3 pb-0 card-header">
-              <h6 class="mb-1">Projects</h6>
-              <p class="text-sm">Architects design houses</p>
-            </div>
             <div class="py-4 container-fluid">
               <div class="row">
                 <div class="col-12">
-                  <div class="card-body px-0 pt-0 pb-2">
-                    <div class="table-responsive p-0">
-                      <table class="custom-table table align-items-center justify-content-center mb-0">
-      <thead>
-        <tr>
-          <th    v-for="(header, index) in headers" :key="index">{{ header.title }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(row, rowIndex) in desserts" :key="rowIndex">
-            <td v-for="(header, headerIndex) in headers" :key="headerIndex">
-                {{ row[header.key] }}
-            </td>
-        </tr>
-      </tbody>
-    </table>
-                    </div>
+                  <div class="card-body px-0 pt-0 pb-2"> -->
+                    <v-card style="max-height: 100%; overflow: auto;border-radius: 1rem;
+                    box-shadow: inset 0 0px 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05)">
+                      <div class="dmsHeader">
+                        <v-btn
+                          :ripple="false"
+                          style="color: black; height: 30px"
+                          @click="checkRendering"
+                          >New</v-btn
+                        >
+                        <input
+                          type="text"
+                          v-model="search"
+                          label="Search"
+                          placeholder="Filter"
+                          single-line
+                          style="height: 30px !important"
+                          variant="outlined"
+                          hide-details
+                          class="searchBar"
+                        />
+                        <!-- </input> -->
+                      </div>
+                      <v-card
+                        style="width: 100%; height: 450px; overflow: hidden"
+                      >
+                        <v-data-table
+                          :headers="headers"
+                          :items="
+                            (propertiesTable = tabsValue[selectedTabValue])
+                          "
+                          :item-key="'customerId'"
+                          :search="search"
+                          style="height: 456px; overflow-y: auto"
+                        >
+                          <template v-slot:[`item.action`]="{ item }">
+                            <v-icon
+                              size="small"
+                              class="mdi mdi-open-in-new"
+                              @click="openWorkItem(item)"
+                            >
+                            </v-icon>
+                          </template>
+                        </v-data-table>
+                      </v-card>
+                    </v-card>
                   </div>
                 </div>
               </div>
             </div>
+            <!-- 
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -114,10 +142,14 @@ import setTooltip from "@/assets/js/tooltip.js";
 
 export default {
   name: "dms",
-  components: {},
   data() {
     return {
-      showMenu: false,
+      search: "",
+      selectedTabValue: "maker",
+      dialogDelete: false,
+      selectedTabs: null,
+      propertiesTable: [],
+      prospectId: "",
       faFacebook,
       faTwitter,
       faInstagram,
@@ -125,101 +157,53 @@ export default {
         { value: "maker", title: "Maker" },
         { value: "checker", title: "Checker" },
       ],
-      search: "",
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: 1,
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: 1,
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: 7,
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: 8,
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: 16,
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: 0,
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: 2,
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: 45,
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: 22,
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: 6,
-        },
-      ],
+      tabsValue: {
+        maker: [
+          {
+            customerId: "1234",
+            name: "SATHISH",
+            accountNumber: "50100364789651",
+            branchName: "Ambattur",
+            branchCode: "1486",
+            ifsc: "2100",
+            prospectId: "DMS_0589",
+          },
+        ],
+        checker: [
+          {
+            customerId: "5678",
+            name: "RAKESH",
+            accountNumber: "50100364789651",
+            branchName: "Ambattur",
+            branchCode: "1486",
+            ifsc: "2100",
+            prospectId: "DMS_0589",
+          },
+          {
+            customerId: "5678",
+            name: "RAKESH",
+            accountNumber: "50100364789651",
+            branchName: "Ambattur",
+            branchCode: "1486",
+            ifsc: "2100",
+            prospectId: "DMS_0589",
+          },
+        ],
+      },
       headers: [
         {
           align: "start",
-          key: "name",
+          key: "prospectId",
           sortable: false,
-          title: "Dessert (100g serving)",
+          title: "PROSPECT ID",
         },
-        { key: "calories", title: "Calories" },
-        { key: "fat", title: "Fat (g)" },
-        { key: "carbs", title: "Carbs (g)" },
-        { key: "protein", title: "Protein (g)" },
-        { key: "iron", title: "Iron (%)" },
+        { key: "customerId", title: "CUSTOMER ID" },
+        { key: "name", title: "NAME" },
+        { key: "accountNumber", title: "ACCOUNT NUMBER" },
+        { key: "branchName", title: "BRANCH NAME" },
+        { key: "branchCode", title: "BRANCH CODE" },
+        { key: "ifsc", title: "IFSC" },
+        { title: "Action", key: "action", sortable: false },
       ],
     };
   },
@@ -232,50 +216,124 @@ export default {
   beforeUnmount() {
     this.$store.state.isAbsolute = false;
   },
+  methods: {
+    selectedTab(value) {
+      this.selectedTabValue = value;
+    },
+    openWorkItem(item) {
+      console.log("item",item);
+      // let userData = {
+      //   prospectId: item.prospectId,
+      //   title: this.selectedTabValue,
+      // };
+
+      this.$router.push({
+        name: "Work Item",
+        query: {
+      id: item.prospectId,
+      name: this.selectedTabValue,
+    },
+      });
+    },
+  },
 };
 </script>
 
 <style scoped>
-.custom-table {
+.v-pagination__first,
+.v-pagination__prev,
+.v-pagination__item,
+.v-pagination__item--is-active,
+.v-pagination__next,
+.v-pagination__last {
+  color: rgb(211, 15, 15) !important;
+}
+body > div.v-overlay-container > div > div.v-overlay__content > div {
+  height: 150%;
+  width: 102%;
+  margin-left: -10px;
+}
+.searchBar {
+  border: 1px solid;
+  margin-right: 10px;
+  margin-left: 10px; /* Add margin for spacing between button and search bar */
+  max-width: 25%; /* Set the maximum width to avoid elongation */
+  display: block;
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4rem;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #d2d6da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.5rem;
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
 }
 
-.custom-table th, .custom-table td {
-  border: 1px solid #dee2e6;
-  padding: 12px;
-  text-align: left;
+.dmsHeader {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1% 0px;
+}
+.v-card-text {
+  padding: 0;
+}
+.dmsHeader > .v-btn {
+  background: #87e42e;
+  transition: 0.5s ease;
+}
+.dmsHeader > .v-btn:hover {
+  cursor: pointer;
+  background-image: linear-gradient(70deg, #17ad37 0%, #98ec2d 100%);
 }
 
-.custom-table th {
-  background-color: #007bff;
-  color: #fff;
+#app
+  > div
+  > div.dashboard
+  > div.content
+  > div
+  > div
+  > div.v-card-text.card-text {
+  flex: 1 1 auto;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.0178571429em;
+  padding: 0.5px;
+  text-transform: none;
 }
 
-.custom-table tbody tr:hover {
-  background-color: #f8f9fa;
+#app
+  > div
+  > div.dashboard
+  > div.content
+  > div
+  > div
+  > div.v-card-text.card-text
+  > div
+  > div
+  > div.v-window-item.v-window-item--active
+  > div
+  > div.v-card.v-theme--light.v-card--density-default.v-card--variant-elevated
+  > div.v-table.v-table--fixed-header.v-table--has-top.v-table--has-bottom.v-theme--light.v-table--density-default.v-data-table
+  > div.v-data-table-footer
+  > div.v-data-table-footer__pagination
+  > nav
+  > ul
+  > li.v-pagination__first
+  > button
+  > span.v-btn__content
+  > i {
+  color: #ce1212;
 }
 
-.card {
-  border: 1px solid #dee2e6;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.min-height-300 {
+  min-height: 101px !important;
 }
-
-.card-header {
-  /* background-color: #007bff; */
-  color: #fff;
-  border-radius: 12px 12px 0 0;
-  padding: 15px;
-}
-
-.card-body {
-  padding: 20px;
-}
-
-.table-responsive {
-  overflow-x: auto;
-}
-
 </style>
