@@ -23,11 +23,25 @@ import SoftUIDashboard from "./soft-ui-dashboard";
 import axios from "axios";
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
-
-
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+import "mdi/css/materialdesignicons.min.css";
+import 'material-design-icons-iconfont/dist/material-design-icons.css'; // Import the icons stylesheet
+import Vue2Editor from "vue2-editor";
+const vuetify = createVuetify({
+    components,
+    directives,
+    icons: {
+        iconFont: "mdi",
+      },
+  })
 
 const appInstance = createApp(App);
 appInstance.use(store);
 appInstance.use(router);
+appInstance.use(vuetify);
 appInstance.use(SoftUIDashboard);
+appInstance.use(Vue2Editor);
 appInstance.mount("#app")
