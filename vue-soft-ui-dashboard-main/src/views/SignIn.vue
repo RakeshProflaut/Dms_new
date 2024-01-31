@@ -138,10 +138,11 @@ export default {
       if (this.user.userName !== "" && this.user.password !== "") {
         event.preventDefault();
         axios
-          .post("http://localhost:61050/dms/dmsCheck/login", this.user)
+          .post("http://localhost:61050/dms/access/login", this.user)
           .then((response) => {
             this.$store.commit("userToken", response.data.token);
             this.$store.commit("userId", response.data.userId);
+            this.$store.commit("userName", this.user.userName);
 
             console.log("token", this.$store.getters.getUserToken);
             console.log("userId", this.$store.getters.getUserId);
