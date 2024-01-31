@@ -20,8 +20,6 @@ import router from "./router";
 import "./assets/css/nucleo-icons.css";
 import "./assets/css/nucleo-svg.css";
 import SoftUIDashboard from "./soft-ui-dashboard";
-import axios from "axios";
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -30,6 +28,8 @@ import * as directives from 'vuetify/directives'
 import "mdi/css/materialdesignicons.min.css";
 import 'material-design-icons-iconfont/dist/material-design-icons.css'; // Import the icons stylesheet
 import Vue2Editor from "vue2-editor";
+import axios from "axios";
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 const vuetify = createVuetify({
     components,
     directives,

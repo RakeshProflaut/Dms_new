@@ -24,8 +24,8 @@
           </div>
           <div class="col-auto my-auto">
             <div class="h-100">
-              <h5 class="mb-1">Alec Thompson</h5>
-              <p class="mb-0 text-sm font-weight-bold">CEO / Co-Founder</p>
+              <h5 class="mb-1">{{ this.$store.getters.getUserName }}</h5>
+              <p class="mb-0 text-sm font-weight-bold">User Id-{{ this.$store.getters.getUserId }}</p>
             </div>
           </div>
         </div>
@@ -40,8 +40,9 @@
           <div class="mb-4 card">
             <div class="py-4 container-fluid">
               <div class="row">
-                <div class="col-12"> -->
-                  <div class="card-body px-0 pt-0"  style="background-image: url(/img/curved14.ee4f00d8.jpg);"> 
+              -->
+                <div class="col-12"> 
+                  <div class="card-body px-0 pt-0"> 
   <div class="workItemContainer">
     <div class="header">
       <div class="left">
@@ -57,7 +58,7 @@
     </div>
     <div class="body">
       <splitpanes class="default-theme" vertical>
-        <pane style="background: #fff;;">
+        <pane style="">
           <iframe
             style="margin-left: 3%; margin-top: 2%; display: none"
             class="embed-responsive-item"
@@ -203,7 +204,8 @@
     </div>
   </div>
                   </div>
-                <!-- </div>
+                </div>
+                <!-- 
                  
               </div>
             </div>
@@ -597,11 +599,12 @@ created(){
   display: flex;
   margin-top: 2rem;
   /* margin-left: 16px !important; */
-  width: 100%;
+  width: 95%;
   height: 100vh;
   flex-direction: column;
   border-radius: 1rem;
-  backdrop-filter: saturate(200%) blur(30px);
+  border: .5px solid #fff ;
+  background: #fff;
     box-shadow: inset 0 0px 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05) !important;
 }
 
@@ -629,7 +632,8 @@ created(){
 }
 .right > .v-btn {
   margin-left: 2%;
-  color: #344767;
+  color: #fff;
+  font-weight: bold;
   background: #87E42E;
   transition: .5s ease;
   box-shadow: 0 0.25rem 0.375rem -0.0625rem rgba(20, 20, 20, 0.12), 0 0.125rem 0.25rem -0.0625rem rgba(20, 20, 20, 0.07) !important;
@@ -639,6 +643,7 @@ created(){
 
 .right > .v-btn:hover {
     cursor: pointer;
+    color:#344767;
     background-image: linear-gradient(270deg, #17ad37 0%, #98ec2d 100%);
 }
 .document > button {
@@ -938,13 +943,7 @@ input[type="file"]::file-selector-button {
 }
 
 
-  #app > main > div:nth-child(2) > div.card-body.px-0.pt-0{
-    border-radius: 1rem;
-    margin-left: 1rem;
-    width: 95%;
-  padding: 0rem 0rem !important;
-  background-image: linear-gradient(310deg, #17ad3721 0%, #99ec2d27 100%) !important;
-}
+
 
 .close:hover {
   opacity: 1;
