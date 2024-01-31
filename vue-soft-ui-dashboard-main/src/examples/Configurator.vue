@@ -10,7 +10,6 @@
       <div class="pt-3 pb-0 bg-transparent card-header">
         <div class="float-start">
           <h5 class="mt-3 mb-0">PROFLAUT</h5>
-          <p>See our dashboard options.</p>
         </div>
         <div class="mt-4 float-end" @click="toggle">
           <button class="p-0 btn btn-link text-dark fixed-plugin-close-button">
