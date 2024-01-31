@@ -24,8 +24,8 @@
           </div>
           <div class="col-auto my-auto">
             <div class="h-100">
-              <h5 class="mb-1">Alec Thompson</h5>
-              <p class="mb-0 text-sm font-weight-bold">CEO / Co-Founder</p>
+              <h5 class="mb-1">{{this.$store.getters.getUserName}}</h5>
+              <p class="mb-0 text-sm font-weight-bold">User Id-{{ this.$store.getters.getUserId }}</p>
             </div>
           </div>
           <div
@@ -77,9 +77,10 @@
                     box-shadow: inset 0 0px 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05)">
                       <div class="dmsHeader">
                         <v-btn
-                          :ripple="false"
-                          style="color: black; height: 30px"
-                          @click="checkRendering"
+                        v-if="selectedTabValue === 'maker'"
+        :ripple="false"
+        style="color: black; height: 30px"
+        @click="checkRendering"
                           >New</v-btn
                         >
                         <input
@@ -139,6 +140,7 @@ import {
 
 import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
+import axios from "axios";
 
 export default {
   name: "dms",
@@ -153,57 +155,54 @@ export default {
       faFacebook,
       faTwitter,
       faInstagram,
-      tabs: [
-        { value: "maker", title: "Maker" },
-        { value: "checker", title: "Checker" },
-      ],
+      tabs: [],
       tabsValue: {
-        maker: [
-          {
-            customerId: "1234",
-            name: "SATHISH",
-            accountNumber: "50100364789651",
-            branchName: "Ambattur",
-            branchCode: "1486",
-            ifsc: "2100",
-            prospectId: "DMS_0589",
-          },
-        ],
-        checker: [
-          {
-            customerId: "5678",
-            name: "RAKESH",
-            accountNumber: "50100364789651",
-            branchName: "Ambattur",
-            branchCode: "1486",
-            ifsc: "2100",
-            prospectId: "DMS_0589",
-          },
-          {
-            customerId: "5678",
-            name: "RAKESH",
-            accountNumber: "50100364789651",
-            branchName: "Ambattur",
-            branchCode: "1486",
-            ifsc: "2100",
-            prospectId: "DMS_0589",
-          },
-        ],
+        // maker: [
+        //   {
+        //     customerId: "1234",
+        //     name: "SATHISH",
+        //     accountNumber: "50100364789651",
+        //     branchName: "Ambattur",
+        //     branchCode: "1486",
+        //     ifsc: "2100",
+        //     prospectId: "DMS_0589",
+        //   },
+        // ],
+        // checker: [
+        //   {
+        //     customerId: "5678",
+        //     name: "RAKESH",
+        //     accountNumber: "50100364789651",
+        //     branchName: "Ambattur",
+        //     branchCode: "1486",
+        //     ifsc: "2100",
+        //     prospectId: "DMS_0589",
+        //   },
+        //   {
+        //     customerId: "5678",
+        //     name: "RAKESH",
+        //     accountNumber: "50100364789651",
+        //     branchName: "Ambattur",
+        //     branchCode: "1486",
+        //     ifsc: "2100",
+        //     prospectId: "DMS_0589",
+        //   },
+        // ],
       },
       headers: [
-        {
-          align: "start",
-          key: "prospectId",
-          sortable: false,
-          title: "PROSPECT ID",
-        },
-        { key: "customerId", title: "CUSTOMER ID" },
-        { key: "name", title: "NAME" },
-        { key: "accountNumber", title: "ACCOUNT NUMBER" },
-        { key: "branchName", title: "BRANCH NAME" },
-        { key: "branchCode", title: "BRANCH CODE" },
-        { key: "ifsc", title: "IFSC" },
-        { title: "Action", key: "action", sortable: false },
+        // {
+        //   align: "start",
+        //   key: "prospectId",
+        //   sortable: false,
+        //   title: "PROSPECT ID",
+        // },
+        // { key: "customerId", title: "CUSTOMER ID" },
+        // { key: "name", title: "NAME" },
+        // { key: "accountNumber", title: "ACCOUNT NUMBER" },
+        // { key: "branchName", title: "BRANCH NAME" },
+        // { key: "branchCode", title: "BRANCH CODE" },
+        // { key: "ifsc", title: "IFSC" },
+        // { title: "Action", key: "action", sortable: false },
       ],
     };
   },
@@ -212,6 +211,8 @@ export default {
     this.$store.state.isAbsolute = true;
     setNavPills();
     setTooltip(this.$store.state.bootstrap);
+    this.getDmsTabs();
+    this.renderNewData(this.selectedTabValue);  
   },
   beforeUnmount() {
     this.$store.state.isAbsolute = false;
@@ -219,6 +220,45 @@ export default {
   methods: {
     selectedTab(value) {
       this.selectedTabValue = value;
+    },
+
+
+    async renderNewData() {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const apiUrl =
+        "http://localhost:8081/dms/transaction/getExecutions?key=maker&userId=1";
+      const token = this.$store.getters.getUserToken;
+      const tabKey = this.selectedTabValue;
+      console.log("tabkey",tabKey);
+      await axios
+        .get(apiUrl, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) => {
+          this.headers = response.data.headers;
+          this.propertitabsValueesMenu = {
+            [tabKey]: response.data[tabKey],
+          };
+        })
+        .catch((error) => console.error("Error occured by", error));
+    },
+    async getDmsTabs() {
+      console.log("dms token",this.$store.getters.getUserToken);
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      await axios
+        .get(
+          `http://localhost:8081/dms/transaction/retrieve/1`
+          
+          // ,{
+          //   headers: {
+          //     token:  this.$store.getters.getUserToken              
+          //   }
+          // }
+        )
+        .then((response) => (this.tabs = console.log(response.data)))
+        .catch((error) => console.error("Error occured by", error));
     },
     openWorkItem(item) {
       console.log("item",item);
@@ -235,6 +275,30 @@ export default {
     },
       });
     },
+    async checkRendering() {
+      const apiUrl = `http://localhost:8081/dms/transaction/saveExecution?userId=1&activityName=maker`;
+      alert(this.$store.getters.getUserToken);
+      const token = this.$store.getters.getUserToken;
+      await axios
+        .post(
+          apiUrl,
+          {},
+          {
+            headers: {
+              token: token,
+            },
+          }
+        )
+        .then((response) => {
+          if (response.data.status) {
+            this.renderNewData("maker");
+          }
+        })
+        .catch((error) => console.error("Error occured by", error));
+    },
+    // handleUpdateDataTable() {
+    //   this.renderNewData(this.menuLabel.key);   
+    // },
   },
 };
 </script>

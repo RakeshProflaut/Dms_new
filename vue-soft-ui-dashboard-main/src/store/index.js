@@ -6,6 +6,7 @@ export default createStore({
     hideConfigButton: false,
     token: null,
     userId: null,
+    userName:"",
     adminName:null,
     isPinned: true,
     showConfig: false,
@@ -36,6 +37,9 @@ export default createStore({
     },
     userId(state, userIdValue) {
       return (state.userId = userIdValue);
+    },
+    userName(state, userNamevalue) {
+      return (state.userName = userNamevalue);
     },
     adminName(state, adminName) {
       return (state.adminName = adminName);
@@ -94,6 +98,9 @@ export default createStore({
     },
     getAdminName(state) {
       return state.adminName;
+    },
+    getUserName(state) {
+      return state.userName;
     },
   },
 });

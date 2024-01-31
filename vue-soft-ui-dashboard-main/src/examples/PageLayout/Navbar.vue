@@ -5,14 +5,12 @@
     :class="isBlur ? isBlur : 'shadow-none my-2 navbar-transparent w-100'"
   >
     <div class="container">
-      <router-link
+      <span
         class="navbar-brand font-weight-bolder ms-lg-0 ms-3"
-        to="/dashboard"
-        v-bind="$attrs"
         :class="isBlur ? 'text-dark' : 'text-white'"
       >
         PROFLAUT
-      </router-link>
+      </span>
       <button
         class="navbar-toggler shadow-none ms-2"
         type="button"

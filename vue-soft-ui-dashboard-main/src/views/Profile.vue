@@ -23,8 +23,8 @@
         </div>
         <div class="col-auto my-auto">
           <div class="h-100">
-            <h5 class="mb-1">Alec Thompson</h5>
-            <p class="mb-0 text-sm font-weight-bold">CEO / Co-Founder</p>
+            <h5 class="mb-1">{{ this.$store.getters.getUserName }}</h5>
+            <p class="mb-0 text-sm font-weight-bold">User Id-{{ this.$store.getters.getUserId }}</p>
           </div>
         </div>
         <div
