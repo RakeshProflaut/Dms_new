@@ -155,54 +155,57 @@ export default {
       faFacebook,
       faTwitter,
       faInstagram,
-      tabs: [],
+      tabs: [
+              {value:'maker',title:'Maker'},
+              {value:'checker',title:'Checker'}
+            ],
       tabsValue: {
-        // maker: [
-        //   {
-        //     customerId: "1234",
-        //     name: "SATHISH",
-        //     accountNumber: "50100364789651",
-        //     branchName: "Ambattur",
-        //     branchCode: "1486",
-        //     ifsc: "2100",
-        //     prospectId: "DMS_0589",
-        //   },
-        // ],
-        // checker: [
-        //   {
-        //     customerId: "5678",
-        //     name: "RAKESH",
-        //     accountNumber: "50100364789651",
-        //     branchName: "Ambattur",
-        //     branchCode: "1486",
-        //     ifsc: "2100",
-        //     prospectId: "DMS_0589",
-        //   },
-        //   {
-        //     customerId: "5678",
-        //     name: "RAKESH",
-        //     accountNumber: "50100364789651",
-        //     branchName: "Ambattur",
-        //     branchCode: "1486",
-        //     ifsc: "2100",
-        //     prospectId: "DMS_0589",
-        //   },
-        // ],
+        maker: [
+          {
+            customerId: "1234",
+            name: "SATHISH",
+            accountNumber: "50100364789651",
+            branchName: "Ambattur",
+            branchCode: "1486",
+            ifsc: "2100",
+            prospectId: "DMS_0589",
+          },
+        ],
+        checker: [
+          {
+            customerId: "5678",
+            name: "RAKESH",
+            accountNumber: "50100364789651",
+            branchName: "Ambattur",
+            branchCode: "1486",
+            ifsc: "2100",
+            prospectId: "DMS_0589",
+          },
+          {
+            customerId: "5678",
+            name: "RAKESH",
+            accountNumber: "50100364789651",
+            branchName: "Ambattur",
+            branchCode: "1486",
+            ifsc: "2100",
+            prospectId: "DMS_0589",
+          },
+        ],
       },
       headers: [
-        // {
-        //   align: "start",
-        //   key: "prospectId",
-        //   sortable: false,
-        //   title: "PROSPECT ID",
-        // },
-        // { key: "customerId", title: "CUSTOMER ID" },
-        // { key: "name", title: "NAME" },
-        // { key: "accountNumber", title: "ACCOUNT NUMBER" },
-        // { key: "branchName", title: "BRANCH NAME" },
-        // { key: "branchCode", title: "BRANCH CODE" },
-        // { key: "ifsc", title: "IFSC" },
-        // { title: "Action", key: "action", sortable: false },
+        {
+          align: "start",
+          key: "prospectId",
+          sortable: false,
+          title: "PROSPECT ID",
+        },
+        { key: "customerId", title: "CUSTOMER ID" },
+        { key: "name", title: "NAME" },
+        { key: "accountNumber", title: "ACCOUNT NUMBER" },
+        { key: "branchName", title: "BRANCH NAME" },
+        { key: "branchCode", title: "BRANCH CODE" },
+        { key: "ifsc", title: "IFSC" },
+        { title: "Action", key: "action", sortable: false },
       ],
     };
   },
@@ -211,8 +214,8 @@ export default {
     this.$store.state.isAbsolute = true;
     setNavPills();
     setTooltip(this.$store.state.bootstrap);
-    this.getDmsTabs();
-    this.renderNewData(this.selectedTabValue);  
+    // this.getDmsTabs();
+    // this.renderNewData(this.selectedTabValue);  
   },
   beforeUnmount() {
     this.$store.state.isAbsolute = false;
@@ -223,43 +226,43 @@ export default {
     },
 
 
-    async renderNewData() {
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      const apiUrl =
-        "http://localhost:8081/dms/transaction/getExecutions?key=maker&userId=1";
-      const token = this.$store.getters.getUserToken;
-      const tabKey = this.selectedTabValue;
-      console.log("tabkey",tabKey);
-      await axios
-        .get(apiUrl, {
-          headers: {
-            token: token,
-          },
-        })
-        .then((response) => {
-          this.headers = response.data.headers;
-          this.propertitabsValueesMenu = {
-            [tabKey]: response.data[tabKey],
-          };
-        })
-        .catch((error) => console.error("Error occured by", error));
-    },
-    async getDmsTabs() {
-      console.log("dms token",this.$store.getters.getUserToken);
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      await axios
-        .get(
-          `http://localhost:8081/dms/transaction/retrieve/1`
+    // async renderNewData() {
+    //   axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+    //   const apiUrl =
+    //     "http://localhost:8081/dms/transaction/getExecutions?key=maker&userId=1";
+    //   const token = this.$store.getters.getUserToken;
+    //   const tabKey = this.selectedTabValue;
+    //   console.log("tabkey",tabKey);
+    //   await axios
+    //     .get(apiUrl, {
+    //       headers: {
+    //         token: token,
+    //       },
+    //     })
+    //     .then((response) => {
+    //       this.headers = response.data.headers;
+    //       this.propertitabsValueesMenu = {
+    //         [tabKey]: response.data[tabKey],
+    //       };
+    //     })
+    //     .catch((error) => console.error("Error occured by", error));
+    // },
+    // async getDmsTabs() {
+    //   console.log("dms token",this.$store.getters.getUserToken);
+    //   axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+    //   await axios
+    //     .get(
+    //       `http://localhost:8081/dms/transaction/retrieve/1`
           
-          // ,{
-          //   headers: {
-          //     token:  this.$store.getters.getUserToken              
-          //   }
-          // }
-        )
-        .then((response) => (this.tabs = console.log(response.data)))
-        .catch((error) => console.error("Error occured by", error));
-    },
+    //       // ,{
+    //       //   headers: {
+    //       //     token:  this.$store.getters.getUserToken              
+    //       //   }
+    //       // }
+    //     )
+    //     .then((response) => (this.tabs = console.log(response.data)))
+    //     .catch((error) => console.error("Error occured by", error));
+    // },
     openWorkItem(item) {
       console.log("item",item);
       // let userData = {
@@ -275,27 +278,27 @@ export default {
     },
       });
     },
-    async checkRendering() {
-      const apiUrl = `http://localhost:8081/dms/transaction/saveExecution?userId=1&activityName=maker`;
-      alert(this.$store.getters.getUserToken);
-      const token = this.$store.getters.getUserToken;
-      await axios
-        .post(
-          apiUrl,
-          {},
-          {
-            headers: {
-              token: token,
-            },
-          }
-        )
-        .then((response) => {
-          if (response.data.status) {
-            this.renderNewData("maker");
-          }
-        })
-        .catch((error) => console.error("Error occured by", error));
-    },
+    // async checkRendering() {
+    //   const apiUrl = `http://localhost:8081/dms/transaction/saveExecution?userId=1&activityName=maker`;
+    //   alert(this.$store.getters.getUserToken);
+    //   const token = this.$store.getters.getUserToken;
+    //   await axios
+    //     .post(
+    //       apiUrl,
+    //       {},
+    //       {
+    //         headers: {
+    //           token: token,
+    //         },
+    //       }
+    //     )
+    //     .then((response) => {
+    //       if (response.data.status) {
+    //         this.renderNewData("maker");
+    //       }
+    //     })
+    //     .catch((error) => console.error("Error occured by", error));
+    // },
     // handleUpdateDataTable() {
     //   this.renderNewData(this.menuLabel.key);   
     // },
