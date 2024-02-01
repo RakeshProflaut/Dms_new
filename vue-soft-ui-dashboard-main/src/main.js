@@ -29,17 +29,23 @@ import "mdi/css/materialdesignicons.min.css";
 import 'material-design-icons-iconfont/dist/material-design-icons.css'; // Import the icons stylesheet
 import Vue2Editor from "vue2-editor";
 import axios from "axios";
+import { registerLicense } from '@syncfusion/ej2-base';
+import { RichTextEditorPlugin } from '@syncfusion/ej2-vue-richtexteditor';
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+
+
 const vuetify = createVuetify({
-    components,
-    directives,
-    icons: {
-        iconFont: "mdi",
-      },
-  })
+  components,
+  directives,
+  icons: {
+    iconFont: "mdi",
+  },
+})
+registerLicense("Ngo9BigBOggjHTQxAR8/V1NAaF1cXmhKYVFpR2Nbe05zflVPal5WVAciSV9jS3pTdEViWXxeeXZdRWNeVA==")
 
 const appInstance = createApp(App);
 appInstance.use(store);
+appInstance.use(RichTextEditorPlugin);
 appInstance.use(router);
 appInstance.use(vuetify);
 appInstance.use(SoftUIDashboard);
