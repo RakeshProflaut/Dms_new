@@ -32,15 +32,7 @@
       </div>
     </div>
 
-    <!-- <div class="container-fluid">
-      <div class="mt-3 row"></div>
-      <div class="mt-4 row">
-      
-        <div class="col-12">
-          <div class="mb-4 card">
-            <div class="py-4 container-fluid">
-              <div class="row">
-              -->
+ 
                 <div class="col-12"> 
                   <div class="card-body px-0 pt-0"> 
   <div class="workItemContainer">
@@ -61,7 +53,7 @@
         <pane  class="fileBlock" style="">
             <div class="fileEditbtn" style="">            
               <v-btn @click="editdialogeToggle=true">Edit</v-btn>
-              <v-dialog  v-model="editdialogeToggle" persistent>
+              <v-dialog  v-model="editdialogeToggle">
              <v-card>
           <edit-item
           v-on:closeDialogeBox="closeDialogeBox"
@@ -85,15 +77,7 @@
 
             <!-- Viewer for displaying Word document -->
             <iframe v-if="wordDocument" :src="wordDocument" style="width: 100%; height: 500px;"></iframe>
-          <!-- <template>
-    <div>
-      <div class="control-section">
-        <div class="sample-container">
-         
-        </div>
-      </div>
-    </div>
-  </template> -->
+
         </pane>
         <pane>
           <div class="dashboard1">
@@ -138,7 +122,7 @@
                       <div class="uploadContainer">
                         <div class="uploadHeader">
                           <div>UPLOAD FILE</div>
-                            <button class="close" @click="dialogOpen = false">
+                            <button class="closebtn" @click="dialogOpen = false">
                               <i class="bx bx-x"></i>
                             </button>
                         </div>
@@ -764,8 +748,14 @@ created(){
 }
 
 .title {
+  font-size: 18px;
   margin-right: 5%;
   color:#344767
+}
+
+.item{
+  font-size: 18px;
+
 }
 .mdi-chevron-right:before {
   color: red;
@@ -1046,28 +1036,28 @@ input[type="file"]::file-selector-button {
 }
 
 
-.close[data-v-6208d5fe] {
+.closebtn[data-v-6208d5fe] {
     position: relative;
     top: -11px;
     left: 0.2px;
-    width: 22px;
-    height: 22px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font-size: 25px;
+    /* width: 22px; */
+    /* height: 22px; */
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    color: #d11313;
+    font-size: 30px;
     opacity: 0.3;
-    border-radius: 50%;
-    border: none;
-    background: rgb(238, 52, 52);
+    /* border-radius: 50%; */
+    /* border: none; */
+    /* background: rgb(238, 52, 52); */
     margin-bottom: 1%;
 }
 
 
 
 
-.close:hover {
+.closebtn:hover {
   opacity: 1;
 }
 

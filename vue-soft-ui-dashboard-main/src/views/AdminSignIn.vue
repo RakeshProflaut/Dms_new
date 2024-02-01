@@ -84,7 +84,7 @@
                       backgroundRepeat:no-repeat,
                       backgroundImage:
                         'url(' +
-                        require('@/assets/img/curved-images/Huawei_Orange_Curve_Abstract_Background_5K_1366x76813.jpg') +
+                        require('@/assets/img/curved-images/curved8.jpg') +
                         ')',
                     }"
                   ></div>

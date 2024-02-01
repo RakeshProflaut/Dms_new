@@ -18,7 +18,7 @@
           </template>
         </sidenav-collapse>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <sidenav-collapse navText="Tables" :to="{ name: 'Tables' }">
           <template #icon>
             <office />
@@ -31,7 +31,7 @@
             <credit-card />
           </template>
         </sidenav-collapse>
-      </li>
+      </li> -->
 
       <!-- <li class="nav-item">
         <sidenav-collapse
