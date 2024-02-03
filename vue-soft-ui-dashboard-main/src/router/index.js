@@ -7,8 +7,13 @@ import SignIn from "@/views/SignIn.vue";
 import SignUp from "@/views/SignUp.vue";
 import AdminSignIn from "@/views/AdminSignIn.vue"
 import WorkItem from "@/views/WorkItem.vue"
-
+import UserBoard from "@/views/UserBoard.vue"
 import Dms from "@/views/Dms.vue"
+import AdminBoard from "@/views/adminBoard/AdminBoard.vue"
+import UserInformation from "@/views/adminBoard/UserInfo.vue"
+import GroupInformation from "@/views/adminBoard/GroupInfo.vue"
+
+
 
 
 const routes = [
@@ -18,56 +23,84 @@ const routes = [
     redirect: "/sign-in",
   },
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    component: Dashboard,
-  },
+    path: '/userBoard',
+    name: 'userBoard',
+    component: UserBoard,
+    children:[
+      {
+        path: "",
+        name: "Dashboard",
+        component: Dashboard,
+      },
+      {
+        path: "/dms",
+        name: "Dms",
+        component: Dms,
+      },
+      {
+        path: "/tables",
+        name: "Tables",
+        component: Tables,
+      },
+      {
+        path: "/billing",
+        name: "Billing",
+        component: Billing,
+      },
+     
+      {
+        path: "/profile",
+        name: "Profile",
+        component: Profile,
+      },
+      
+      {
+        path: "/sign-in",
+        name: "Sign In",
+        component: SignIn,
+      },
+      {
+        path: "/adminSign-in",
+        name: "AdminSign In",
+        component: AdminSignIn,
+      },
+      {
+        path: "/sign-up",
+        name: "Sign Up",
+        component: SignUp,
+      },
+      {
+        path: "/workItem",
+        name: "Work Item",
+        component: WorkItem,
+        props: route => ({
+          id: route.query.id,
+          name: route.query.name,
+        }),
+      },    
+     
+    ]
+  }, 
+
   {
-    path: "/dms",
-    name: "Dms",
-    component: Dms,
-  },
-  {
-    path: "/tables",
-    name: "Tables",
-    component: Tables,
-  },
-  {
-    path: "/billing",
-    name: "Billing",
-    component: Billing,
-  },
+    path: '/adminBoard',
+    name: 'adminBoard',
+    component: AdminBoard,
+    children:[
+      {
+        path: "",
+        name: "User Information",
+        component: UserInformation,
+      },
+      {
+        path: "/groupInfo",
+        name: "Group Information",
+        component: GroupInformation,
+      },
+    ]
+
+    }
  
-  {
-    path: "/profile",
-    name: "Profile",
-    component: Profile,
-  },
-  
-  {
-    path: "/sign-in",
-    name: "Sign In",
-    component: SignIn,
-  },
-  {
-    path: "/adminSign-in",
-    name: "AdminSign In",
-    component: AdminSignIn,
-  },
-  {
-    path: "/sign-up",
-    name: "Sign Up",
-    component: SignUp,
-  },
-  {
-    path: "/workItem",
-    name: "Work Item",
-    component: WorkItem,
-    props: route => ({
-      id: route.query.id,
-      name: route.query.name,
-    }),
-  },
 ];
 
 const router = createRouter({

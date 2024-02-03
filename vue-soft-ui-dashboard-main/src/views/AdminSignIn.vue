@@ -142,7 +142,7 @@
         if (this.user.userName !== "" && this.user.password !== "") {
           event.preventDefault();
           axios
-            .post("http://localhost:61050/dms/dmsCheck/login", this.user)
+            .post("http://localhost:61050/dms/access/login", this.user)
             .then((response) => {
               this.$store.commit("userToken", response.data.token);
               this.$store.commit("userId", response.data.userId);
@@ -166,7 +166,7 @@
                 icon: "success",
                 title: "Signed in successfully",
               });
-              this.$router.push(`/dashboard`);
+              this.$router.push(`/adminBoard`);
             })
             .catch((error) => {
               // if (error.response && error.response.status === 401) {

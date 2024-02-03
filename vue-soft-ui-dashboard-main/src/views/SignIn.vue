@@ -163,7 +163,7 @@ export default {
               icon: "success",
               title: "Signed in successfully",
             });
-            this.$router.push(`/dashboard`);
+            this.$router.push(`/userBoard`);
           })
           .catch((error) => {
             // if (error.response && error.response.status === 401) {
