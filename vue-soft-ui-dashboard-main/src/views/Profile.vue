@@ -15,7 +15,7 @@
         <div class="col-auto">
           <div class="avatar avatar-xl position-relative">
             <img
-              src="@/assets/img/bruce-mars.jpg"
+              src="@/assets/img/user.png"
               alt="profile_image"
               class="shadow-sm w-100 border-radius-lg"
             />
@@ -305,7 +305,7 @@
           }"
         />
       </div>
-      <div class="mt-4 col-12 col-xl-4 mt-xl-0">
+      <!-- <div class="mt-4 col-12 col-xl-4 mt-xl-0">
         <div class="card h-100">
           <div class="p-3 pb-0 card-header">
             <h6 class="mb-0">Conversations</h6>
@@ -425,9 +425,9 @@
             </ul>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
-    <div class="mt-4 row">
+    <!-- <div class="mt-4 row">
       <div class="col-12">
         <div class="mb-4 card">
           <div class="p-3 pb-0 card-header">
@@ -535,7 +535,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 

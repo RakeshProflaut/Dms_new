@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="fixed-plugin">
     <a
       class="px-3 py-2 fixed-plugin-button text-dark position-fixed"
@@ -16,11 +16,13 @@
             <i class="fa fa-close"></i>
           </button>
         </div>
-        <!-- End Toggle Button -->
+        End Toggle Button -->
+        <!--
       </div>
       <hr class="my-1 horizontal dark" />
       <div class="pt-0 card-body pt-sm-3">
-        <!-- Sidebar Backgrounds -->
+        Sidebar Backgrounds -->
+        <!--
         <div>
           <h6 class="mb-0">Sidebar Colors</h6>
         </div>
@@ -61,7 +63,8 @@
             ></span>
           </div>
         </a>
-        <!-- Sidenav Type -->
+        Sidenav Type -->
+        <!-- 
         <div class="mt-3">
           <h6 class="mb-0">Sidenav Type</h6>
           <p class="text-sm">Choose between 2 different sidenav types.</p>
@@ -87,7 +90,8 @@
         <p class="mt-2 text-sm d-xl-none d-block">
           You can change the sidenav type just on desktop view.
         </p>
-        <!-- Navbar Fixed -->
+        Navbar Fixed -->
+        <!-- 
         <div class="mt-3">
           <h6 class="mb-0">Navbar Fixed</h6>
         </div>
@@ -103,7 +107,7 @@
           />
         </div>
         <hr class="horizontal dark my-sm-4" />
-        <!-- <a
+        <a
           class="btn bg-gradient-info w-100"
           href="https://www.creative-tim.com/product/vue-soft-ui-dashboard-pro"
           >Buy now</a
@@ -118,7 +122,7 @@
           href="https://www.creative-tim.com/learning-lab/vue/overview/soft-ui-dashboard/"
           >View documentation</a
         > -->
-        <div class="text-center w-100">
+        <!-- <div class="text-center w-100">
           <!-- <a
             class="github-button"
             href="https://github.com/creativetimofficial/vue-soft-ui-dashboard"
@@ -142,12 +146,12 @@
             target="_blank"
           >
             <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Share
-          </a> -->
+          </a>
         </div>
       </div>
     </div>
   </div>
-</template>
+</template> 
 
 <script>
 import { mapMutations, mapActions } from "vuex";
@@ -162,12 +166,12 @@ export default {
   methods: {
     ...mapMutations(["navbarMinimize", "sidebarType", "navbarFixed"]),
     ...mapActions(["toggleSidebarColor"]),
-
+    
     sidebarColor(color = "success") {
       document.querySelector("#sidenav-main").setAttribute("data-color", color);
       this.$store.state.mcolor = `card-background-mask-${color}`;
     },
-
+    
     sidebarType(type) {
       this.toggleSidebarColor(type);
     },
@@ -177,7 +181,7 @@ export default {
         this.$store.state.isNavFixed = !this.$store.state.isNavFixed;
       }
     },
-
+    
     sidenavTypeOnResize() {
       let transparent = document.querySelector("#btn-transparent");
       let white = document.querySelector("#btn-white");
@@ -200,9 +204,21 @@ export default {
   },
   beforeMount() {
     this.$store.state.isTransparent = "bg-transparent";
-    // Deactivate sidenav type buttons on resize and small screens
     window.addEventListener("resize", this.sidenavTypeOnResize);
     window.addEventListener("load", this.sidenavTypeOnResize);
   },
 };
+</script> -->
+<template>
+  
+</template>
+
+<script>
+export default {
+
+}
 </script>
+
+<style>
+
+</style>
