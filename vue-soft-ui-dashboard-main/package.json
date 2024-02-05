@@ -53,14 +53,6 @@
     "sass": "1.70.0",
     "sass-loader": "14.0.0",
     "vue-cli-plugin-vite": "~1.5.0"
-  },
-  "bugs": {
-    "url": "https://github.com/creativetimofficial/vue-soft-ui-dashboard/issues"
-  },
-  "homepage": "https://demos.creative-tim.com/vue-soft-ui-dashboard/",
-  "license": "SEE LICENSE IN <https://www.creative-tim.com/license>",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/creativetimofficial/vue-soft-ui-dashboard.git"
   }
+
 }
