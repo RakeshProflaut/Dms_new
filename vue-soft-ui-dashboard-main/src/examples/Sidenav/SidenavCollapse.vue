@@ -33,3 +33,14 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+.nav-link:hover >div{
+  background-image: linear-gradient(310deg, #82d616 0%, #82d616 360%) !important;
+}
+
+.nav-link:hover .icon{
+  color: #fff !important;
+}
+</style>
