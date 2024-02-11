@@ -32,7 +32,7 @@
                   :key="index"
                   style="text-align: center"
                 >
-                    {{ data[header.key] }}
+                  {{ data[header.key] }}
                 </td>
               </tr>
             </tbody>
@@ -79,6 +79,16 @@
           </div>
         </v-card>
       </v-dialog>
+      <div v-if="showLoader" class="loader-overlay">
+        <div v-if="showLoader" class="loader">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+        <div class="bg"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -102,6 +112,7 @@ export default {
       openDialogeBox: false,
       groupDatas: [],
       enteredGroupName: "",
+      showLoader: false,
     };
   },
   mounted() {
@@ -166,15 +177,22 @@ export default {
           groupName: this.enteredGroupName,
         };
         console.log("group Data", groupData);
-        axios
-          .post("http://localhost:61050/dms/group/create?=", groupData, {
-            headers: {
-              token: token,
-            },
-          })
-          .then((response) => {
+
+        try {
+          const response = axios.post(
+            "http://localhost:61050/dms/group/create?=",
+            groupData,
+            {
+              headers: {
+                token: token,
+              },
+            }
+          );
+
+          this.showLoader = true;
+          setTimeout(() => {
             this.openDialogeBox = false;
-            console.log("status:", response);
+            this.showLoader = false;
             const Toast = Swal.mixin({
               toast: true,
               position: "top-end",
@@ -192,32 +210,31 @@ export default {
               icon: "success",
               title: "Group Added successfully",
             });
-            this.dialogDelete = false;
-            this.getGroupData();
-          })
-          .catch((error) => {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              customClass: "swal-wide",
-              height: "30px",
-              background: "hsl(0, 43%, 52%)",
-              color: "white",
-              timer: 2000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-              },
-            });
-            Toast.fire({
-              icon: "warning",
-              title: "Group Name Already Exist!",
-            });
-            console.error("API There was an error!", error);
-            // }
+          }, 3000);
+          this.getGroupData();
+        } catch (error) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            customClass: "swal-wide",
+            height: "30px",
+            background: "hsl(0, 43%, 52%)",
+            color: "white",
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
           });
+          Toast.fire({
+            icon: "warning",
+            title: "Group Name Already Exist!",
+          });
+          console.error("API There was an error!", error);
+          // }
+        }
       } else {
         event.preventDefault();
         const Toast = Swal.mixin({
@@ -331,5 +348,109 @@ export default {
   top: 0;
   z-index: 1;
   background: #fff;
+}
+
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(1, 1, 1, 0.76);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 50px;
+  height: 50px;
+  margin: auto;
+  background: var(--c), var(--r1), var(--r2), var(--c), var(--r1), var(--r2),
+    var(--c), var(--r1), var(--r2);
+  background-repeat: no-repeat;
+  animation: l2 5s infinite alternate;
+}
+
+.loader .circle {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  opacity: 0;
+  transform: rotate(225deg);
+  animation-iteration-count: infinite;
+  animation-name: orbit;
+  animation-duration: 5.5s;
+}
+.loader .circle:after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 5px;
+  background: #fff;
+}
+.loader .circle:nth-child(2) {
+  animation-delay: 240ms;
+}
+.loader .circle:nth-child(3) {
+  animation-delay: 480ms;
+}
+.loader .circle:nth-child(4) {
+  animation-delay: 720ms;
+}
+.loader .circle:nth-child(5) {
+  animation-delay: 960ms;
+}
+.loader .bg {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  margin-left: -16px;
+  margin-top: -16px;
+  border-radius: 13px;
+  background-color: rgba(0, 153, 255, 0.69);
+  animation: bgg 46087ms ease-in alternate infinite;
+}
+@keyframes orbit {
+  0% {
+    transform: rotate(225deg);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  7% {
+    transform: rotate(345deg);
+    animation-timing-function: linear;
+  }
+  30% {
+    transform: rotate(455deg);
+    animation-timing-function: ease-in-out;
+  }
+  39% {
+    transform: rotate(690deg);
+    animation-timing-function: linear;
+  }
+  70% {
+    transform: rotate(815deg);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  75% {
+    transform: rotate(945deg);
+    animation-timing-function: ease-out;
+  }
+  76% {
+    transform: rotate(945deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(945deg);
+    opacity: 0;
+  }
 }
 </style>
