@@ -40,7 +40,12 @@
                     <soft-badge
                       color="success"
                       variant="gradient"
-                      style="background: #5fc0ff !important"
+                      style="
+                      
+                      background: rgb(228,243,227);
+background: linear-gradient(270deg, rgba(228,243,227,1) 0%, rgba(88,189,255,1) 95%);
+
+                      !important"
                       size="sm"
                       >Enable</soft-badge
                     >
