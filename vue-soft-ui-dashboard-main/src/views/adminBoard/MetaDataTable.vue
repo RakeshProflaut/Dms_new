@@ -498,4 +498,10 @@ input {
     opacity: 0;
   }
 }
+
+select {
+  -webkit-appearance: menulist;
+  -moz-appearance: menulist;
+  appearance: menulist;
+}
 </style>
