@@ -61,8 +61,8 @@
               <v-card style="width: 100%; height: 450px; overflow: hidden">
                 <v-data-table
                   :headers="headers"
-                  :items="options"
-                  :item-key="'customerId'"
+                  :items="folders"
+                  :item-key="'folderID'"
                   :search="search"
                   style="height: 456px; overflow-y: auto"
                 >
@@ -75,7 +75,7 @@
                     </v-icon>
                   </template>
                   <template v-slot:[`item.sno`]="{ item }">
-                  {{ options.indexOf(item) + 1 }}
+                  {{ folders.indexOf(item) + 1 }}
                 </template>
                 </v-data-table>      
               </v-card>           
@@ -124,14 +124,7 @@
                 title:'Action',
             },
         ],
-        options:[
-            {
-                folderName:'dms',
-                folderPath:'/d',
-                createdBy:'rahual',
-                createdAt:'7:20',
-            }
-        ]
+        folders:[],
       };
     },
   
@@ -139,10 +132,33 @@
       this.$store.state.isAbsolute = true;
       setNavPills();
       setTooltip(this.$store.state.bootstrap);
+      this.getAllFolders();
     },
     beforeUnmount() {
       this.$store.state.isAbsolute = false;
     },
+
+    methods:{
+      async getAllFolders(){
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const apiUrl = `http://localhost:61050/dms/folder/getAllfolders`;
+      const token = this.$store.getters.getUserToken;
+      try{
+
+        const response=await axios
+        .get(apiUrl, {
+          headers: {
+            token: token,
+          },
+        });         
+          this.folders = response.data.folder;
+          console.log("data",response.data);
+          console.log("folders",this.folders);
+          
+        }
+      catch (error){ console.error("Error occured by", error)};
+    },
+    }
    
   };
   </script>
