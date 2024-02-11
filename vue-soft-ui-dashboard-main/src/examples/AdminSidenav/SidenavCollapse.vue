@@ -4,7 +4,7 @@
       class="text-center bg-white shadow icon icon-shape icon-sm border-radius-md d-flex align-items-center justify-content-center"
       :class="this.$store.state.isRTL ? ' ms-2' : 'me-2'"
     >
-      <slot name="icon"></slot>
+      <slot class="icon" name="icon"></slot>
     </div>
     <span
       class="nav-link-text"
@@ -33,3 +33,14 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.nav-link:hover >div{
+  background: #55B6F6 !important;
+}
+
+.nav-link:hover .icon{
+  color: #fff !important;
+}
+</style>
+
