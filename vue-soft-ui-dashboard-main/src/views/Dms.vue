@@ -41,7 +41,7 @@
                 <li v-for="tab in tabs" v-bind:key="tab.key" class="nav-item">
                   <a
                     class="px-0 py-1 mb-0 nav-link active"
-                    @click="selectedTab(tab.key)"
+                    @click="selectedTab(tab)"
                     data-bs-toggle="tab"
                     href="javascript:;"
                     role="tab"
@@ -118,7 +118,17 @@
                   </v-icon>
                 </template>
               </v-data-table>
-            </v-card>
+              <v-dialog v-model="dialogDelete">
+        <v-card>
+          <work-item
+            :tabLabel="selectedTabObj"
+            :itemValue="currentItem"
+            v-on:listnerDialog="listnerDialogBox"
+            @update-data-table="handleUpdateDataTable"
+          />
+        </v-card>
+      </v-dialog>
+            </v-card>           
           </v-card>
         </div>
       </div>
@@ -128,38 +138,29 @@
 </template>
 
 <script>
-import {
-  faFacebook,
-  faTwitter,
-  faInstagram,
-} from "@fortawesome/free-brands-svg-icons";
 
 import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
 import axios from "axios";
-
+import WorkItem from "./WorkItem.vue";
 export default {
   name: "dms",
+  components:{
+    WorkItem,
+  },
   data() {
     return {
       search: "",
       selectedTabValue: "maker",
+      currentItem : "",
+      selectedTabObj:{},
       dialogDelete: false,
       selectedTabs: null,
       propertiesTable: [],
       prospectId: "",
-      faFacebook,
-      faTwitter,
-      faInstagram,
-      tabs: [
-  
-      ],
-      tabsValue: {
-      
-      },
-      headers: [
-      
-      ],
+      tabs: [],
+      tabsValue: {},
+      headers: [],
     };
   },
 
@@ -175,8 +176,12 @@ export default {
   },
   methods: {
     selectedTab(value) {
-      this.selectedTabValue = value;
+      this.selectedTabObj=value;
+      this.selectedTabValue = value.key;
     },
+
+    
+
 
     async renderNewData() {
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
@@ -216,16 +221,15 @@ export default {
         .catch((error) => console.error("Error occured by", error));
     },
     openWorkItem(item) {
-      console.log("item", item);
-
-      this.$router.push({
-        name: "Work Item",
-        query: {
-          id: item.prospectId,
-          name: this.selectedTabValue,
-        },
-      });
+      console.log("item", item);      
+      this.dialogDelete = true;
+      this.currentItem = item;    
     },
+
+    listnerDialogBox(value) {
+      this.dialogDelete = value;
+    },
+
     async checkRendering() {
       const apiUrl = `http://localhost:61050/dms/transaction/saveExecution?userId=1&activityName=maker`;
       const token = this.$store.getters.getUserToken;
@@ -240,7 +244,7 @@ export default {
           }
         )
         .then(() => {
-          this.renderNewData("maker");
+          this.renderNewData(this.selectedTabValue);
         })
         .catch((error) => console.error("Error occured by", error));
     },
@@ -252,14 +256,7 @@ export default {
 </script>
 
 <style scoped>
-.v-pagination__first,
-.v-pagination__prev,
-.v-pagination__item,
-.v-pagination__item--is-active,
-.v-pagination__next,
-.v-pagination__last {
-  color: rgb(211, 15, 15) !important;
-}
+
 body > div.v-overlay-container > div > div.v-overlay__content > div {
   height: 150%;
   width: 102%;
@@ -321,29 +318,7 @@ body > div.v-overlay-container > div > div.v-overlay__content > div {
   text-transform: none;
 }
 
-#app
-  > div
-  > div.dashboard
-  > div.content
-  > div
-  > div
-  > div.v-card-text.card-text
-  > div
-  > div
-  > div.v-window-item.v-window-item--active
-  > div
-  > div.v-card.v-theme--light.v-card--density-default.v-card--variant-elevated
-  > div.v-table.v-table--fixed-header.v-table--has-top.v-table--has-bottom.v-theme--light.v-table--density-default.v-data-table
-  > div.v-data-table-footer
-  > div.v-data-table-footer__pagination
-  > nav
-  > ul
-  > li.v-pagination__first
-  > button
-  > span.v-btn__content
-  > i {
-  color: #ce1212;
-}
+
 
 .min-height-300 {
   min-height: 101px !important;
