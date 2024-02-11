@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-auto h-auto collapse navbar-collapse max-height-vh-100 h-100"
+    class="w-auto h-auto collapse navbar-collapse max-height-vh-100"
     id="sidenav-collapse-main"
   >
     <ul class="navbar-nav">
@@ -12,7 +12,21 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
+        <sidenav-collapse navText="Workflow" :to="{ name: 'Dms' }">
+          <template #icon>
+            <document />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
         <sidenav-collapse navText="Dms" :to="{ name: 'Dms' }">
+          <template #icon>
+            <document />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="Folders" :to="{ name: 'Folders' }">
           <template #icon>
             <document />
           </template>
@@ -59,7 +73,7 @@
         </h6>
       </li>
       <li class="nav-item">
-        <sidenav-collapse navText="Profile" :to="{ name: 'Profile' }">
+        <sidenav-collapse navText="Profile" :to="{ name: 'Profile' }" class="side">
           <template #icon>
             <customer-support />
           </template>
@@ -149,3 +163,22 @@ export default {
   },
 };
 </script>
+
+
+<style scoped>
+
+
+.navbar-vertical.navbar-expand-xs .navbar-nav > .nav-item:hover {
+  color: #344767;
+}
+
+.navbar-vertical .navbar-nav .nav-link:hover {
+  background-color: #fff;
+    font-weight: 600;
+    box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 0.5rem;
+}
+
+
+
+</style>
