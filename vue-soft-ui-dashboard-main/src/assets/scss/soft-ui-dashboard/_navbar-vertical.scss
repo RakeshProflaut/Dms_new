@@ -83,10 +83,10 @@
             min-height: 100%;
             padding-left: 0;
             padding-right: 0; // Target IE 10 & 11
-            @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-              min-height: none;
-              height: 100%;
-            }
+            // @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            //   min-height: none;
+            //   height: 100%;
+            // }
           }
           // Fixes the vertical navbar to the left
           &.fixed-start {
@@ -168,9 +168,9 @@
   // Define colors
   @each $color, $value in $theme-colors {
     &[data-color="#{$color}"] {
-      .navbar-nav > .nav-item > .nav-link.active .icon {
-        @include gradient-directional(nth(#{$value}, 1) 0%, nth(#{$value}, -1) 100%, $deg: 310deg);
-      }
+      // .navbar-nav > .nav-item > .nav-link.active .icon {
+      //   @include gradient-directional(nth(#{$value}, 1) 0%, nth(#{$value}, -1) 100%, $deg: 310deg);
+      // }
     }
   }
 }
@@ -283,41 +283,41 @@
   &.bg-white {
     box-shadow: $card-box-shadow;
 
-    .navbar-nav {
-      .nav-link {
-        &.active {
-          box-shadow: none;
-        }
+    // .navbar-nav {
+    //   .nav-link {
+    //     &.active {
+    //       box-shadow: none;
+    //     }
 
-        .icon {
-          @include gradient-directional(nth($light, 1) 0%, nth($light, -1) 100%, $deg: 310deg);
-        }
-      }
+    //     .icon {
+    //       @include gradient-directional(nth($light, 1) 0%, nth($light, -1) 100%, $deg: 310deg);
+    //     }
+    //   }
     }
   }
 
-  .navbar-nav .nav-link.active {
-    font-weight: $font-weight-bold;
-    box-shadow: $card-box-shadow;
-    border-radius: $border-radius-md;
-  }
+  // .navbar-nav .nav-link.active {
+  //   font-weight: $font-weight-bold;
+  //   box-shadow: $card-box-shadow;
+  //   border-radius: $border-radius-md;
+  // }
 
-  .navbar-nav > .nav-item .nav-link.active {
-    color: $dark;
-    background-color: $white;
+  // .navbar-nav > .nav-item .nav-link.active {
+  //   color: $dark;
+  //   background-color: $white;
 
-    .icon {
-      @include gradient-directional(nth($success, 1) 0%, nth($success, -1) 100%, $deg: 310deg);
+  //   .icon {
+  //     @include gradient-directional(nth($success, 1) 0%, nth($success, -1) 100%, $deg: 310deg);
 
-      svg {
-        .color-background,
-        .color-foreground {
-          fill: $white;
-        }
-      }
-    }
-  }
-}
+  //     svg {
+  //       .color-background,
+  //       .color-foreground {
+  //         fill: $white;
+  //       }
+  //     }
+  //   }
+  // }
+
 
 .navbar-main {
   transition: box-shadow $transition-base-time ease-in, background-color $transition-base-time ease-in;
@@ -382,28 +382,28 @@
                 background: rgba($dark-gradient-state, 0.5);
               }
 
-              &.active {
-                color: $dark-gradient-state;
+              // &.active {
+              //   color: $dark-gradient-state;
 
-                &:before {
-                  height: $navbar-vertical-collapse-dot-size-active;
-                  width: $navbar-vertical-collapse-dot-size-active;
-                  background: $dark-gradient-state;
-                }
-              }
+              //   &:before {
+              //     height: $navbar-vertical-collapse-dot-size-active;
+              //     width: $navbar-vertical-collapse-dot-size-active;
+              //     background: $dark-gradient-state;
+              //   }
+              // }
             }
 
-            &.active {
-              .nav-link {
-                color: $dark-gradient-state;
+            // &.active {
+            //   .nav-link {
+            //     color: $dark-gradient-state;
 
-                &:before {
-                  height: $navbar-vertical-collapse-dot-size-active;
-                  width: $navbar-vertical-collapse-dot-size-active;
-                  background: $dark-gradient-state;
-                }
-              }
-            }
+            //     &:before {
+            //       height: $navbar-vertical-collapse-dot-size-active;
+            //       width: $navbar-vertical-collapse-dot-size-active;
+            //       background: $dark-gradient-state;
+            //     }
+            //   }
+            // }
             // Third level
             .nav-item {
               .nav-link {
