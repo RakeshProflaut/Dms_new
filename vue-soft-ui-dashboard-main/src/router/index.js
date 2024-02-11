@@ -6,14 +6,14 @@ import Profile from "@/views/Profile.vue";
 import SignIn from "@/views/SignIn.vue";
 import SignUp from "@/views/SignUp.vue";
 import AdminSignIn from "@/views/AdminSignIn.vue"
-import WorkItem from "@/views/WorkItem.vue"
 import UserBoard from "@/views/UserBoard.vue"
 import Dms from "@/views/Dms.vue"
 import AdminBoard from "@/views/adminBoard/AdminBoard.vue"
 import UserInformation from "@/views/adminBoard/UserInfo.vue"
 import GroupInformation from "@/views/adminBoard/GroupInfo.vue"
-
-
+import MetaData from "@/views/adminBoard/MetaData.vue"
+import AccessRights from "@/views/adminBoard/AccessRights.vue"
+import Folders from "@/views/Folders.vue"
 
 
 const routes = [
@@ -36,6 +36,11 @@ const routes = [
         path: "/dms",
         name: "Dms",
         component: Dms,
+      },
+      {
+        path: "/folders",
+        name: "Folders",
+        component:Folders,
       },
       {
         path: "/tables",
@@ -68,16 +73,7 @@ const routes = [
         path: "/sign-up",
         name: "Sign Up",
         component: SignUp,
-      },
-      {
-        path: "/workItem",
-        name: "Work Item",
-        component: WorkItem,
-        props: route => ({
-          id: route.query.id,
-          name: route.query.name,
-        }),
-      },    
+      },   
      
     ]
   }, 
@@ -96,6 +92,16 @@ const routes = [
         path: "/groupInfo",
         name: "Group Information",
         component: GroupInformation,
+      },
+      {
+        path: "/metaData",
+        name: "Meta Data",
+        component: MetaData,
+      },
+      {
+        path: "/accessrights",
+        name: "Access Rights",
+        component: AccessRights,
       },
     ]
 
