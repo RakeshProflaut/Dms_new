@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="container" style="width: 100%; height: 100%">        
-        <div>
-          <button class="closebtn" @click="$emit('closeDialogeBox',false)">
-          <i class="bx bx-x" style="position: relative; top: 20%;"></i>
+    <div class="container" style="width: 100%; height: 100%">
+      <div>
+        <button class="closebtn" @click="$emit('closeDialogeBox', false)">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
         </button>
-        </div>
-      <div class="pt-10 text-center card-header">       
+      </div>
+      <div class="pt-10 text-center card-header">
         <h5>User Registration</h5>
       </div>
 
@@ -88,6 +88,16 @@
         </form>
       </div>
     </div>
+    <!-- <div  class="loader-overlay">
+  <div  v-if="showLoader" class="loader">
+  <div class='circle'></div>
+  <div class='circle'></div>
+  <div class='circle'></div>
+  <div class='circle'></div>
+  <div class='circle'></div>
+</div>
+  <div class="bg"></div>
+</div>     -->
   </div>
 </template>
 
@@ -111,6 +121,7 @@ export default {
   },
   data() {
     return {
+      showLoader: false,
       userdetails: {
         userName: "",
         email: "",
@@ -146,35 +157,19 @@ export default {
       const token = this.$store.getters.getUserToken;
       console.log("token", token);
       if (Object.values(this.userdetails).every((value) => value !== "")) {
-        await axios
-          .post(apiUrl, this.userdetails, {
+       
+        try {          
+          const response = await axios.post(apiUrl, this.userdetails, {
             headers: {
               token: token,
             },
-          })
-          .then((response) => {
-            console.log(response.data.status);
-            this.getUserInfo();
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              background: "#4fb945",
-              color: "white",
-              timer: 2000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "User Added successfully",
-            });
-            this.$emit("closeDialogeBox", false);
-          })
-          .catch((error) => console.error("Error occured byyy", error));
+          });          
+          this.$emit('showLoader',true);        
+          this.getUserInfo();  
+          this.$emit("closeDialogeBox", false);
+        } catch (error) {
+          console.error("Error occured byyy", error);
+        }
       } else {
         const Toast = Swal.mixin({
           toast: true,
@@ -218,7 +213,7 @@ export default {
   display: flex;
   width: 80%;
   justify-content: space-between;
-  --blue: #55B6F6;
+  --blue: #55b6f6;
   --g08: #e1e5eb;
   --g04: #848ea1;
 }
@@ -327,7 +322,7 @@ export default {
   display: flex;
   width: 80%;
   justify-content: space-between;
-  --blue: #55B6F6;
+  --blue: #55b6f6;
   --g08: #e1e5eb;
   --g04: #848ea1;
 }
@@ -489,13 +484,11 @@ export default {
   top: -15px;
 }
 
-
-
-.closebtn{
+.closebtn {
   position: relative;
   left: 6%;
   float: right;
-  width: 22px; 
+  width: 22px;
   height: 22px;
   color: #d11313;
   font-size: 30px;
@@ -506,5 +499,116 @@ export default {
   opacity: 1;
 }
 
+.body > div.v-overlay-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.loader-overlay {
+  position: fixed; /* Change to fixed */
+  top: 0;
+  left: 0;
+  width: 100%; /* Use viewport width */
+  height: 100%; /* Use viewport height */
+  background: rgba(1, 1, 1, 0.76);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
 
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 50px;
+  height: 50px;
+  margin: auto;
+  background: 
+    var(--c), var(--r1), var(--r2),
+    var(--c), var(--r1), var(--r2),
+    var(--c), var(--r1), var(--r2);
+  background-repeat: no-repeat;
+  animation: l2 5s infinite alternate;
+}
+
+.loader .circle {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  opacity: 0;
+  transform: rotate(225deg);
+  animation-iteration-count: infinite;
+  animation-name: orbit;
+  animation-duration: 5.5s;
+}
+.loader .circle:after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 5px;
+  background: #fff;
+}
+.loader .circle:nth-child(2) {
+  animation-delay: 240ms;
+}
+.loader .circle:nth-child(3) {
+  animation-delay: 480ms;
+}
+.loader .circle:nth-child(4) {
+  animation-delay: 720ms;
+}
+.loader .circle:nth-child(5) {
+  animation-delay: 960ms;
+}
+.loader .bg {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  margin-left: -16px;
+  margin-top: -16px;
+  border-radius: 13px;
+  background-color: rgba(0, 153, 255, 0.69);
+  animation: bgg 46087ms ease-in alternate infinite;
+}
+@keyframes orbit {
+  0% {
+    transform: rotate(225deg);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  7% {
+    transform: rotate(345deg);
+    animation-timing-function: linear;
+  }
+  30% {
+    transform: rotate(455deg);
+    animation-timing-function: ease-in-out;
+  }
+  39% {
+    transform: rotate(690deg);
+    animation-timing-function: linear;
+  }
+  70% {
+    transform: rotate(815deg);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  75% {
+    transform: rotate(945deg);
+    animation-timing-function: ease-out;
+  }
+  76% {
+    transform: rotate(945deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(945deg);
+    opacity: 0;
+  }
+}
 </style>
