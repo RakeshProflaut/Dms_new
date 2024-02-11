@@ -1,123 +1,62 @@
-<!-- <template>
-  <div class="py-4 container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <authors-table />
-      </div>
-    </div>
-
-  </div>
-</template>
-
-<script>
-
-export default {
-  name: "tables",
-
-};
-</script> -->
-
 <template>
-  <div class="card mb-4">
+  <div class="card mb-4"  style="height: 484px !important;">
     <div class="newButton">
       <v-btn @click="openDialogeBox =true"> New </v-btn>
     </div>
     <div class="card-header pb-0">
-      <h6>User Information table</h6>
+      <h3>User Information</h3>
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
         <table class="table align-items-center mb-0">
-          <thead>
+          <thead class="table-header">
             <tr>
               <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                v-for="(header, index) in headers"
+                v-for="(header) in headers"
                 :key="header.key"
-                :class="{
-                  'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2':
-                    index === 1,
-                  'text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7':
-                    index === 2,
-                  'text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7':
-                    index === 3,
-                  'text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7':
-                    index === 4,
-                  'text-secondary opacity-7': index === 5,
-                }"
+                class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
               >
                 {{ header.title }}
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="userInfo in userInfos" :key="userInfo.userId">
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <div class="d-flex flex-column justify-content-center">
-                    {{ userInfo.userId }}
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">{{ userInfo.userName }}</h6>
-                  </div>
-                </div>
-              </td>
+            <tr v-for="(data, rowIndex) in displayedData " :key="rowIndex" >
+          <td 
+          
+          :class="{  'font-weight-bolder text-uppercase':
+                    header.key === 'userName',}" 
+          v-for="(header, index) in headers" :key="index"  style="text-align: center;">  
+            <template v-if="header.key === 'adminAccesss' || header.key ==='webAccess' ">
+              <template v-if=" data[header.key] === 'Y'">
+              <soft-badge color="success" variant="gradient"  style="background:#5FC0FF !important;"  size="sm">Enable</soft-badge>
+          </template>
+          <template v-else>
+              <soft-badge color="secondary" variant="gradient" size="sm">Disable</soft-badge>
+          </template>
 
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <div class="d-flex flex-column justify-content-center">
-                    {{ userInfo.createdDate }}
-                  </div>
-                </div>
-              </td>
-              <!-- <td class="align-middle text-center text-sm">
-                <soft-badge color="success" variant="gradient" size="sm"
-                  >Online</soft-badge
-                >
-              </td> -->
-              <!-- <td
-                class="status-cell align-middle text-center text-sm"
-              >
-                <soft-badge
-                  variant="gradient"
-                  size="sm"
-                  >{{
-                    user.webAccess === "Y" ? "Online" : "Offline"
-                  }}</soft-badge
-                >
-              </td>
-              <td
-                class="status-cell align-middle text-center text-sm"
-              >
-                <soft-badge
-                  variant="gradient"
-                  size="sm"
-                  >{{
-                    user.adminAccess === "Y" ? "Online" : "Offline"
-                  }}</soft-badge
-                >
-              </td> -->
-              <td class="align-middle">
-                <a
-                  href="javascript:;"
-                  class="text-secondary font-weight-bold text-xs"
-                  data-toggle="tooltip"
-                  data-original-title="Edit user"
-                  >Edit</a
-                >
-              </td>
-            </tr>
+            </template>
+            <template v-else>
+            {{ data[header.key] }}
+            </template>        
+          </td>    
+        </tr>
           </tbody>
         </table>
+        <v-pagination
+      v-model="page"
+      :length="pages"
+      @input="updateDisplayedData"
+    ></v-pagination>
       </div>
-    </div>
-    <v-dialog v-model="openDialogeBox">
-      <v-card>
-        <user-signup v-on:closeDialogeBox="closeDialogeBox" />
+    </div> 
+    <v-dialog v-model="openDialogeBox"  style="display: flex;padding-left: 73%;z-index: 1001;">
+      <v-card style="width: 28%;border-radius: 3%;">
+        <user-signup 
+        v-on:closeDialogeBox="closeDialogeBox"
+        :getUserInfo="getUserInfo"  
+        
+        />
       </v-card>
     </v-dialog>
   </div>
@@ -131,17 +70,35 @@ import axios from "axios";
 
 export default {
   name: "table",
-  mounted(){
-   this.getUserInfo()
-  },
-  data() {
-    return {
-      openDialogeBox: false,
-    };
+  created(){
+    this.getUserInfo()
   },
   components: {
     SoftBadge,
     UserSignup,
+  },
+
+  watch: {
+    page(newValue, oldValue) {
+        console.log('Page changed to:', newValue);
+        this.updateDisplayedData();
+    }
+},
+computed: {
+  displayedData() {
+    console.log("displa data rendering");
+    const start = (this.page - 1) * this.itemsPerPage;
+    console.log("start",start);
+    const end = start + this.itemsPerPage;
+    console.log("end",start);
+
+    return this.userInfos.slice(start, end);
+  },
+  pages() {
+    console.log(Math.ceil(this.userInfos.length /this.itemsPerPage));
+    return Math.ceil(this.userInfos.length / this.itemsPerPage);
+  },
+    
   },
   data() {
     return {
@@ -151,14 +108,24 @@ export default {
         { key: "email", title: "E-MAIL" },
         { key: "createdDate", title: "CREATED DATE" },
         { key: "webAccess", title: "WEB ACCESS" },
-        { key: "adminAccess", title: "ADMIN ACCESS" },
-        { key: "action", title: "Action" },
+        { key: "adminAccesss", title: "ADMIN ACCESS" },
+        // { key: "action", title: "Action" },
       ],
-      userInfos: [],
-    };
-  },
+      openDialogeBox: false,
+      userInfos:[],
+      page: 1, // Current page
+    itemsPerPage:10, // Number of items per page
+  }
+},
   methods: {
-    async getUserInfo() {
+
+    updateDisplayedData() {
+    // Your logic to update displayed data based on the new page number
+    const start = (this.page - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.displayedData = this.userInfos.slice(start, end);
+  },
+    async getUserInfo(){
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
       const apiUrl = `http://localhost:61050/dms/group/getAllUsers`;
       const token = this.$store.getters.getUserToken;
@@ -169,12 +136,9 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response.data);
-          console.log("date",response.data.createdDate);    
-          console.log("web",response.data.webAccess);
-          console.log("admin",response.data.adminAccess);
-
           this.userInfos = response.data;
+          console.log("response",response.data);
+
         })
         .catch((error) => console.error("Error occured by", error));
     },
@@ -196,45 +160,25 @@ export default {
 .newButton > .v-btn {
    background: #58BDFF;
   transition: 0.5s ease;
+  color: #fff;
 }
 .newButton > .v-btn:hover {
   cursor: pointer;
 }
+
+.table-responsive{
+  height:350px;
+  position: relative;
+  overflow-x: auto;
+
+}
+
+.table-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #fff;
+}
+
 </style>
 
-<!-- <tr v-for="(user, index) in users" :key="index">
-  <td :class="{ 'special-user': user.special }">
-    <div class="d-flex px-2 py-1">                
-      <div class="d-flex flex-column justify-content-center">
-        <h6 class="mb-0 text-sm">{{ user.name }}</h6>
-        Additional data rendering if needed -->
-<!--
-      </div>
-    </div>
-  </td>
-  <td class="position-cell">
-    <p class="text-xs font-weight-bold mb-0">{{ user.position }}</p>
-  </td>
-  <td class="status-cell align-middle text-center text-sm">
-    <soft-badge :color="user.statusColor" variant="gradient" size="sm">{{ user.status }}</soft-badge>
-  </td>
-  <td class="date-cell align-middle text-center">
-    <span class="text-secondary text-xs font-weight-bold">{{ user.date }}</span>
-  </td>
-  <td class="edit-cell align-middle">
-    <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Edit</a>
-  </td>
-</tr> -->
-
-<!-- <td class="status-cell align-middle text-center text-sm" :class="getStatusClass(user.webAccess)">
-  <soft-badge :color="getBadgeColor(user.webAccess)" variant="gradient" size="sm">{{ user.webAccess === 'Y' ? 'Online' : 'Offline' }}</soft-badge>
-</td>
-<td class="status-cell align-middle text-center text-sm" :class="getStatusClass(user.clientAccess)">
-  <soft-badge :color="getBadgeColor(user.clientAccess)" variant="gradient" size="sm">{{ user.clientAccess === 'Y' ? 'Online' : 'Offline' }}</soft-badge>
-</td>
-<td class="date-cell align-middle text-center">
-  <span class="text-secondary text-xs font-weight-bold">{{ user.date }}</span>
-</td>
-<td class="edit-cell align-middle">
-  <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Edit</a>
-</td> -->
