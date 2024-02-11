@@ -91,6 +91,16 @@
       </div>
     </section>
   </main>
+  <div v-if="showLoader" class="loader-overlay">
+  <div  v-if="showLoader" class="loader">
+  <div class='circle'></div>
+  <div class='circle'></div>
+  <div class='circle'></div>
+  <div class='circle'></div>
+  <div class='circle'></div>
+</div>
+  <div class="bg"></div>
+</div>
   <app-footer />
 </template>
 
@@ -114,10 +124,12 @@ export default {
   },
   data(){
     return{
+      showLoader: false,
       user:{
         userName: "",
         password: "",
         useForceLogin:"N",
+
       },
     }
   },
@@ -137,13 +149,16 @@ export default {
       console.log(this.user);
       if (this.user.userName !== "" && this.user.password !== "") {
         event.preventDefault();
-        axios
-          .post("http://localhost:61050/dms/access/login", this.user)
-          .then((response) => {
+        try{
+          const response= await axios.post("http://localhost:61050/dms/access/login", this.user);
+          this.showLoader = true;
+          console.log("loader",this.showLoader);
+          await new Promise(resolve => setTimeout(resolve, 3000));
+
             this.$store.commit("userToken", response.data.token);
             this.$store.commit("userId", response.data.userId);
             this.$store.commit("userName", this.user.userName);
-
+            
             console.log("token", this.$store.getters.getUserToken);
             console.log("userId", this.$store.getters.getUserId);
             const Toast = Swal.mixin({
@@ -164,12 +179,8 @@ export default {
               title: "Signed in successfully",
             });
             this.$router.push(`/userBoard`);
-          })
-          .catch((error) => {
-            // if (error.response && error.response.status === 401) {
-            //   // Token expired, attempt to refresh the token
-            //   this.refreshToken();
-            // } else {
+        }
+          catch(error) {       
               const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -190,9 +201,9 @@ export default {
                 title: "Incorrect User Details!",
               });
               console.error("API There was an error!", error);
-            // }
-          });
-      } else {
+          
+      }
+     } else {
         event.preventDefault();
         const Toast = Swal.mixin({
           toast: true,
@@ -242,5 +253,111 @@ export default {
 }
 #app > main > main > section > div > div > div > div:nth-child(2) > div > div{
   transform: none;
+}
+
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(1, 1, 1, 0.76);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 50px;
+  height: 50px;
+  margin: auto;
+  background: 
+    var(--c), var(--r1), var(--r2),
+    var(--c), var(--r1), var(--r2),
+    var(--c), var(--r1), var(--r2);
+  background-repeat: no-repeat;
+  animation: l2 5s infinite alternate;
+}
+
+.loader .circle {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  opacity: 0;
+  transform: rotate(225deg);
+  animation-iteration-count: infinite;
+  animation-name: orbit;
+  animation-duration: 5.5s;
+}
+.loader .circle:after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 5px;
+  background: #fff;
+}
+.loader .circle:nth-child(2) {
+  animation-delay: 240ms;
+}
+.loader .circle:nth-child(3) {
+  animation-delay: 480ms;
+}
+.loader .circle:nth-child(4) {
+  animation-delay: 720ms;
+}
+.loader .circle:nth-child(5) {
+  animation-delay: 960ms;
+}
+.loader .bg {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  margin-left: -16px;
+  margin-top: -16px;
+  border-radius: 13px;
+  background-color: rgba(0, 153, 255, 0.69);
+  animation: bgg 46087ms ease-in alternate infinite;
+}
+@keyframes orbit {
+  0% {
+    transform: rotate(225deg);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  7% {
+    transform: rotate(345deg);
+    animation-timing-function: linear;
+  }
+  30% {
+    transform: rotate(455deg);
+    animation-timing-function: ease-in-out;
+  }
+  39% {
+    transform: rotate(690deg);
+    animation-timing-function: linear;
+  }
+  70% {
+    transform: rotate(815deg);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  75% {
+    transform: rotate(945deg);
+    animation-timing-function: ease-out;
+  }
+  76% {
+    transform: rotate(945deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(945deg);
+    opacity: 0;
+  }
 }
 </style>
