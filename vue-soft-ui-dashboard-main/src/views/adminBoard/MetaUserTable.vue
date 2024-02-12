@@ -84,7 +84,7 @@ export default {
 name:'metUserTable',
 mounted(){
   this.getTableData()
-  console.log("nameee",this.selectedTableName);
+  console.log("nameee",this.selectedTableId);
 },
 computed:{
   filteredFieldNames() {
@@ -156,7 +156,7 @@ data(){
     };
   },
 props: {
-  selectedTableName:{
+  selectedTableId:{
       type: String,
       required: true,
     },
@@ -171,7 +171,7 @@ methods:{
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
       await axios
         .get(
-          `http://localhost:61050/dms/file/getAllTables?tableName=${this.selectedTableName}`,
+          `http://localhost:61050/dms/meta/getAllTables?tableName=${this.selectedTableId}`,
           {
             headers: {
               token: this.$store.getters.getUserToken,

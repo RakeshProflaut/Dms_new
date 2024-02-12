@@ -27,7 +27,7 @@
       <td v-for="(header, index) in headers" :key="index" style="text-align: center;">
         <template v-if="header.key ==='action'">
             <v-btn
-            @click="sendTableNameAndToggle(data['name'])"
+            @click="sendTableIdAndToggle(data['id'])"
                   class="text-secondary font-weight-bold text-xs"
                   >View</v-btn
                 >
@@ -67,7 +67,7 @@
       <v-card style="width: 60%;margin: 0 auto;">
         <meta-user-table
         v-on:dialogeBox="userTableDialogBox"
-        :selectedTableName="selectedTableName"
+        :selectedTableId="selectedTableId"
 
         />
       </v-card>
@@ -105,7 +105,7 @@ data(){
   return{
     openDialogeBox:false,
     openTableDialogeBox:false,
-    selectedTableName:"",
+    selectedTableId:"",
     page: 1, // Current page
     itemsPerPage:10, // Number of items per page
     showLoader:false,
@@ -193,8 +193,8 @@ methods:{
       }
     },
 
-  sendTableNameAndToggle(value){
-    this.selectedTableName=value;
+  sendTableIdAndToggle(value){
+    this.selectedTableId=value;
     this.openTableDialogeBox=true;
     
   },
@@ -211,7 +211,7 @@ methods:{
       console.log("dms token", this.$store.getters.getUserToken);
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
       await axios
-        .get('http://localhost:61050/dms/file/getAllMetaEntity',
+        .get('http://localhost:61050/dms/meta/getAllMetaEntity',
 
           {
             headers: {

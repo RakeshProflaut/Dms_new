@@ -202,7 +202,7 @@ export default {
       if (allFieldsFilled && this.tableName && this.selectedItems != "") {
         event.preventDefault();
         await axios
-          .post("http://localhost:61050/dms/file/createTable", postDetails, {
+          .post("http://localhost:61050/dms/meta/createTable", postDetails, {
             headers: {
               token: token,
             },
