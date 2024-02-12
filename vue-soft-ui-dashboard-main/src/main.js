@@ -25,7 +25,7 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import "mdi/css/materialdesignicons.min.css";
+import '@mdi/font/css/materialdesignicons.min.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css'; // Import the icons stylesheet
 import Vue2Editor from "vue2-editor";
 import axios from "axios";

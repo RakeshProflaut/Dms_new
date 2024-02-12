@@ -26,6 +26,7 @@
     "mammoth": "^1.6.0",
     "path-browserify": "^1.0.1",
     "pdf-lib": "^1.17.1",
+    "pspdfkit": "^2024.1.2",
     "splitpanes": "^3.1.5",
     "sweetalert2": "^11.10.4",
     "util": "^0.12.5",
@@ -54,5 +55,4 @@
     "sass-loader": "14.0.0",
     "vue-cli-plugin-vite": "~1.5.0"
   }
-
 }
