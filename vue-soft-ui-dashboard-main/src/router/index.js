@@ -14,6 +14,8 @@ import GroupInformation from "@/views/adminBoard/GroupInfo.vue"
 import MetaData from "@/views/adminBoard/MetaData.vue"
 import AccessRights from "@/views/adminBoard/AccessRights.vue"
 import Folders from "@/views/Folders.vue"
+import ViewFolder from "@/views/ViewFolder.vue"
+
 
 
 const routes = [
@@ -38,9 +40,17 @@ const routes = [
         component: Dms,
       },
       {
+        path: "/viewFolder",
+        name: "ViewFolder",
+        component: ViewFolder, 
+        props: route => ({
+          id: route.query.id,
+        }),    
+      },
+      {
         path: "/folders",
         name: "Folders",
-        component:Folders,
+        component:Folders, 
       },
       {
         path: "/tables",
