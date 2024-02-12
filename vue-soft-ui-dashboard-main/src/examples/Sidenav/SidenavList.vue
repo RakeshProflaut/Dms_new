@@ -26,7 +26,7 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse navText="Folders" :to="{ name: 'Folders' }">
+        <sidenav-collapse navText="Directory" :to="{ name: 'Folders' }">
           <template #icon>
             <document />
           </template>
