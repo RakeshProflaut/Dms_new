@@ -7,45 +7,41 @@
           style="position: relative; top: -30%; left: -20%"
         ></i>
       </button>
-    </div>   
-    <div class="pt-1 text-center card-header">       
-        <h5>Metadata Creation</h5>
-      </div>
-   
+    </div>
+    <div class="pt-1 text-center card-header">
+      <h5>Metadata Creation</h5>
+    </div>
+
     <div class="card-body px-0 pt-0 pb-2">
-        <div style="display: flex;width: 100%;justify-content: space-between;">    
-      <div class="tableExtension">
-        <div  >
+      <div style="display: flex; width: 100%; justify-content: space-between">
+        <div class="tableExtension">
+          <div>
             <label>Name</label>
-            <input
-            type="text"
-            v-model="tableName"
-            placeholder="Name"
-            />
-        </div>
-        <div style="margin-right: 5%;">
+            <input type="text" v-model="tableName" placeholder="Name" />
+          </div>
+          <div style="margin-right: 5%">
             <label>File Extensions</label>
             <v-select
-            variant="underlined"
-            style="width: 54%;font-size: 10px;"
-            v-model="selectedItems"
-            :items="selectedOptions"
-            item-title="text"
-            label="Select items"
-            multiple
-            chipstabelName
-            small-chips
-            clearable
-            class="custom-select"
+              variant="underlined"
+              style="width: 54%; font-size: 10px"
+              v-model="selectedItems"
+              :items="selectedOptions"
+              item-title="text"
+              label="Select items"
+              multiple
+              chipstabelName
+              small-chips
+              clearable
+              class="custom-select"
             >
-        </v-select>
-    </div>
-    </div>
-    <div class="addButton">
-        <v-btn @click="addEmptyRow"> Add </v-btn>
-        <v-btn @click="postTable"> Save </v-btn>
+            </v-select>
+          </div>
+        </div>
+        <div class="addButton">
+          <v-btn @click="addEmptyRow"> Add </v-btn>
+          <v-btn @click="postTable"> Save </v-btn>
+        </div>
       </div>
-</div>
 
       <div class="table-responsive p-0">
         <table class="table align-items-center mb-0">
@@ -74,33 +70,32 @@
                     <option value="integer">INTEGER</option>
                   </select>
                 </template>
-                <template v-else-if="header.key === 'mandatory'" >
-                    <select name="mandatory" id="" v-model="item[header.key]">
+                <template v-else-if="header.key === 'mandatory'">
+                  <select name="mandatory" id="" v-model="item[header.key]">
                     <option value="" disabled selected>Select Option</option>
                     <option value="Yes">Yes</option>
                     <option value="NO">No</option>
                   </select>
                 </template>
                 <template v-else-if="header.key === 'maxLength'">
-                  <input type="number" v-model="item[header.key]"/>
+                  <input type="number" v-model="item[header.key]" />
                 </template>
                 <template v-else>
-                  <input type="text" v-model="item[header.key]"/>
+                  <input type="text" v-model="item[header.key]" />
                 </template>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-
     </div>
     <div v-if="showLoader" class="loader-overlay">
-      <div  v-if="showLoader" class="loader">
-        <div class='circle'></div>
-        <div class='circle'></div>
-        <div class='circle'></div>
-        <div class='circle'></div>
-        <div class='circle'></div>
+      <div v-if="showLoader" class="loader">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
       </div>
       <div class="bg"></div>
     </div>
@@ -108,7 +103,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 import Swal from "sweetalert2";
 
 export default {
@@ -116,11 +111,11 @@ export default {
   data() {
     return {
       selectedTabs: null,
-      selectedItems:[],
-      tableName:"",
+      selectedItems: [],
+      tableName: "",
       search: "",
-      showLoader:false,    
-    fields: [],        
+      showLoader: false,
+      fields: [],
       headers: [
         {
           key: "fieldName",
@@ -140,40 +135,40 @@ export default {
         },
       ],
       selectedOptions: [
-      {
+        {
           text: "Word",
           value: "doc",
         },
         {
-            text: "PDF",
+          text: "PDF",
           value: "pdf",
         },
         {
-            text: "Text",
+          text: "Text",
           value: "txt",
         },
         {
-            text: "Excel(xls)",
+          text: "Excel(xls)",
           value: "xls",
         },
         {
-            text: "Excel(xlsx)",
+          text: "Excel(xlsx)",
           value: "xlsx",
         },
         {
-            text: "JPG",
+          text: "JPG",
           value: "jpg",
         },
         {
-            text: "JPEG",
+          text: "JPEG",
           value: "jpeg",
         },
         {
-            text: "PNG",
+          text: "PNG",
           value: "png",
         },
         // Add more options as needed
-      ]
+      ],
     };
   },
   methods: {
@@ -189,54 +184,35 @@ export default {
       this.$emit("dialogeBox", false);
     },
 
-   async postTable(event){
-     console.log("field",this.fields);
-     console.log('name',this.tableName);
-     const allFieldsFilled = this.fields.every(row => {
-       return Object.values(row).every(value => value !== "");
+    async postTable(event) {
+      console.log("field", this.fields);
+      console.log("name", this.tableName);
+      const allFieldsFilled = this.fields.every((row) => {
+        return Object.values(row).every((value) => value !== "");
       });
-      const extension = this.selectedItems.join(","); 
-      console.log('selected',extension);
-      const token = this.$store.getters.getUserToken;    
-      const postDetails={
-        fileExtension:extension,
-        tableName:this.tableName,
-        fields:this.fields,
+      const extension = this.selectedItems.join(",");
+      console.log("selected", extension);
+      const token = this.$store.getters.getUserToken;
+      const postDetails = {
+        fileExtension: extension,
+        tableName: this.tableName,
+        fields: this.fields,
       };
-      
-      if (allFieldsFilled && (this.tableName &&this.selectedItems !='')) {
-          // this.showLoader = true;
-          event.preventDefault();
-          // await new Promise(resolve => setTimeout(resolve, 3000));
-          await axios.post("http://localhost:61050/dms/file/createTable",
-          postDetails,
-            {
-          headers: {
-            token: token,
-        }
-          }).then(() =>{
-              this.showLoader = true;
-              const Toast = Swal.mixin({
-                  toast: true,
-                  position: "top-end",
-                  showConfirmButton: false,
-                  background: "#4fb945",
-                  color: "white",
-                  timer: 2000,
-                  timerProgressBar: true,
-                  didOpen: (toast) => {
-                      toast.onmouseenter = Swal.stopTimer;
-                      toast.onmouseleave = Swal.resumeTimer;
-                    },
-                });
-                Toast.fire({
-                    icon: "success",
-                    title: "Table created successfully",
-                });
-                this.$emit("update-meta-table", true);
-                this.$emit("dialogeBox", false);
-                
-            }).catch((error) =>{          
+
+      if (allFieldsFilled && this.tableName && this.selectedItems != "") {
+        event.preventDefault();
+        await axios
+          .post("http://localhost:61050/dms/file/createTable", postDetails, {
+            headers: {
+              token: token,
+            },
+          })
+          .then(() => {
+            this.$emit("showLoader", true);
+            this.$emit("update-meta-table", true);
+            this.$emit("dialogeBox", false);
+          })
+          .catch((error) => {
             console.error("API There was an error!", error);
             // }
           });
@@ -263,8 +239,8 @@ export default {
         });
       }
     },
-    }
-  }
+  },
+};
 </script>
 
 <style scoped>
@@ -345,15 +321,14 @@ input {
     border-color 0.15s ease;
 }
 
-
-.tableExtension >div:first-child >input{
-    width: 50%;
-    display: block;
-    height: 49%;
+.tableExtension > div:first-child > input {
+  width: 50%;
+  display: block;
+  height: 49%;
   padding: 0.5rem 0.45rem;
   font-size: 0.875rem;
   font-weight: 400;
-  line-height: .5rem;
+  line-height: 0.5rem;
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
@@ -367,23 +342,21 @@ input {
     border-color 0.15s ease;
 }
 
-
-.tableExtension{
-    flex-basis: 50%;
-    margin-left: 5%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
+.tableExtension {
+  flex-basis: 50%;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.tableExtension >div{
-    margin-top: 1%;
-    flex-basis: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content:flex-start;
-
+.tableExtension > div {
+  margin-top: 1%;
+  flex-basis: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .custom-select .v-input--selection-controls__input {
@@ -391,9 +364,10 @@ input {
 }
 
 .custom-select .v-select__slot {
-  line-height: 2px; /* Adjust the line height as needed */}
+  line-height: 2px; /* Adjust the line height as needed */
+}
 
-  .loader-overlay {
+.loader-overlay {
   position: fixed;
   top: -100px;
   left: 0;
@@ -414,9 +388,7 @@ input {
   width: 50px;
   height: 50px;
   margin: auto;
-  background: 
-    var(--c), var(--r1), var(--r2),
-    var(--c), var(--r1), var(--r2),
+  background: var(--c), var(--r1), var(--r2), var(--c), var(--r1), var(--r2),
     var(--c), var(--r1), var(--r2);
   background-repeat: no-repeat;
   animation: l2 5s infinite alternate;
@@ -433,7 +405,7 @@ input {
   animation-duration: 5.5s;
 }
 .loader .circle:after {
-  content: '';
+  content: "";
   position: absolute;
   width: 6px;
   height: 6px;

@@ -56,6 +56,7 @@
     <v-dialog v-model="openDialogeBox"  style="z-index: 1001;">
       <v-card style="width: 60%;margin: 0 auto;">
         <meta-data-table
+        @showLoader="handleShowLoader"
         v-on:dialogeBox="listnerDialogBox"
         @update-meta-table="handleUpdateMetaTable"
         />
@@ -67,9 +68,20 @@
         <meta-user-table
         v-on:dialogeBox="userTableDialogBox"
         :selectedTableName="selectedTableName"
+
         />
       </v-card>
     </v-dialog>
+    <div v-if="showLoader" class="loader-overlay">
+      <div v-if="showLoader" class="loader">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+      <div class="bg"></div>
+    </div>
   </div>
   </div>
 </template>
@@ -78,6 +90,8 @@
 import axios from 'axios';
 import MetaDataTable from './MetaDataTable.vue';
 import MetaUserTable from './MetaUserTable.vue';
+import Swal from "sweetalert2";
+
 export default {
 name:'metaData',
 components:{
@@ -94,6 +108,7 @@ data(){
     selectedTableName:"",
     page: 1, // Current page
     itemsPerPage:10, // Number of items per page
+    showLoader:false,
     headers: [
         {
           key: "id",
@@ -150,6 +165,33 @@ methods:{
     const end = start + this.itemsPerPage;
     this.displayedData = this.tableDatas.slice(start, end);
   },
+  
+  async handleShowLoader(value) {
+      console.log("handleShowLoader", value);
+      this.showLoader = value;
+      if (value) {
+        setTimeout(() => {
+          this.showLoader = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            background: "#4fb945",
+            color: "white",
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Metadata Added successfully",
+          });
+        }, 3000);
+      }
+    },
 
   sendTableNameAndToggle(value){
     this.selectedTableName=value;
@@ -223,5 +265,108 @@ methods:{
   background: #fff;
 }
 
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(1, 1, 1, 0.76);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 50px;
+  height: 50px;
+  margin: auto;
+  background: var(--c), var(--r1), var(--r2), var(--c), var(--r1), var(--r2),
+    var(--c), var(--r1), var(--r2);
+  background-repeat: no-repeat;
+  animation: l2 5s infinite alternate;
+}
+
+.loader .circle {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  opacity: 0;
+  transform: rotate(225deg);
+  animation-iteration-count: infinite;
+  animation-name: orbit;
+  animation-duration: 5.5s;
+}
+.loader .circle:after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 5px;
+  background: #fff;
+}
+.loader .circle:nth-child(2) {
+  animation-delay: 240ms;
+}
+.loader .circle:nth-child(3) {
+  animation-delay: 480ms;
+}
+.loader .circle:nth-child(4) {
+  animation-delay: 720ms;
+}
+.loader .circle:nth-child(5) {
+  animation-delay: 960ms;
+}
+.loader .bg {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  margin-left: -16px;
+  margin-top: -16px;
+  border-radius: 13px;
+  background-color: rgba(0, 153, 255, 0.69);
+  animation: bgg 46087ms ease-in alternate infinite;
+}
+@keyframes orbit {
+  0% {
+    transform: rotate(225deg);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  7% {
+    transform: rotate(345deg);
+    animation-timing-function: linear;
+  }
+  30% {
+    transform: rotate(455deg);
+    animation-timing-function: ease-in-out;
+  }
+  39% {
+    transform: rotate(690deg);
+    animation-timing-function: linear;
+  }
+  70% {
+    transform: rotate(815deg);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  75% {
+    transform: rotate(945deg);
+    animation-timing-function: ease-out;
+  }
+  76% {
+    transform: rotate(945deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(945deg);
+    opacity: 0;
+  }
+}
 
 </style>
