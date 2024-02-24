@@ -51,17 +51,17 @@
               <th
                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
               >
-                Companies
+                Group Name
               </th>
               <th
                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
               >
-                Members
+                Group Members
               </th>
               <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
               >
-                Budget
+                 Groups <br/> file size
               </th>
               <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
@@ -74,9 +74,9 @@
             <tr>
               <td>
                 <div class="d-flex px-2 py-1">
-                  <div>
+                  <!-- <div>
                     <soft-avatar :img="img1" size="sm" class="me-3" alt="xd" />
-                  </div>
+                  </div> -->
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">Soft UI XD Version</h6>
                   </div>
@@ -123,7 +123,7 @@
                 </div>
               </td>
               <td class="align-middle text-center text-sm">
-                <span class="text-xs font-weight-bold">$14,000</span>
+                <span class="text-xs font-weight-bold">14,000kb</span>
               </td>
               <td class="align-middle">
                 <div class="d-flex align-items-center justify-content-center">
@@ -142,14 +142,14 @@
             <tr>
               <td>
                 <div class="d-flex px-2 py-1">
-                  <div>
+                  <!-- <div>
                     <soft-avatar
                       :img="img6"
                       size="sm"
                       class="me-3"
                       alt="atlassian"
                     />
-                  </div>
+                  </div> -->
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">Add Progress Track</h6>
                   </div>
@@ -178,7 +178,7 @@
                 </div>
               </td>
               <td class="align-middle text-center text-sm">
-                <span class="text-xs font-weight-bold">$3,000</span>
+                <span class="text-xs font-weight-bold">3,000kb</span>
               </td>
               <td class="align-middle">
                 <div class="d-flex align-items-center justify-content-center">
@@ -197,14 +197,14 @@
             <tr>
               <td>
                 <div class="d-flex px-2 py-1">
-                  <div>
+                  <!-- <div>
                     <soft-avatar
                       :img="img9"
                       size="sm"
                       class="me-3"
                       alt="team7"
                     />
-                  </div>
+                  </div> -->
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">Fix Platform Errors</h6>
                   </div>
@@ -252,14 +252,14 @@
             <tr>
               <td>
                 <div class="d-flex px-2 py-1">
-                  <div>
+                  <!-- <div>
                     <soft-avatar
                       :img="img12"
                       class="me-3"
                       size="sm"
                       alt="spotify"
                     />
-                  </div>
+                  </div> -->
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">Launch our Mobile App</h6>
                   </div>
@@ -306,7 +306,7 @@
                 </div>
               </td>
               <td class="align-middle text-center text-sm">
-                <span class="text-xs font-weight-bold">$20,500</span>
+                <span class="text-xs font-weight-bold">20,500kb</span>
               </td>
               <td class="align-middle">
                 <div class="d-flex align-items-center justify-content-center">
@@ -325,7 +325,7 @@
             <tr>
               <td>
                 <div class="d-flex px-2 py-1">
-                  <div>
+                  <!-- <div>
                     <soft-avatar
                       :img="img17"
                       rounded-circle
@@ -333,7 +333,7 @@
                       size="sm"
                       alt="jira"
                     />
-                  </div>
+                  </div> -->
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">Add the New Pricing Page</h6>
                   </div>
@@ -353,7 +353,7 @@
                 </div>
               </td>
               <td class="align-middle text-center text-sm">
-                <span class="text-xs font-weight-bold">$500</span>
+                <span class="text-xs font-weight-bold">500kb</span>
               </td>
               <td class="align-middle">
                 <div class="d-flex align-items-center justify-content-center">
@@ -372,14 +372,14 @@
             <tr>
               <td>
                 <div class="d-flex px-2 py-1">
-                  <div>
+                  <!-- <div>
                     <soft-avatar
                       :img="img19"
                       class="me-3"
                       size="sm"
                       alt="invision"
                     />
-                  </div>
+                  </div> -->
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">Redesign New Online Shop</h6>
                   </div>
@@ -408,7 +408,7 @@
                 </div>
               </td>
               <td class="align-middle text-center text-sm">
-                <span class="text-xs font-weight-bold">$2,000</span>
+                <span class="text-xs font-weight-bold">2,000kb</span>
               </td>
               <td class="align-middle">
                 <div class="d-flex align-items-center justify-content-center">

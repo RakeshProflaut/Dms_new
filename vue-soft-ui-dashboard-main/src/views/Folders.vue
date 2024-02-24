@@ -10,119 +10,246 @@
         }"
       >
         <span class="mask bg-gradient-success opacity-6"></span>
-      </div>
-      <div class="mx-4 overflow-hidden card card-body blur shadow-blur mt-n6">
-        <div class="row gx-4">
-          <div class="col-auto">
-            <div class="avatar avatar-xl position-relative">
-              <img
-                src="@/assets/img/user.png"
-                alt="profile_image"
-                class="shadow-sm w-100 border-radius-lg"
-              />
-            </div>
-          </div>
-          <div class="col-auto my-auto">
-            <div class="h-100">
-              <h5 class="mb-1">{{ this.$store.getters.getUserName }}</h5>
-              <p class="mb-0 text-sm font-weight-bold">
-                User Id-{{ this.$store.getters.getUserId }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      </div>      
     </div>
+    <div class="mt-3 row"></div>
     <div class="container-fluid">
-      <div class="mt-3 row"></div>
-      <div class="mt-4 row">
-        <div class="col-12">        
-          <div class="card mb-4" style="height: 484px !important">
-            <!-- <div class="newButton">
-              <v-btn @click="openDialogeBox = true"> New </v-btn>
-            </div> -->
-            <div class="card-header pb-0">
-              <h3>Folders</h3>
+      <div class="row">
+        <div class="col-12">
+          <div class="card mb-4" style="height: 489px !important">
+            <div style="display: flex; justify-content: space-between">
+              <div class="card-header text-uppercase">
+                <h4>{{ this.currentFolderName }}</h4>
+              </div>
+              <div v-show="viewFolderButton" class="newButton">
+                <v-btn @click="openFolderDialogeBox = true"
+                  >Create Folder</v-btn
+                >
+                <v-btn @click="getAllFolders">Back</v-btn>
+              </div>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
-                  <thead class="table-header">
-                    <tr>
-                      <th
-                        v-for="header in headers"
-                        :key="header.key"
-                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
-                      >
-                        {{ header.title }}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      v-for="(data, rowIndex) in displayedData"
-                      :key="rowIndex"
-                    >
-                      <td
-                        :class="{
-                          'font-weight-bolder text-uppercase':
-                            header.key === 'folderName',
-                        }"
-                        v-for="(header, index) in headers"
-                        :key="index"
-                        style="text-align: center"
-                      >
-                        <template v-if="header.key === 'action'">
-                          <v-btn
-                            @click="sendTableNameAndToggle(data['name'])"
-                            class="text-secondary font-weight-bold text-xs"
-                            >View</v-btn
-                          >
-                        </template>
-
-                        <template v-else-if="header.key === 'sno'">
-                          {{ rowIndex+1 }}
-                        </template>
-
-                        <template
-                          v-else-if="
-                            header.key === 'view' || header.key === 'write'
-                          "
+                <div class="tableContaier">
+                  <table class="table align-items-center mb-0">
+                    <thead class="table-header">
+                      <tr>
+                        <th
+                          style="font-size: 0.7rem !important"
+                          v-for="header in headers"
+                          :key="header.key"
+                          class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
+                          :style="{
+                            'text-align':
+                              header.key === 'view' ||
+                              header.key === 'write' ||
+                              header.key === 'subFolder' ||
+                              header.key === 'files'
+                                ? 'center'
+                                : 'left',
+                          }"
                         >
-                          <template v-if="data[header.key] === 'Yes'">
-                            <soft-badge
-                              color="success"
-                              variant="gradient"
-                              style="background: #5fc0ff !important"
-                              size="sm"
-                              >Enable</soft-badge
+                          {{ header.title }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        style="font-size: 0.9rem !important"
+                        v-for="(data, rowIndex) in displayedData"
+                        :key="rowIndex"
+                      >
+                        <td
+                          v-for="(header, index) in headers"
+                          :key="index"
+                          :class="{
+                            'pl-5':
+                              header.key !== 'files' &&
+                              header.key !== 'subFolder' &&
+                              header.key !== 'view' &&
+                              header.key !== 'write',
+                            'font-weight-bolder text-uppercase':
+                              header.key === 'folderName',
+                          }"
+                          :style="{
+                            'text-align':
+                              header.key === 'view' ||
+                              header.key === 'write' ||
+                              header.key === 'files' ||
+                              header.key === 'subFolder'
+                                ? 'center'
+                                : 'left',
+                          }"
+                        >
+                          <template v-if="header.key === 'files'">
+                            <div
+                              style="
+                                font-size: 0.7rem !important;
+                                height: 2rem !important;
+                              "
+                              @click="sendTableNameAndToggle(data)"
+                              class="text-secondary font-weight-bold text-xs"
                             >
+                              <span
+                                style="
+                                  font-size: 1.8rem;
+                                  cursor: pointer;
+                                  color: #234375;
+                                "
+                                class="mdi mdi-file-eye-outline"
+                              ></span>
+                            </div>
+                          </template>
+                          <template v-else-if="header.key === 'subFolder'">
+                            <div
+                              style="
+                                font-size: 0.7rem !important;
+                                height: 2rem !important;
+                              "
+                              @click="getSubFolders(data['folderID'])"
+                              class="text-secondary font-weight-bold text-xs"
+                            >
+                              <span
+                                style="
+                                  font-size: 1.8rem;
+                                  cursor: pointer;
+                                  color: #234375;
+                                "
+                                class="mdi mdi-folder-eye-outline"
+                              ></span>
+                            </div>
+                          </template>
+
+                          <template v-else-if="header.key === 'sno'">
+                            {{ rowIndex + 1 }}
+                          </template>
+
+                          <template
+                            v-else-if="
+                              header.key === 'view' || header.key === 'write'
+                            "
+                          >
+                            <template v-if="data[header.key] === 'Yes'">
+                              <soft-badge
+                                color="success"
+                                variant="gradient"
+                                style="
+                                  background-image: linear-gradient(
+                                    24deg,
+                                    #17ad37 0%,
+                                    #98ec2d 100%
+                                  );
+                                "
+                                size="sm"
+                                >Enable</soft-badge
+                              >
+                            </template>
+                            <template v-else>
+                              <soft-badge
+                                color="secondary"
+                                variant="gradient"
+                                size="sm"
+                                >Disable</soft-badge
+                              >
+                            </template>
                           </template>
                           <template v-else>
-                            <soft-badge
-                              color="secondary"
-                              variant="gradient"
-                              size="sm"
-                              >Disable</soft-badge
-                            >
+                            {{ data[header.key] }}
                           </template>
-                        </template>
-                        <template v-else>
-                          {{ data[header.key] }}
-                        </template>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <v-pagination
-                  v-model="page"
-                  :length="pages"
-                  @input="updateDisplayedData"
-                ></v-pagination>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <v-pagination
+                    v-model="page"
+                    :length="pages"
+                    @input="updateDisplayedData"
+                  ></v-pagination>
+                </div>
               </div>
             </div>
+            <v-dialog v-model="openFolderDialogeBox" style="z-index: 1001">
+              <v-card style="width: 28%; margin: 0 auto; border-radius: 3%">
+                <div>
+                  <div class="folderContainer">
+                    <div>
+                      <button
+                        class="closebtn"
+                        @click="openFolderDialogeBox = false"
+                      >
+                        <i
+                          class="bx bx-x"
+                          style="position: relative; top: -40%"
+                        ></i>
+                      </button>
+                    </div>
+                    <div class="pt-10 text-center card-header">
+                      <h5>Folder Name</h5>
+                    </div>
+                    <div class="card-body">
+                      <form role="form">
+                        <div class="mb-3">
+                          <label>Name *</label>
+                          <input
+                            id="name"
+                            type="text"
+                            placeholder="Name"
+                            aria-label="Name"
+                            style="width: 100%"
+                            v-model="enteredFolderName"
+                          />
+                        </div>
+                        <div style="margin-right: 5%">
+                          <label>Metadata Name *</label>
+                          <v-select
+                            variant="underlined"
+                            style="width: 100%; font-size: 10px"
+                            v-model="selectedMetaTable"
+                            :items="metaTables"
+                            item-title="tableName"
+                            item-value="metaId"
+                            label="Select items"
+                            chipstabelName
+                            small-chips
+                            clearable
+                          >
+                          </v-select>
+                        </div>
+                         <div>
+                        <label>Mount Point</label>
+                        <v-select
+                          variant="underlined"
+                          v-model="selectedFolder"
+                          :items="mountData"
+                          item-title="path"
+                          item-value="id"
+                          label="Select items"
+                        >
+                        </v-select>
+                      </div>
+                        <div class="text-center">
+                          <button @click="submitfolderDetails">Submit</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </v-card>
+            </v-dialog>
           </div>
         </div>
+      </div>
+      <div v-if="showLoader" class="loader-overlay">
+        <div v-if="showLoader" class="loader">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+        <div class="bg"></div>
       </div>
     </div>
   </div>
@@ -131,31 +258,40 @@
 <script>
 import setNavPills from "@/assets/js/nav-pills.js";
 import SoftBadge from "@/components/SoftBadge.vue";
-
+import Swal from "sweetalert2";
 import setTooltip from "@/assets/js/tooltip.js";
 import axios from "axios";
+import ViewFolder from "./ViewFolder.vue";
 export default {
   name: "dms",
-  components:{
+  components: {
     SoftBadge,
+    ViewFolder,
   },
   data() {
     return {
       search: "",
       page: 1, // Current page
       itemsPerPage: 10, // Number of items per page
+      showLoader: false,
+      openDialogeBox: false,
+      openFolderDialogeBox: false,
+      enteredFolderName: "",
+      viewFolderButton: false,
+      selectedMetaTable: null,
+      currentFolderName: "Directory",
+      selectedFolderId: "",
+      selectedFolder:null,
+      postfolderDetails: {},
+      metaTables: [],
       headers: [
         {
           key: "sno",
-          title: "SNo",
+          title: "S.No",
         },
         {
           key: "folderName",
           title: "FOLDER NAME",
-        },
-        {
-          key: "folderPath",
-          title: "FOLDER PATH",
         },
         {
           key: "createdBy",
@@ -174,11 +310,17 @@ export default {
           title: "WRITE",
         },
         {
-          key: "action",
-          title: "Action",
+          key: "files",
+          title: "FILES",
+        },
+        {
+          key: "subFolder",
+          title: "SUB FOLDER",
         },
       ],
       folders: [],
+      secondaryFolders: [],
+      mountData: [],
     };
   },
 
@@ -187,6 +329,8 @@ export default {
     setNavPills();
     setTooltip(this.$store.state.bootstrap);
     this.getAllFolders();
+    this.getMetaData();
+    this.getMountData();
   },
   beforeUnmount() {
     this.$store.state.isAbsolute = false;
@@ -194,24 +338,22 @@ export default {
 
   computed: {
     displayedData() {
-      console.log("displa data rendering");
       const start = (this.page - 1) * this.itemsPerPage;
-      console.log("start", start);
       const end = start + this.itemsPerPage;
-      console.log("end", start);
 
       return this.folders.slice(start, end);
     },
     pages() {
-      console.log(Math.ceil(this.folders.length / this.itemsPerPage));
       return Math.ceil(this.folders.length / this.itemsPerPage);
     },
   },
 
   methods: {
     async getAllFolders() {
+      this.currentFolderName = "Directory";
+      this.viewFolderButton = false;
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      const apiUrl = `http://localhost:61050/dms/folder/getAllfolders`;
+      const apiUrl = `http://localhost:61050/dms/folder/getAllParentFolders`;
       const token = this.$store.getters.getUserToken;
       try {
         const response = await axios.get(apiUrl, {
@@ -219,19 +361,152 @@ export default {
             token: token,
           },
         });
-        this.folders = response.data.folder;
-        console.log("data", response.data);
-        console.log("folders", this.folders);
+
+        this.folders = response.data.folder.filter(
+          (ele) => ele.write !== "No" || ele.view !== "No"
+        );
+        this.secondaryFolders = response.data.folder.filter(
+          (ele) => ele.write !== "No" || ele.view !== "No"
+        );
+        console.log("resposnseParen Fodlers", this.folders);
       } catch (error) {
         console.error("Error occured by", error);
       }
     },
 
+    async getMetaData() {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      await axios
+        .get(`http://localhost:61050/dms/meta/getAllAccessMetaTable`, {
+          headers: {
+            token: this.$store.getters.getUserToken,
+          },
+        })
+        .then((response) => {
+          this.metaTables = response.data;
+          console.log("metaaaa", this.metaTables);
+        })
+        .catch((error) => console.error("Error occured by", error));
+    },
+
+    sendTableNameAndToggle(value) {
+      console.log("selectedtoViewfodler", value);
+      this.openDialogeBox = true;
+      this.$router.push({
+        name: "ViewFolder",
+        query: {
+          id: value.folderID,
+          view: value.view,
+          write: value.write,
+          folderName: value.folderName,
+          metaId: value.metaId,
+        },
+      });
+    },
+    async getSubFolders(value) {
+      this.viewFolderButton = true;
+      this.selectedFolderId = value;
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const apiUrl = `http://localhost:61050/dms/folder/getByParentId?parentFolderID=${value}`;
+      const token = this.$store.getters.getUserToken;
+      try {
+        const response = await axios.get(apiUrl, {
+          headers: {
+            token: token,
+          },
+        });
+        console.log("subbFodler",response.data);
+        this.folders = response.data.subFolderPath;
+        const currentfolderName=this.secondaryFolders.find(ele=>ele.folderID ===this.selectedFolderId);
+        console.log("currentFolderrr",currentfolderName.folderName);
+        // this.currentFolderName=renderFolderName[0].folderName;
+      } catch (error) {
+        Swal.fire({
+          title: "No Sub Folders Present",
+          text: "You Want to Create New Folder",
+          icon: "info",
+          showCancelButton: true,
+          reverseButtons: true,
+          customClass: {
+            confirmButton: "swal2-confirm-custom",
+            cancelButton: "swal2-cancel-custom",
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.openFolderDialogeBox = true;
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire("Cancelled", "Folder Creation Cancelled", "error");
+          }
+        });
+      }
+    },
     updateDisplayedData() {
       // Your logic to update displayed data based on the new page number
       const start = (this.page - 1) * this.itemsPerPage;
       const end = start + this.itemsPerPage;
       this.displayedData = this.folders.slice(start, end);
+    },
+
+    async submitfolderDetails(event) {
+      event.preventDefault();
+      this.postfolderDetails = {
+        parentFolderID: this.selectedFolderId,
+        folderName: this.enteredFolderName,
+        metaDataId: this.selectedMetaTable,
+        mountId:this.selectedFolder,
+      };
+      console.log("enteredFolderNmae", this.postfolderDetails);
+      const apiUrl = "http://localhost:61050/dms/folder/create";
+      const token = this.$store.getters.getUserToken;
+      await axios
+        .post(apiUrl, this.postfolderDetails, {
+          headers: {
+            token: token,
+          },
+        })
+        .then(() => {
+          this.openFolderDialogeBox = false;
+          this.showLoader = true;
+          setTimeout(() => {
+            this.showLoader = false;
+            (this.enteredFolderName = ""),
+              this.getSubFolders(this.selectedFolderId);
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              background: "#4fb945",
+              color: "white",
+              timer: 2000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Folder Created successfully",
+            });
+          }, 3000);
+        })
+        .catch((error) => console.log("error occured by", error));
+    },
+    async getMountData() {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const apiUrl = `http://localhost:61050/dms/mount/getAllMountPoint`;
+      const token = this.$store.getters.getUserToken;
+      await axios
+        .get(apiUrl, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) => {
+          this.mountData = response.data;
+          console.log("mountData", this.mountData);
+        })
+        .catch((error) => console.error("Error occured by", error));
     },
   },
 };
@@ -301,6 +576,226 @@ body > div.v-overlay-container > div > div.v-overlay__content > div {
 }
 
 .min-height-300 {
-  min-height: 101px !important;
+  min-height: 75px !important;
+}
+
+.card .card-header {
+  padding: 1rem !important;
+}
+.newButton {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1% 0px;
+  margin-right: 2%;
+}
+.newButton > .v-btn {
+  background-image: linear-gradient(310deg, #5cc06e, #82d616) !important;
+  color: #fff;
+  transition: 0.5s ease;
+  margin-left: 2%;
+  font-weight: bold;
+  font-size: 0.7rem !important;
+  height: 2rem !important;
+}
+
+.newButton > .v-btn:hover {
+  cursor: pointer;
+}
+
+.closebtn {
+  position: relative;
+  left: 4%;
+  float: right;
+  width: 22px;
+  height: 22px;
+  color: #d11313;
+  font-size: 30px;
+  opacity: 0.3;
+}
+
+.closebtn:hover {
+  opacity: 1;
+}
+
+.container {
+  position: relative;
+  top: -15px;
+}
+
+.mb-3 > input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4rem;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #d2d6da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.5rem;
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.text-center > button {
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  width: 50% !important;
+  margin-bottom: 8px !important;
+  letter-spacing: -0.025rem;
+  text-transform: uppercase;
+  background-size: 150%;
+  background-position-x: 25%;
+  background-image: linear-gradient(310deg, #141727 0%, #3a416f 100%);
+  margin-top: 16px !important;
+  border-radius: 1rem;
+  padding: 8px 0px;
+  box-shadow:
+    0 4px 7px -1px rgba(0, 0, 0, 0.11),
+    0 2px 4px -1px rgba(0, 0, 0, 0.07);
+}
+
+.folderContainer {
+  height: 100%;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.table-responsive {
+  display: flex;
+  flex-direction: column;
+}
+
+.tableContaier {
+  position: relative;
+  height: 360px;
+  overflow-x: auto;
+}
+
+.table-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #fff;
+}
+
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(1, 1, 1, 0.76);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 50px;
+  height: 50px;
+  margin: auto;
+  background: var(--c), var(--r1), var(--r2), var(--c), var(--r1), var(--r2),
+    var(--c), var(--r1), var(--r2);
+  background-repeat: no-repeat;
+  animation: l2 5s infinite alternate;
+}
+
+.loader .circle {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  opacity: 0;
+  transform: rotate(225deg);
+  animation-iteration-count: infinite;
+  animation-name: orbit;
+  animation-duration: 5.5s;
+}
+.loader .circle:after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 5px;
+  background: #fff;
+}
+.loader .circle:nth-child(2) {
+  animation-delay: 240ms;
+}
+.loader .circle:nth-child(3) {
+  animation-delay: 480ms;
+}
+.loader .circle:nth-child(4) {
+  animation-delay: 720ms;
+}
+.loader .circle:nth-child(5) {
+  animation-delay: 960ms;
+}
+.loader .bg {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  margin-left: -16px;
+  margin-top: -16px;
+  border-radius: 13px;
+  background-color: rgba(0, 153, 255, 0.69);
+  animation: bgg 46087ms ease-in alternate infinite;
+}
+@keyframes orbit {
+  0% {
+    transform: rotate(225deg);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  7% {
+    transform: rotate(345deg);
+    animation-timing-function: linear;
+  }
+  30% {
+    transform: rotate(455deg);
+    animation-timing-function: ease-in-out;
+  }
+  39% {
+    transform: rotate(690deg);
+    animation-timing-function: linear;
+  }
+  70% {
+    transform: rotate(815deg);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  75% {
+    transform: rotate(945deg);
+    animation-timing-function: ease-out;
+  }
+  76% {
+    transform: rotate(945deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(945deg);
+    opacity: 0;
+  }
+}
+
+.swal2-confirm {
+  background-color: #28a745 !important;
+  color: #fff;
+}
+
+.swal2-cancel {
+  background-color: #dc3545 !important;
+  color: #fff;
 }
 </style>

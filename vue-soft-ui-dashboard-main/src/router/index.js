@@ -14,7 +14,19 @@ import GroupInformation from "@/views/adminBoard/GroupInfo.vue"
 import MetaData from "@/views/adminBoard/MetaData.vue"
 import AccessRights from "@/views/adminBoard/AccessRights.vue"
 import Folders from "@/views/Folders.vue"
+import Search from "@/views/Search.vue"
+import Portal from "@/views/Portal.vue"
 import ViewFolder from "@/views/ViewFolder.vue"
+import LicenceManagement from "@/views/LicenceManagement.vue"
+import WorkflowManagement from "@/views/WorkflowManagement.vue"
+import Ckyc from "@/views/Ckyc.vue"
+import DCDRConfigur from "@/views/DCDRConfigur.vue"
+import DigitalSignature from "@/views/DigitalSignature.vue"
+import MountPoints from "@/views/MountPoints.vue"
+
+
+
+
 
 
 
@@ -45,6 +57,10 @@ const routes = [
         component: ViewFolder, 
         props: route => ({
           id: route.query.id,
+          view:route.query.view,
+          write:route.query.write,
+          folderName:route.query.folderName,
+          metaId:route.query.metaId
         }),    
       },
       {
@@ -52,6 +68,16 @@ const routes = [
         name: "Folders",
         component:Folders, 
       },
+      {
+        path: "/search",
+        name: "Search",
+        component:Search, 
+      },
+      {
+        path: "/portal",
+        name: "Portal",
+        component:Portal, 
+      },      
       {
         path: "/tables",
         name: "Tables",
@@ -102,7 +128,7 @@ const routes = [
         path: "/groupInfo",
         name: "Group Information",
         component: GroupInformation,
-      },
+      },      
       {
         path: "/metaData",
         name: "Meta Data",
@@ -112,6 +138,36 @@ const routes = [
         path: "/accessrights",
         name: "Access Rights",
         component: AccessRights,
+      },
+      {
+        path: "/workflowManagement",
+        name: "Worlflow Management",
+        component:WorkflowManagement, 
+      },
+      {
+        path: "/LicenceManagement",
+        name: "Licence Management",
+        component:LicenceManagement, 
+      },
+      {
+        path: "/ckyc",
+        name: "CKYC",
+        component:Ckyc, 
+      },
+      {
+        path: "/dcdrConfigur",
+        name: "DCDR Configure",
+        component:DCDRConfigur, 
+      },
+      {
+        path: "/digitalSignature",
+        name: "Digital Signature",
+        component:DigitalSignature, 
+      },
+      {
+        path: "/mountPoints",
+        name: "Mount Points",
+        component:MountPoints, 
       },
     ]
 

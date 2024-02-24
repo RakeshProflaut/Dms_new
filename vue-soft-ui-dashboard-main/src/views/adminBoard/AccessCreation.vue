@@ -12,8 +12,8 @@
       <h5>Access Right Creation</h5>
     </div>
     <div class="addButton">
-      <v-btn @click="addEmptyRow"> Add </v-btn>
-      <v-btn @click="postAccess"> Save </v-btn>
+      <!-- <v-btn @click="addEmptyRow"> Add </v-btn> -->
+      <v-btn @click="checkAndPost"> Save </v-btn>
     </div>
 
     <div class="card-body px-0 pt-0 pb-2">
@@ -105,7 +105,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-
 export default {
   name: "accessCreation",
 
@@ -113,7 +112,7 @@ export default {
     return {
       selectedGroupIds: [],
       selectedUserIds: [],
-      selectedMetaId: "",
+      selectedMetaId: null,
       users: [],
       groups: [],
       metaDatas: [],
@@ -151,8 +150,6 @@ export default {
     this.getMetaData();
   },
 
-
-
   methods: {
     addEmptyRow() {
       const emptyRow = {};
@@ -176,7 +173,7 @@ export default {
         })
         .then((response) => {
           this.users = response.data;
-          console.log("users",response.data);
+          console.log("users", response.data);
         })
         .catch((error) => console.error("Error occured by", error));
     },
@@ -199,7 +196,7 @@ export default {
       console.log("dms token", this.$store.getters.getUserToken);
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
       await axios
-        .get("http://localhost:61050/dms/file/getAllMetaEntity", {
+        .get("http://localhost:61050/dms/meta/getAllMetaEntity", {
           headers: {
             token: this.$store.getters.getUserToken,
           },
@@ -210,62 +207,39 @@ export default {
         })
         .catch((error) => console.error("Error occured by", error));
     },
-    async postAccess(event) {
-      console.log("user id", this.selectedUserIds);
-      // this.showLoader = true;
-      console.log("selected groups",this.selectedGroupIds);
-   
 
-      const userIds = this.selectedUserIds.join(",");
-      const groupIds = this.selectedGroupIds.join(",");      
-
-      const token = this.$store.getters.getUserToken;
-      const postDetails = {
-        group: this.getSelectedgroups(),
-        user:  this.getSelectedUsers(),       
-        metaId: this.selectedMetaId,
-        view:this.viewAccess,
-        write:this.writeAccess,
-        createdBy: this.$store.getters.getAdminName,
-      };
-      console.log("ppost detais",postDetails);
-
-      const checkGroupAndName =(this.selectedUserIds.length >0 && this.selectedGroupIds.length >0);
-      // await new Promise(resolve => setTimeout(resolve, 3000));
-      if ( checkGroupAndName && (this.selectedMetaId &&this.viewAccess 
-        && this.writeAccess != "")) {
-        event.preventDefault();       
-        await axios
-          .post("http://localhost:61050/dms/access/saveAccess", postDetails, {
-            headers: {
-              token: token,
+    async checkAndPost(event) {
+      const checkGroupAndName =
+        this.selectedUserIds.length > 0 && this.selectedGroupIds.length > 0;
+      if (
+        checkGroupAndName &&
+        this.selectedMetaId &&
+        this.viewAccess &&
+        this.writeAccess != ""
+      ) {
+        if (this.viewAccess == "Yes" || this.writeAccess == "yes") {
+          this.postAccess(event);
+        } else {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            customClass: "swal-wide",
+            height: "30px",
+            background: "hsl(0, 43%, 52%)",
+            color: "white",
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
             },
-          })
-          .then(() => {
-            this.showLoader = true;
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              background: "#4fb945",
-              color: "white",
-              timer: 2000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Access created successfully",
-            });
-            this.$emit("update-access-table", true);
-            this.$emit("dialogeBox", false);
-          })
-          .catch((error) => {
-            console.error("API There was an error!", error);
           });
+          Toast.fire({
+            icon: "error",
+            title: "Please Give Access to  View or Write!",
+          });
+        }
       } else {
         event.preventDefault();
         const Toast = Swal.mixin({
@@ -289,19 +263,46 @@ export default {
         });
       }
     },
+    async postAccess(event) {
+      const token = this.$store.getters.getUserToken;
+      const postDetails = {
+        group: this.getSelectedgroups(),
+        user: this.getSelectedUsers(),
+        metaId: this.selectedMetaId,
+        view: this.viewAccess,
+        write: this.writeAccess,
+        createdBy: this.$store.getters.getAdminName,
+      };
 
-
-    getSelectedgroups(){
-      const selectedGroups= this.groups.filter((ele)=>
-       this.selectedGroupIds.includes(ele.id)).map(({ id, groupName }) =>({ groupId:id, groupName }));
-        return selectedGroups;
+      event.preventDefault();
+      await axios
+        .post("http://localhost:61050/dms/access/saveAccess", postDetails, {
+          headers: {
+            token: token,
+          },
+        })
+        .then(() => {
+          this.$emit("update-access-table", true);
+          this.$emit("dialogeBox", false);
+          this.$emit("showLoader", true);
+        })
+        .catch((error) => {
+          console.error("API There was an error!", error);
+        });
     },
-    getSelectedUsers(){
-      const selectedUsers= this.users.filter((ele)=>
-       this.selectedUserIds.includes(ele.userId)).map(({ userId, userName }) =>({ userId, userName }));
-        return selectedUsers;
-      },
 
+    getSelectedgroups() {
+      const selectedGroups = this.groups
+        .filter((ele) => this.selectedGroupIds.includes(ele.id))
+        .map(({ id, groupName }) => ({ groupId: id, groupName }));
+      return selectedGroups;
+    },
+    getSelectedUsers() {
+      const selectedUsers = this.users
+        .filter((ele) => this.selectedUserIds.includes(ele.userId))
+        .map(({ userId, userName }) => ({ userId, userName }));
+      return selectedUsers;
+    },
 
     updateViewAccess() {
       this.viewAccess = this.viewAccess === "No" ? "Yes" : "No";
@@ -344,109 +345,8 @@ export default {
   flex-direction: column;
 }
 
-.loader-overlay {
-  position: fixed;
-  top: -100px;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(15, 15, 15, 0.671);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-/* 
-.loader {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  width: 50px;
-  height: 50px;
-  margin: auto;
-  background: var(--c), var(--r1), var(--r2), var(--c), var(--r1), var(--r2),
-    var(--c), var(--r1), var(--r2);
-  background-repeat: no-repeat;
-  animation: l2 5s infinite alternate;
-}
 
-.loader .circle {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  opacity: 0;
-  transform: rotate(225deg);
-  animation-iteration-count: infinite;
-  animation-name: orbit;
-  animation-duration: 5.5s;
-}
-.loader .circle:after {
-  content: "";
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 5px;
-  background: #fff;
-}
-.loader .circle:nth-child(2) {
-  animation-delay: 240ms;
-}
-.loader .circle:nth-child(3) {
-  animation-delay: 480ms;
-}
-.loader .circle:nth-child(4) {
-  animation-delay: 720ms;
-}
-.loader .circle:nth-child(5) {
-  animation-delay: 960ms;
-}
-.loader .bg {
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  margin-left: -16px;
-  margin-top: -16px;
-  border-radius: 13px;
-  background-color: rgba(0, 153, 255, 0.69);
-  animation: bgg 46087ms ease-in alternate infinite;
-}
-@keyframes orbit {
-  0% {
-    transform: rotate(225deg);
-    opacity: 1;
-    animation-timing-function: ease-out;
-  }
-  7% {
-    transform: rotate(345deg);
-    animation-timing-function: linear;
-  }
-  30% {
-    transform: rotate(455deg);
-    animation-timing-function: ease-in-out;
-  }
-  39% {
-    transform: rotate(690deg);
-    animation-timing-function: linear;
-  }
-  70% {
-    transform: rotate(815deg);
-    opacity: 1;
-    animation-timing-function: ease-out;
-  }
-  75% {
-    transform: rotate(945deg);
-    animation-timing-function: ease-out;
-  }
-  76% {
-    transform: rotate(945deg);
-    opacity: 0;
-  }
-  100% {
-    transform: rotate(945deg);
-    opacity: 0;
-  }
-} */
+
 
 .extensionField {
   width: 49%;
@@ -472,8 +372,6 @@ export default {
   width: 80%;
   margin: 0 auto;
 }
-
-
 
 .addButton {
   display: flex;

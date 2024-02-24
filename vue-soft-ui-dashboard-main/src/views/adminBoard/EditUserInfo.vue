@@ -1,22 +1,23 @@
 <template>
   <div class="folderContainer">
     <div>
-      <button class="closebtn" @click="$emit('closeDialogeBox', false)">
+      <button class="closebtn" @click="$emit('closeEditBox', false)">
         <i class="bx bx-x" style="position: relative; top: -40%"></i>
       </button>
     </div>
     <div class="pt-2 text-center card-header">
-      <h5>User Creation</h5>
+      <h5>Edit User Creation</h5>
     </div>
 
     <div class="card-body">
+      <form role="form">
         <div class="mb-3">
           <input
             id="name"
             type="text"
             placeholder="Name"
             aria-label="Name"
-            v-model="userdetails.userName"
+            v-model="userDetails.userName"
           />
         </div>
         <div class="mb-3">
@@ -25,25 +26,24 @@
             type="email"
             placeholder="Email"
             aria-label="Email"
-            v-model="userdetails.email"
+            v-model="userDetails.email"
           />
         </div>
-        <div class="mb-3">
-          <input
-            v-model="userdetails.password"
-            id="password"
-            type="password"
-            placeholder="Password"
-            aria-label="Password"
-          />
-        </div>
+        <!-- <div class="mb-3">
+            <input
+              id="password"
+              type="password"
+              placeholder="Password"
+              aria-label="Password"
+            />
+          </div> -->
         <div class="mb-3">
           <input
             id="name"
             type="text"
             placeholder="Mobile Number"
             aria-label="Mobile Number"
-            v-model="userdetails.mobileNo"
+            v-model="userDetails.mobileNo"
           />
         </div>
         <div class="mb-3">
@@ -52,7 +52,7 @@
             type="text"
             placeholder="Location"
             aria-label="Location"
-            v-model="userdetails.location"
+            v-model="userDetails.location"
           />
         </div>
         <div class="mb-3 switch">
@@ -67,7 +67,7 @@
           </div>
           <div>
             <v-switch
-              v-model="userdetails.adminAccess"
+              v-model="userDetails.adminAccess"
               hide-details
               true-value="Y"
               false-value="N"
@@ -88,28 +88,7 @@
           </div>
           <div>
             <v-switch
-              v-model="userdetails.webAccess"
-              hide-details
-              true-value="Y"
-              false-value="N"
-              color="blue"
-              inset
-            ></v-switch>
-          </div>
-        </div>
-        <div class="mb-3 switch">
-          <div
-            style="
-              display: flex;
-              justify-content: flex-start;
-              align-items: center;
-            "
-          >
-            <span>LDAP Access</span>
-          </div>
-          <div>
-            <v-switch
-              v-model="userdetails.ldap"
+              v-model="userDetails.webAccess"
               hide-details
               true-value="Y"
               false-value="N"
@@ -119,9 +98,33 @@
           </div>
         </div>
 
-        <div class="text-center">
-          <button @click="submitData">Submit</button>
+        <div class="mb-3 switch">
+          <div
+            style="
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+            "
+          >
+            <span>LDAP</span>
+          </div>
+          <div>
+            <v-switch
+              v-model="userDetails.ldap"
+              hide-details
+              true-value="Y"
+              false-value="N"
+              color="blue"
+              inset
+              class="custom-switch"
+            ></v-switch>
+          </div>
         </div>
+
+        <div class="text-center">
+          <button @click="submitData">Save</button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -131,46 +134,42 @@ import Swal from "sweetalert2";
 import axios from "axios";
 
 export default {
-  name: "SignupBasic",
+  name: "edituserinfo",
   props: {
-    getUserInfo: {
-      type: Function,
-      required: true,
-    },
+    userDetails: Object,
   },
   data() {
     return {
       showLoader: false,
-      userdetails: {
-        userName: "",
-        email: "",
-        webAccess: "N",
-        adminAccess: "N",
-        ldap: "N",
-        location: "",
-        mobileNo: "",
-      },
     };
+  },
+
+  mounted() {
+    console.log("userdetailsss", this.userDetails);
   },
 
   methods: {
     async submitData(event) {
       event.preventDefault();
-      const apiUrl = "http://localhost:61050/dms/access/signup";
+      console.log("idddd", this.userDetails.userId);
+      const apiUrl = `http://localhost:61050/dms/group/updateUsers/${this.userDetails.userId}`;
       const token = this.$store.getters.getUserToken;
       console.log("token", token);
-      if (Object.values(this.userdetails).every((value) => value !== "")) {
+      if (Object.values(this.userDetails).every((value) => value !== "")) {
         try {
-          const response = await axios.post(apiUrl, this.userdetails, {
+          const response = await axios.put(apiUrl, this.userDetails, {
             headers: {
               token: token,
             },
           });
           this.$emit("showLoader", true);
-          this.getUserInfo();
-          this.$emit("closeDialogeBox", false);
+          this.$emit("closeEditBox", false);
         } catch (error) {
-          console.error("Error occured byyy", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: error.response.data.errorMessage,
+          });
         }
       } else {
         const Toast = Swal.mixin({
@@ -196,20 +195,6 @@ export default {
           title: "Please Fill all the Fields!",
         });
       }
-    },
-    updateWebAccess() {
-      this.userdetails.webAccess =
-        this.userdetails.webAccess === "N" ? "Y" : "N";
-      console.log("web", this.userdetails.webAccess);
-    },
-    updateAdminAccess() {
-      this.userdetails.adminAccess =
-        this.userdetails.adminAccess === "N" ? "Y" : "N";
-    },
-
-    updateLdap() {
-      this.userdetails.ldap = this.userdetails.ldap === "N" ? "Y" : "N";
-      console.log("ldapp", this.userdetails.ldap);
     },
   },
 };
@@ -250,9 +235,7 @@ export default {
     0 4px 7px -1px rgba(0, 0, 0, 0.11),
     0 2px 4px -1px rgba(0, 0, 0, 0.07);
 }
-.mb-3{
-  margin-bottom: 9px !important;
-}
+
 .mb-3 > input {
   display: block;
   width: 100%;

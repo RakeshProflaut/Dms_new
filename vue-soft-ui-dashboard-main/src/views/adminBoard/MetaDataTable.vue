@@ -136,17 +136,17 @@ export default {
       ],
       selectedOptions: [
         {
-          text: "Word",
+          text: "Word(doc)",
           value: "doc",
         },
         {
           text: "PDF",
           value: "pdf",
         },
-        {
-          text: "Text",
-          value: "txt",
-        },
+        // {
+        //   text: "Text(txt)",
+        //   value: "txt",
+        // },
         {
           text: "Excel(xls)",
           value: "xls",
@@ -209,7 +209,6 @@ export default {
           })
           .then(() => {
             this.$emit("showLoader", true);
-            this.$emit("update-meta-table", true);
             this.$emit("dialogeBox", false);
           })
           .catch((error) => {
@@ -475,5 +474,25 @@ select {
   -webkit-appearance: menulist;
   -moz-appearance: menulist;
   appearance: menulist;
+}
+
+::-webkit-scrollbar {
+  width: 3px; /* width of the scrollbar */
+  border-radius: 13px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #65C2FC; /* color of the handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #65C2FC; /* color of the handle on hover */
 }
 </style>

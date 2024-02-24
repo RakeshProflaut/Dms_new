@@ -26,7 +26,7 @@
           <span class="navbar-toggler-bar bar3"></span>
         </span>
       </button>
-      <div class="collapse navbar-collapse" id="navigation">
+      <div class=" navbar-collapse" id="navigation">
         <ul class="navbar-nav mx-auto">
            <!-- <li class="nav-item">
             <router-link
@@ -93,6 +93,8 @@
 <script>
 import downArrWhite from "@/assets/img/down-arrow-white.svg";
 import downArrBlack from "@/assets/img/down-arrow-dark.svg";
+import SidenavCollapse from "../AdminSidenav/SidenavCollapse.vue";
+
 
 export default {
   name: "navbar",
@@ -101,6 +103,9 @@ export default {
       downArrWhite,
       downArrBlack,
     };
+  },
+  components:{
+    SidenavCollapse,
   },
   props: {
     btnBackground: String,
@@ -123,5 +128,10 @@ export default {
 <style scoped>
 #app > main > div.container.top-0.position-sticky.z-index-sticky > div > div > nav{
   width: 50%;
+}
+
+.navbar-vertical .navbar-brand > img, .navbar-vertical .navbar-brand-img {
+    max-width: 108%;
+    max-height: 3rem !important;
 }
 </style>

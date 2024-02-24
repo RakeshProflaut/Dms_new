@@ -1,118 +1,200 @@
-<template>  
-<div>
-    <div class="card mb-4" style="height: 484px !important;">
-    <div class="newButton">
-      <v-btn @click="openDialogeBox =true"> New </v-btn>
-    </div>
-    <div class="card-header pb-0">
-      <h3>Meta Data</h3>
-    </div>
-    <div class="card-body px-0 pt-0 pb-1" >
-      <div class="table-responsive p-0">
-        <table class="table align-items-center mb-0">
-          <thead class="table-header">
-            <tr>
-              <th
-                v-for="(header) in headers"
-                :key="header.key"
-                class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
-                :class="{'text-secondary opacity-7': header.key === 'action'}"
-              >
-                {{ header.title }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-    <tr v-for="(data, rowIndex) in displayedData " :key="rowIndex" style="">
-      <td v-for="(header, index) in headers" :key="index" style="text-align: center;">
-        <template v-if="header.key ==='action'">
-            <v-btn
-            @click="sendTableIdAndToggle(data['id'])"
-                  class="text-secondary font-weight-bold text-xs"
-                  >View</v-btn
-                >
-        </template>
-        <template v-else>
-                  <div 
-                  style="text-align: center;"  
-                  :class="{  'font-weight-bolder':
-                    header.key === 'name',}"
-                  class=" text-center d-flex flex-column justify-content-center">
-        {{ data[header.key] }}
+<template>
+  <div>
+    <div class="container-fluid">
+      <div
+        class="mt-4 page-header min-height-300 border-radius-xl"
+        :style="{
+          backgroundImage:
+            'url(' + require('@/assets/img/curved-images/curved14.jpg') + ')',
+          backgroundPositionY: '50%',
+        }"
+      ></div>
+      <!-- <div class="mx-4 overflow-hidden card card-body blur shadow-blur mt-n6">
+        <div class="row gx-4">
+          <div class="col-auto">
+            <div class="avatar avatar-xl position-relative">
+              <img
+                src="@/assets/img/user.png"
+                alt="profile_image"
+                class="shadow-sm w-100 border-radius-lg"
+              />
+            </div>
+          </div>
+          <div class="col-auto my-auto">
+            <div class="h-100">
+              <h5 class="mb-1">{{ this.$store.getters.getUserName }}</h5>
+              <p class="mb-0 text-sm font-weight-bold">
+                User Id-{{ this.$store.getters.getUserId }}
+              </p>
+            </div>
+          </div>
         </div>
-        </template>        
-      </td>    
-    </tr>
-  </tbody>       
-        </table>
-        <v-pagination
-      v-model="page"
-      :length="pages"
-      @input="updateDisplayedData"
-      class="pagination"
-    ></v-pagination>
-      </div>
-    </div> 
-    <v-dialog v-model="openDialogeBox"  style="z-index: 1001;">
-      <v-card style="width: 60%;margin: 0 auto;">
-        <meta-data-table
-        @showLoader="handleShowLoader"
-        v-on:dialogeBox="listnerDialogBox"
-        @update-meta-table="handleUpdateMetaTable"
-        />
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="openTableDialogeBox"  style="z-index: 1001;">
-      <v-card style="width: 60%;margin: 0 auto;">
-        <meta-user-table
-        v-on:dialogeBox="userTableDialogBox"
-        :selectedTableId="selectedTableId"
-
-        />
-      </v-card>
-    </v-dialog>
-    <div v-if="showLoader" class="loader-overlay">
-      <div v-if="showLoader" class="loader">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-      </div>
-      <div class="bg"></div>
+      </div> -->
     </div>
-  </div>
+
+    <div class="container-fluid">
+      <div class="row" style="margin-top: 0.5rem !important">
+        <div class="col-12">
+          <div class="card mb-4" style="height: 492px !important">
+
+            <div style="display: flex;justify-content: space-between;">
+              <div class="card-header">
+                <h4>Meta Data</h4>
+              </div>
+              <div class="newButton">
+                <v-btn @click="openDialogeBox = true"> New </v-btn>
+              </div>              
+            </div>           
+            <div class="card-body px-0 pt-0 pb-1">
+              <div class="table-responsive p-0">
+                <div class="tableContaier">
+
+                  <table class="table align-items-center mb-0">
+                    <thead class="table-header">
+                      <tr>
+                        <th
+                      style="font-size: 0.7rem !important"
+                        v-for="header in headers"
+                        :key="header.key"
+                        class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
+                        :class="{
+                          'text-secondary opacity-7': header.key === 'action'||header.key === 'view',
+                        }"
+                        :style="{
+                          'text-align':header.key === 'action'|| header.key === 'view'? 'center' : 'left',    
+                        }"
+                      >
+                      {{ header.title }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                    style="font-size: 0.9rem !important"
+                      v-for="(data, rowIndex) in displayedData"
+                      :key="rowIndex"
+                    >
+                      <td
+                        v-for="(header, index) in headers"
+                        :key="index"
+                        :class="{
+                          'pl-5': header.key !== 'action',
+    'font-weight-bolder text-uppercase': header.key === 'userName',}"
+:style="{
+  'text-align':header.key === 'action'||header.key === 'view' ? 'center' : 'left',
+  
+}"
+
+
+>
+<template v-if="header.key === 'view'">
+  <div
+  style="
+                              font-size: 0.7rem !important;
+                              height: 2rem !important;
+                              "
+                            @click="sendTableIdAndToggle(data['id'])"
+                            class="text-secondary font-weight-bold text-xs"
+                            >
+                    <span style="font-size: 1.7rem;color: #234375;cursor: pointer;" class="mdi mdi-archive-eye-outline"></span></div
+                          >
+                        </template>
+                        <template v-else-if="header.key === 'sno'">
+                            {{ rowIndex + 1 }}
+                          </template>                        
+                        <template v-else>
+                          <div
+                          :class="{
+                            'font-weight-bolder': header.key === 'name',
+                          }"
+                          >
+                          {{ data[header.key] }}
+                        </div>
+                      </template>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <v-pagination
+              v-model="page"
+              :length="pages"
+              @input="updateDisplayedData"
+              class="pagination"
+              ></v-pagination>
+            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <v-dialog v-model="openDialogeBox" style="z-index: 1001">
+          <v-card style="width: 60%; margin: 0 auto">
+            <meta-data-table
+              @showLoader="handleShowLoader"
+              v-on:dialogeBox="listnerDialogBox"
+            />
+          </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="openTableDialogeBox" style="z-index: 1001">
+          <v-card style="width: 60%; margin: 0 auto">
+            <meta-user-table
+              v-on:dialogeBox="userTableDialogBox"
+              :selectedTableId="selectedTableId"
+            />
+          </v-card>
+        </v-dialog>
+      </div>
+      <div v-if="showLoader" class="loader-overlay">
+        <div v-if="showLoader" class="loader">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+        <div class="bg"></div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import MetaDataTable from './MetaDataTable.vue';
-import MetaUserTable from './MetaUserTable.vue';
+import axios from "axios";
+import MetaDataTable from "./MetaDataTable.vue";
+import MetaUserTable from "./MetaUserTable.vue";
 import Swal from "sweetalert2";
+import setNavPills from "@/assets/js/nav-pills.js";
+import setTooltip from "@/assets/js/tooltip.js";
 
 export default {
-name:'metaData',
-components:{
-  MetaDataTable,
-  MetaUserTable,
-},
-mounted(){
-  this.getTableEntity();
-},
-data(){
-  return{
-    openDialogeBox:false,
-    openTableDialogeBox:false,
-    selectedTableId:"",
-    page: 1, // Current page
-    itemsPerPage:10, // Number of items per page
-    showLoader:false,
-    headers: [
-        {
-          key: "id",
-          title: "ID",
+  name: "metaData",
+  components: {
+    MetaDataTable,
+    MetaUserTable,
+  },
+  mounted() {
+    this.$store.state.isAbsolute = true;
+    setNavPills();
+    setTooltip(this.$store.state.bootstrap);
+    this.getTableEntity();
+  },
+  beforeUnmount() {
+    this.$store.state.isAbsolute = false;
+  },
+  data() {
+    return {
+      openDialogeBox: false,
+      openTableDialogeBox: false,
+      selectedTableId: "",
+      page: 1, // Current page
+      itemsPerPage: 10, // Number of items per page
+      showLoader: false,
+      headers: [
+      {
+          key: "sno",
+          title: "S.No",
         },
         {
           key: "name",
@@ -130,47 +212,48 @@ data(){
           key: "createdBy",
           title: "CREATED BY",
         },
-        { key: 'action', title: 'ACTION' },
-     
-      ],
-      tableDatas:[],
-  }
-},
-watch: {
-    page(newValue, oldValue) {
-        console.log('Page changed to:',newValue);
-        this.updateDisplayedData();
-    }
-},
-computed: {
-  displayedData() {
-    console.log("displa data rendering");
-    const start = (this.page - 1) * this.itemsPerPage;
-    console.log("start",start);
-    const end = start + this.itemsPerPage;
-    console.log("end",start);
 
-    return this.tableDatas.slice(start, end);
+        { key: "view", title: "VIEW" },
+
+      ],
+      tableDatas: [],
+    };
   },
-  pages() {
-    console.log(Math.ceil(this.tableDatas.length /this.itemsPerPage));
-    return Math.ceil(this.tableDatas.length / this.itemsPerPage);
+  watch: {
+    page(newValue, oldValue) {
+      console.log("Page changed to:", newValue);
+      this.updateDisplayedData();
+    },
   },
-    
+  computed: {
+    displayedData() {
+      console.log("displa data rendering");
+      const start = (this.page - 1) * this.itemsPerPage;
+      console.log("start", start);
+      const end = start + this.itemsPerPage;
+      console.log("end", start);
+
+      return this.tableDatas.slice(start, end);
+    },
+    pages() {
+      console.log(Math.ceil(this.tableDatas.length / this.itemsPerPage));
+      return Math.ceil(this.tableDatas.length / this.itemsPerPage);
+    },
   },
-methods:{
-  updateDisplayedData() {
-    // Your logic to update displayed data based on the new page number
-    const start = (this.page - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-    this.displayedData = this.tableDatas.slice(start, end);
-  },
-  
-  async handleShowLoader(value) {
+  methods: {
+    updateDisplayedData() {
+      // Your logic to update displayed data based on the new page number
+      const start = (this.page - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      this.displayedData = this.tableDatas.slice(start, end);
+    },
+
+    async handleShowLoader(value) {
       console.log("handleShowLoader", value);
       this.showLoader = value;
       if (value) {
         setTimeout(() => {
+          this.getTableEntity();
           this.showLoader = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -193,25 +276,25 @@ methods:{
       }
     },
 
-  sendTableIdAndToggle(value){
-    this.selectedTableId=value;
-    this.openTableDialogeBox=true;
-    
-  },
-  
-  listnerDialogBox(value) {
+    sendTableIdAndToggle(value) {
+      this.selectedTableId = value;
+      this.openTableDialogeBox = true;
+    },
+
+    listnerDialogBox(value) {
       this.openDialogeBox = value;
     },
 
-    userTableDialogBox(value){
-      this.openTableDialogeBox=value
+    userTableDialogBox(value) {
+      this.openTableDialogeBox = value;
     },
 
     async getTableEntity() {
       console.log("dms token", this.$store.getters.getUserToken);
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
       await axios
-        .get('http://localhost:61050/dms/meta/getAllMetaEntity',
+        .get(
+          "http://localhost:61050/dms/meta/getAllMetaEntity",
 
           {
             headers: {
@@ -219,21 +302,25 @@ methods:{
             },
           }
         )
-        .then((response) =>{
-          console.log("response",response.data);
-          (this.tableDatas = response.data)
-        } 
-        )
+        .then((response) => {
+          console.log("response", response.data);
+          this.tableDatas = response.data;
+        })
         .catch((error) => console.error("Error occured by", error));
     },
-    handleUpdateMetaTable(){
-      this.getTableEntity();
-    }
-}
-}
+
+  },
+};
 </script>
 
 <style scoped>
+.min-height-300 {
+  min-height: 75px !important;
+}
+
+.card .card-header {
+  padding: 1rem !important;
+}
 
 .newButton {
   display: flex;
@@ -242,20 +329,27 @@ methods:{
   margin-right: 2%;
 }
 .newButton > .v-btn {
-   background: #58BDFF;
-   color:#fff;
+  background: #58bdff;
+  color: #fff;
   transition: 0.5s ease;
+  font-weight: bold;
+  height: 2rem !important;
+  font-size: 0.7rem !important;
 }
 
 .newButton > .v-btn:hover {
   cursor: pointer;
 }
 
-.table-responsive{
-  height:350px;
-  position: relative;
-  overflow-x: auto;
+.table-responsive {
+  display: flex;
+  flex-direction: column;    
 
+}
+.tableContaier{
+  position: relative;
+  height: 366px;
+  overflow-x: auto;
 }
 
 .table-header {
@@ -369,4 +463,23 @@ methods:{
   }
 }
 
+::-webkit-scrollbar {
+  width: 3px; /* width of the scrollbar */
+  border-radius: 13px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #65C2FC; /* color of the handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #65C2FC; /* color of the handle on hover */
+}
 </style>

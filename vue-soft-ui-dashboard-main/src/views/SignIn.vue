@@ -19,7 +19,7 @@
               <div class="mt-8 card card-plain">
                 <div class="pb-0 card-header text-start" style="margin-top: 12%">
                   <h3 class="font-weight-bolder text-success text-gradient">
-                    Welcome back
+                    Welcome back to Sign In Page
                   </h3>
                   <p class="mb-0">Enter your username and password to sign in</p>
                 </div>
@@ -158,6 +158,7 @@ export default {
             this.$store.commit("userToken", response.data.token);
             this.$store.commit("userId", response.data.userId);
             this.$store.commit("userName", this.user.userName);
+            this.$store.commit("templeteStatus", "user");
             
             console.log("token", this.$store.getters.getUserToken);
             console.log("userId", this.$store.getters.getUserId);

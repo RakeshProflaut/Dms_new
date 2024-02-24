@@ -12,11 +12,11 @@
       ></i>
       <a class="m-0 navbar-brand" href="/">
         <img :src="logo" class="navbar-brand-img h-100" alt="main_logo" />
-        <span class="ms-1 font-weight-bold">PROFLAUT</span>
+        <span style="font-size: 19px;" class="ms-1 font-weight-bold">PROFLAUT</span>
       </a>
     </div>
     <hr class="mt-0 horizontal dark" />
-    <sidenav-list :cardBg="customClass" />
+    <sidenav-list :cardBg="customClass"/>
   </aside>
 </template>
 <script>
@@ -49,4 +49,29 @@ export default {
 #sidenav-main{
   z-index: 0;
 }
+.navbar-vertical .navbar-brand > img, .navbar-vertical .navbar-brand-img {
+    max-width: 108%;
+    max-height: 3rem !important;
+}
+
+::-webkit-scrollbar {
+  width: 3px; /* width of the scrollbar */
+  border-radius: 13px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #d2d6da; /* color of the handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #d2d6da; /* color of the handle on hover */
+}
+
 </style>

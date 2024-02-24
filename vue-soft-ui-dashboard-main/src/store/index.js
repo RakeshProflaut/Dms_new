@@ -7,6 +7,7 @@ export default createStore({
     token: null,
     userId: null,
     userName:"",
+    templete:"",
     adminName:null,
     isPinned: true,
     showConfig: false,
@@ -43,6 +44,9 @@ export default createStore({
     },
     adminName(state, adminName) {
       return (state.adminName = adminName);
+    },
+    templeteStatus(state, templeteStatus) {
+      return (state.templete = templeteStatus);
     },
     navbarMinimize(state) {
       const sidenav_show = document.querySelector(".g-sidenav-show");
@@ -101,6 +105,9 @@ export default createStore({
     },
     getUserName(state) {
       return state.userName;
+    },
+    getTemplets(state) {
+      return state.templete;
     },
   },
 });

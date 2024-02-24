@@ -171,7 +171,7 @@ methods:{
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
       await axios
         .get(
-          `http://localhost:61050/dms/meta/getAllTables?tableName=${this.selectedTableId}`,
+          `http://localhost:61050/dms/meta/getAllTables?id=${this.selectedTableId}`,
           {
             headers: {
               token: this.$store.getters.getUserToken,
@@ -414,5 +414,23 @@ input {
   background: #fff;
 }
 
+::-webkit-scrollbar {
+  width: 3px; /* width of the scrollbar */
+  border-radius: 13px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #65C2FC; /* color of the handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #65C2FC; /* color of the handle on hover */
+}
 </style>

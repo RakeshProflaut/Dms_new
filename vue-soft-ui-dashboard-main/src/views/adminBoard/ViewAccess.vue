@@ -21,7 +21,10 @@
         <div>
           <label>View</label>
               <template v-if="viewAccess === 'Yes'">
-              <soft-badge color="success" variant="gradient"  style="background:#5FC0FF !important;"  size="sm">Enable</soft-badge>
+              <soft-badge color="success" variant="gradient"    style=" 
+                              color:#596195;                     
+                      background: rgb(228,243,227);
+background: linear-gradient(270deg, rgba(228,243,227,1) 0%, rgba(88,189,255,1) 95%);"  size="sm">Enable</soft-badge>
           </template>
           <template v-else>
               <soft-badge color="secondary" variant="gradient" size="sm">Disable</soft-badge>
@@ -30,7 +33,10 @@
         <div>
           <label>Write</label>
           <template v-if="writeAccess === 'Yes'">
-              <soft-badge color="success" variant="gradient"  style="background:#5FC0FF !important;"  size="sm">Enable</soft-badge>
+              <soft-badge color="success" variant="gradient"    style=" 
+                              color:#596195;                     
+                      background: rgb(228,243,227);
+background: linear-gradient(270deg, rgba(228,243,227,1) 0%, rgba(88,189,255,1) 95%);"  size="sm">Enable</soft-badge>
           </template>
           <template v-else>
               <soft-badge color="secondary" variant="gradient" size="sm">Disable</soft-badge>

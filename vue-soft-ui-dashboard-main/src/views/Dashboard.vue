@@ -4,13 +4,13 @@
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
           title="Today's Money"
-          value="$53,000"
+          value="OCR"
           :percentage="{
             value: '+505%',
             color: 'text-success',
           }"
           :icon="{
-            component: 'ni ni-money-coins',
+            component: 'ni ni-document-text',
             background: iconBackground,
           }"
           direction-reverse
@@ -18,8 +18,8 @@
       </div>
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
-          title="Today's Users"
-          value="2,300"
+          title="IU"
+          value="IMAGE UPSCALE"
           :percentage="{
             value: '+3%',
             color: 'text-success',
@@ -34,7 +34,7 @@
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
           title="New Clients"
-          value="+3,462"
+          value="DIRECTORY"
           :percentage="{
             value: '-2%',
             color: 'text-danger',
@@ -49,13 +49,13 @@
       <div class="col-xl-3 col-sm-6 mb-xl-0">
         <mini-statistics-card
           title="Sales"
-          value="$103,430"
+          value="SEARCH"
           :percentage="{
             value: '+5%',
             color: 'text-success',
           }"
           :icon="{
-            component: 'ni ni-cart',
+            component: 'ni ni-zoom-split-in',
             background: iconBackground,
           }"
           direction-reverse
@@ -69,15 +69,15 @@
             <div class="row">
               <div class="col-lg-6">
                 <div class="d-flex flex-column h-100">
-                  <p class="mb-1 pt-2 text-bold">Built by developers</p>
-                  <h5 class="font-weight-bolder">Soft UI Dashboard</h5>
+                  <p class="mb-1 pt-2 text-bold">Built by</p>
+                  <h5 class="font-weight-bolder">PROFLAUT TECHNOLOGIES</h5>
                   <p class="mb-5">
-                    From colors, cards, typography to complex elements, you will
-                    find the full documentation.
+                    We work
+                     in the advanced technologies in the Industries We are more focused on Excellence and delivering the services as per the client requirements.
                   </p>
                   <a
                     class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto"
-                    href="javascript:;"
+                    href="http://www.proflaut.com/"
                   >
                     Read More
                     <i
@@ -121,11 +121,12 @@
             <div class="card-body position-relative z-index-1 p-3 h-100">
               <div class="d-flex flex-column h-100">
                 <h5 class="text-white font-weight-bolder mb-4 pt-2">
-                  Work with the rockets
+                  DMS
                 </h5>
                 <p class="text-white mb-5">
-                  Wealth creation is an evolutionarily recent positive-sum game.
-                  It is all about who take the opportunity first.
+                  DMS can  store, manage and track electronic
+                   documents and electronic images of paper-based information captured through
+                    the use of a document scanner.
                 </p>
                 <a
                   class="text-white font-weight-bold ps-1 mb-0 icon-move-left mt-auto"
@@ -164,7 +165,7 @@
                   'Dec',
                 ],
                 datasets: {
-                  label: 'Sales',
+                  label: 'Users',
                   data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
                 },
               }"
@@ -174,24 +175,24 @@
                     color: 'primary',
                     component: faUsers,
                   },
-                  label: 'users',
+                  label: 'USERS',
                   progress: { content: '37K', percentage: 60 },
                 },
                 {
                   icon: { color: 'info', component: faHandPointer },
-                  label: 'clicks',
+                  label: 'GROUPS',
                   progress: { content: '2m', percentage: 90 },
                 },
                 {
                   icon: { color: 'warning', component: faCreditCard },
-                  label: 'Sales',
+                  label: 'FILES',
                   progress: { content: '435$', percentage: 30 },
                 },
-                {
-                  icon: { color: 'danger', component: faScrewdriverWrench },
-                  label: 'Items',
-                  progress: { content: '43', percentage: 50 },
-                },
+                // {
+                //   icon: { color: 'danger', component: faScrewdriverWrench },
+                //   label: 'Items',
+                //   progress: { content: '43', percentage: 50 },
+                // },
               ]"
             />
           </div>
@@ -219,11 +220,11 @@
               ],
               datasets: [
                 {
-                  label: 'Mobile Apps',
+                  label: 'Group Files',
                   data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
                 },
                 {
-                  label: 'Websites',
+                  label: 'User Files',
                   data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
                 },
               ],
@@ -236,7 +237,7 @@
       <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
         <projects-card />
       </div>
-      <div class="col-lg-4 col-md-6">
+      <!-- <div class="col-lg-4 col-md-6">
         <timeline-list
           class="h-100"
           title="Orders overview"
@@ -280,7 +281,7 @@
             date-time="15 DEC"
           />
         </timeline-list>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

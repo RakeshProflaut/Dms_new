@@ -11,7 +11,7 @@
           </template>
         </sidenav-collapse>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <sidenav-collapse navText="Workflow" :to="{ name: 'Dms' }">
           <template #icon>
             <document />
@@ -24,7 +24,7 @@
             <document />
           </template>
         </sidenav-collapse>
-      </li>
+      </li> -->
       <li class="nav-item">
         <sidenav-collapse navText="Directory" :to="{ name: 'Folders' }">
           <template #icon>
@@ -32,6 +32,20 @@
           </template>
         </sidenav-collapse>
       </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="Search" :to="{ name: 'Search' }">
+          <template #icon>
+            <document />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="Portal" :to="{ name: 'Portal' }">
+          <template #icon>
+            <document />
+          </template>
+        </sidenav-collapse>
+      </li>      
       <!-- <li class="nav-item">
         <sidenav-collapse navText="Tables" :to="{ name: 'Tables' }">
           <template #icon>
@@ -64,7 +78,7 @@
           </template>
         </sidenav-collapse>
       </li> -->
-      <li class="mt-3 nav-item">
+      <!-- <li class="mt-3 nav-item">
         <h6
           class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
           :class="this.$store.state.isRTL ? 'me-4' : 'ms-2'"
@@ -99,7 +113,7 @@
             <spaceship />
           </template>
         </sidenav-collapse>
-      </li>
+      </li> -->
     </ul>
   </div>
   <!-- <div class="pt-3 mx-3 mt-3 sidenav-footer">

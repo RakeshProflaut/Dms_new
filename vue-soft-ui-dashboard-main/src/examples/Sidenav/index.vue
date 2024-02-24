@@ -12,7 +12,7 @@
       ></i>
       <a class="m-0 navbar-brand" href="/">
         <img :src="logo" class="navbar-brand-img h-100" alt="main_logo" />
-        <span class="ms-1 font-weight-bold">PROFLAUT</span>
+        <span style="font-size: 19px;" class="ms-1 font-weight-bold">PROFLAUT</span>
       </a>
     </div>
     <hr class="mt-0 horizontal dark" />
@@ -48,5 +48,10 @@ export default {
 <style scoped>
 #sidenav-main{
   z-index: 0;
+}
+
+.navbar-vertical .navbar-brand > img, .navbar-vertical .navbar-brand-img {
+    max-width: 108%;
+    max-height: 3rem !important;
 }
 </style>

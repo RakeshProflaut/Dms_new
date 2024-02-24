@@ -16,7 +16,7 @@
           class="pe-md-3 d-flex align-items-center"
           :class="this.$store.state.isRTL ? 'me-md-auto' : 'ms-md-auto'"
         >
-          <div class="input-group">
+          <!-- <div class="input-group">
             <span class="input-group-text text-body"
               ><i class="fas fa-search" aria-hidden="true"></i
             ></span>
@@ -27,25 +27,49 @@
                 this.$store.state.isRTL ? 'أكتب هنا...' : 'Type here...'
               "
             />
-          </div>
+          </div> -->
         </div>
         <ul class="navbar-nav justify-content-end">
-          <li class="nav-item d-flex align-items-center">
+          <!-- <li class="nav-item d-flex align-items-center">
             <router-link
               :to="{ name: 'Sign In' }"
               class="px-0 nav-link font-weight-bold"
               :class="textWhite ? textWhite : 'text-body'"
             >
-              <!-- <i
+              <i
                 class="fa fa-user"
                 :class="this.$store.state.isRTL ? 'ms-sm-2' : 'me-sm-1'"
-              ></i> -->
-              <!-- <span v-if="this.$store.state.isRTL" class="d-sm-inline d-none"
-                >يسجل دخول</span
-              > -->
-              <!-- <span v-else class="d-sm-inline d-none">Sign In </span> -->
+              ></i> 
+             
+              <span  class="d-sm-inline d-none">Logout</span>
             </router-link>
-          </li>
+          </li> -->
+          <!-- <li class="nav-item d-flex align-items-center" @click="getLogout">
+            <div
+              style="cursor: pointer"
+              class="px-0 nav-link font-weight-bold"
+              :class="textWhite ? textWhite : 'text-body'"
+            >
+              <router-link
+              :to="{ name: 'Sign In' }"
+              
+              >
+              <i
+                style="font-size: 1.2rem"
+                class="mdi mdi-logout"
+                :class="'me-sm-1'"
+              ></i>
+            </div>
+            </router-link>
+          </li> -->
+          <!-- <li class="nav-item">
+        <sidenav-collapse navText="Profile" :to="{ name: 'Profile' }" class="side">
+          <template #icon>
+            <customer-support />
+          </template>
+        </sidenav-collapse>
+      </li> -->
+
           <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
             <a
               href="#"
@@ -195,6 +219,24 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item d-flex align-items-center" @click="getLogout">
+            <div
+              style="cursor: pointer"
+              class="px-0 nav-link font-weight-bold"
+              :class="textWhite ? textWhite : 'text-body'"
+            >
+              <!-- <router-link
+              :to="{ name: 'Sign In' }"
+              
+              > -->
+              <i
+                style="font-size: 1.2rem"
+                class="mdi mdi-logout"
+                :class="'me-sm-1'"
+              ></i>
+            </div>
+            <!-- </router-link> -->
+          </li>
         </ul>
       </div>
     </div>
@@ -203,6 +245,9 @@
 <script>
 import Breadcrumbs from "../Breadcrumbs.vue";
 import { mapMutations, mapActions } from "vuex";
+import SidenavCollapse from "../AdminSidenav/SidenavCollapse.vue";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "navbar",
@@ -210,6 +255,9 @@ export default {
     return {
       showMenu: false,
     };
+  },
+  components: {
+    SidenavCollapse,
   },
   props: ["minNav", "textWhite"],
   created() {
@@ -223,6 +271,51 @@ export default {
       this.toggleSidebarColor("bg-white");
       this.navbarMinimize();
     },
+    async getLogout() {
+      // Display confirmation dialog
+      const confirmed = await Swal.fire({
+        title: "Are you sure you want to logout?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#5FC0FF",
+        cancelButtonColor: "#C72E2E",
+        confirmButtonText: "Yes, logout",
+        timer: 2000,
+        timerProgressBar: true,
+      });
+
+      if (confirmed.isConfirmed) {
+        this.putLogout();
+      }
+    },
+
+    async putLogout() {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      console.log("token", this.$store.getters.getUserToken);
+      console.log("userid", this.$store.getters.getUserId);
+      console.log("templete", this.$store.getters.getTemplets);
+      const templete = this.$store.getters.getTemplets;
+
+      await axios
+        .delete(
+          `http://localhost:61050/dms/access/logout/${this.$store.getters.getUserId}`,
+          {
+            headers: {
+              token: this.$store.getters.getUserToken,
+            },
+          }
+        )
+        .then(() => {
+          setTimeout(() => {
+            if (templete === "user") {
+              this.$router.push({ name: "Sign In" });
+            } else {
+              this.$router.push({ name: "AdminSign In" });
+            }
+          }, 500);
+        })
+        .catch((error) => console.error("Error occured by", error));
+    },
   },
   components: {
     Breadcrumbs,
@@ -232,6 +325,5 @@ export default {
       return this.$route.name;
     },
   },
-  
 };
 </script>

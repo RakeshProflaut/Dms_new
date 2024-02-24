@@ -171,6 +171,7 @@ export default {
           this.$store.commit("userToken", response.data.token);
             this.$store.commit("userId", response.data.userId);
             this.$store.commit("adminName", this.user.userName);
+            this.$store.commit("templeteStatus", "admin");
 
             console.log("token", this.$store.getters.getUserToken);
             console.log("userId", this.$store.getters.getUserId);

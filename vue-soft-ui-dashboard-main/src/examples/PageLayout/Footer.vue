@@ -1,7 +1,6 @@
 <template>
-  <footer class="py-5 footer">
-    <div class="container">
-      <div class="row">
+  <footer class="py-1 footer text-right">
+      <!-- <div class="row">
         <div class="mx-auto mb-4 text-center col-lg-8">
           <a
             href="javascript:;"
@@ -83,15 +82,10 @@
             <span class="text-lg fab fa-github"></span>
           </a>
         </div>
-      </div>
-      <div class="row">
-        <div class="mx-auto mt-1 text-center col-8">
-          <p class="mb-0 text-secondary">
-            Copyright © {{ new Date().getFullYear() }} PROFLAUT
+      </div> -->
+          <p class="mr-5 text-secondary pt-3" style="padding-bottom: .1rem !important;">
+            ©powered by PROFLAUT Technologies
           </p>
-        </div>
-      </div>
-    </div>
   </footer>
 </template>
 

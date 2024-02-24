@@ -17,7 +17,7 @@
             <document />
           </template>
         </sidenav-collapse>
-      </li>
+      </li>      
       <li class="nav-item">
         <sidenav-collapse navText="Meta Data" :to="{name: 'Meta Data'}">
           <template #icon>
@@ -32,13 +32,47 @@
           </template>
         </sidenav-collapse>
       </li>
-      <li class="mt-3 nav-item">
-        <h6
-          class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
-          :class="this.$store.state.isRTL ? 'me-4' : 'ms-2'"
-        >
-          PAGES
-        </h6>
+      <li class="nav-item">
+        <sidenav-collapse navText="Licence Management" :to="{ name: 'Licence Management' }">
+          <template #icon>
+            <document />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="Worlflow Management" :to="{ name: 'Worlflow Management' }">
+          <template #icon>
+            <document />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="CKYC" :to="{ name: 'CKYC' }">
+          <template #icon>
+            <document />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="DC-DR Configure" :to="{ name: 'DCDR Configure' }">
+          <template #icon>
+            <document />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="Digital Signature" :to="{ name: 'Digital Signature' }">
+          <template #icon>
+            <document />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="Mount Points" :to="{ name:'Mount Points'}">
+          <template #icon>
+            <document />
+          </template>
+        </sidenav-collapse>
       </li>
       <li class="nav-item">
         <sidenav-collapse navText="Profile" :to="{ name: 'Profile' }">
@@ -47,6 +81,15 @@
           </template>
         </sidenav-collapse>
       </li>
+      <!-- <li class="mt-3 nav-item">
+        <h6
+          class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
+          :class="this.$store.state.isRTL ? 'me-4' : 'ms-2'"
+        >
+          PAGES
+        </h6>
+      </li>
+
       <li class="nav-item">
         <sidenav-collapse navText="Sign In" :to="{ name: 'Sign In' }">
           <template #icon>
@@ -67,7 +110,7 @@
             <spaceship />
           </template>
         </sidenav-collapse>
-      </li>
+      </li> -->
     </ul>
   </div>
 
@@ -124,6 +167,27 @@ export default {
     font-weight: 600;
     box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
     border-radius: 0.5rem;
+}
+
+
+::-webkit-scrollbar {
+  width: 3px; /* width of the scrollbar */
+  border-radius: 13px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #9cccca; /* color of the handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #d2d6da; /* color of the handle on hover */
 }
 
 
