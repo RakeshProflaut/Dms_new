@@ -22,20 +22,10 @@
               </v-card>
             </v-dialog>
           </div>
-          <div style="flex-basis: 95%">
-            <!-- <iframe
-              style="display: none; width: 153%; margin-left: 8%; height: 93%"           
-              id="iframeId"
-              height="80%"
-              width="90%"
-            ></iframe> -->
-            
-
+          <div style="flex-basis: 95%">            
             <iframe
     id="iframeId"
-    style="display: none; width: 153%; margin-left: 8%; height: 93%"
-    height="80%"
-    width="90%"
+    style="display: none;margin-left: 8%"
   ></iframe>
           </div>
         </pane>
@@ -220,11 +210,9 @@ export default {
 }
 .workItemContainer {
   display: flex;
-  /* margin-top: 2rem; */
-  /* margin-left: 16px !important; */
+  flex-direction: column;
   width: 100%;
   height: 100vh;
-  flex-direction: column;
   border-radius: 1rem;
   border: 0.5px solid #fff;
   background: #fff;
@@ -319,12 +307,17 @@ export default {
   color: red;
 }
 
-.body {
+/* .body {
   flex-basis: 90%;
   width: 100%;
   height: 100%;
-}
+} */
 
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 .dashboard1 {
   display: flex;
   flex-direction: column;
@@ -418,7 +411,7 @@ select {
 height: 150px; */
 }
 
-.splitpanes__pane {
+/* .splitpanes__pane {
   justify-content: center;
   align-items: center;
   display: flex;
@@ -427,9 +420,20 @@ height: 150px; */
   transition:
     background-color 0.3s ease,
     transform 0.3s ease; /* Added transition */
-}
+/* } */ 
 
-.fileBlock {
+
+/* .splitpanes__pane {
+  display: flex;
+  flex-direction: column;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+} */
+
+
+
+/* .fileBlock {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -444,6 +448,45 @@ height: 150px; */
   padding-right: 3%;
   width: 100%;
   height: 100%;
+} */
+
+/* .fileEditbtn > .v-btn {
+  color: #fff;
+  font-weight: bold;
+  background: #87e42e;
+  transition: 0.5s ease;
+  box-shadow:
+    0 0.25rem 0.375rem -0.0625rem rgba(20, 20, 20, 0.12),
+    0 0.125rem 0.25rem -0.0625rem rgba(20, 20, 20, 0.07) !important;
+}
+
+.fileEditbtn > .v-btn:hover {
+  cursor: pointer;
+  color: #344767;
+  background-image: linear-gradient(270deg, #17ad37 0%, #98ec2d 100%);
+} */
+
+.splitpanes__pane {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Adjust alignment as needed */
+  align-items: stretch; /* Ensures the child elements stretch to fill the container */
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.fileBlock {
+  flex: 1; /* Allow the fileBlock to grow and shrink as needed */
+}
+
+/* Additional styling for the fileEditbtn, if necessary */
+.fileEditbtn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 3%;
+  width: 100%;
+  margin-bottom: 2%;
 }
 
 .fileEditbtn > .v-btn {
@@ -521,6 +564,12 @@ height: 150px; */
   transition:
     box-shadow 0.15s ease,
     border-color 0.15s ease;
+}
+
+iframe {
+  flex: 1; /* Occupy remaining space */
+  width: 100%;
+  height: 100%;
 }
 
 .card-body {

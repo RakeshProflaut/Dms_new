@@ -458,6 +458,7 @@ export default {
       console.log("enteredFolderNmae", this.postfolderDetails);
       const apiUrl = "http://localhost:61050/dms/folder/create";
       const token = this.$store.getters.getUserToken;
+      if(Object.values(this.postfolderDetails).every((value) => value !== "" && value !==null)){
       await axios
         .post(apiUrl, this.postfolderDetails, {
           headers: {
@@ -491,6 +492,31 @@ export default {
           }, 3000);
         })
         .catch((error) => console.log("error occured by", error));
+      } else{
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          customClass: "swal-wide",
+          height: "30px",
+          background: "hsl(0, 43%, 52%)",
+          color: "white",
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+          onBeforeOpen: (toast) => {
+            toast.style.zIndex = 10000;
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Please Fill all the Fields!",
+        });
+      }
+
     },
     async getMountData() {
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
@@ -652,7 +678,7 @@ body > div.v-overlay-container > div > div.v-overlay__content > div {
   text-transform: uppercase;
   background-size: 150%;
   background-position-x: 25%;
-  background-image: linear-gradient(310deg, #141727 0%, #3a416f 100%);
+  background-image: linear-gradient(310deg, #5cc06e, #82d616) !important;
   margin-top: 16px !important;
   border-radius: 1rem;
   padding: 8px 0px;
@@ -797,5 +823,32 @@ body > div.v-overlay-container > div > div.v-overlay__content > div {
 .swal2-cancel {
   background-color: #dc3545 !important;
   color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 3px; /* width of the scrollbar */
+  border-radius: 13px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #5cc06e; /* color of the handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #5cc06e; /* color of the handle on hover */
+}
+
+.custom-input-class {
+  /* Add your custom CSS rules for the input field here */
+  border: 2px solid #ff0000; /* Example border color */
+  border-radius: 5px; /* Example border radius */
+  padding: 10px; /* Example padding */
 }
 </style>

@@ -1,66 +1,35 @@
 <template>
   <div class="py-4 container-fluid">
     <div class="row">
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <mini-statistics-card
-          title="Today's Money"
-          value="OCR"
-          :percentage="{
-            value: '+505%',
-            color: 'text-success',
-          }"
-          :icon="{
-            component: 'ni ni-document-text',
-            background: iconBackground,
-          }"
-          direction-reverse
-        />
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4" v-for="(detail,index) in details" :key="index">
+        <div class="mb-4 card">
+          <div class="p-3 card-body">
+            <div class="d-flex flex-row-reverse justify-content-between">
+              <div>
+                <div
+                  class="text-center shadow icon icon-shape border-radius-md"
+                >
+                  <span
+                    :class="detail.icon"
+                    aria-hidden="true"
+                  ></span>
+                </div>
+              </div>
+              <div>
+                <div class="numbers">
+                  <p class="mb-0 text-sm text-capitalize font-weight-bold">
+                   {{ detail.title }}
+                  </p>
+                  <h5 class="mb-0 font-weight-bolder">
+                    {{ detail.value }}
+                    <span class="text-sm font-weight-bolder"> </span>
+                  </h5>
+                </div>
+              </div>
+            </div>
+        </div>
       </div>
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <mini-statistics-card
-          title="IU"
-          value="IMAGE UPSCALE"
-          :percentage="{
-            value: '+3%',
-            color: 'text-success',
-          }"
-          :icon="{
-            component: ' ni ni-world',
-            background: iconBackground,
-          }"
-          direction-reverse
-        />
-      </div>
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <mini-statistics-card
-          title="New Clients"
-          value="DIRECTORY"
-          :percentage="{
-            value: '-2%',
-            color: 'text-danger',
-          }"
-          :icon="{
-            component: 'ni ni-paper-diploma',
-            background: iconBackground,
-          }"
-          direction-reverse
-        />
-      </div>
-      <div class="col-xl-3 col-sm-6 mb-xl-0">
-        <mini-statistics-card
-          title="Sales"
-          value="SEARCH"
-          :percentage="{
-            value: '+5%',
-            color: 'text-success',
-          }"
-          :icon="{
-            component: 'ni ni-zoom-split-in',
-            background: iconBackground,
-          }"
-          direction-reverse
-        />
-      </div>
+    </div>
     </div>
     <div class="row">
       <div class="col-lg-7 mb-lg-0 mb-4">
@@ -72,8 +41,9 @@
                   <p class="mb-1 pt-2 text-bold">Built by</p>
                   <h5 class="font-weight-bolder">PROFLAUT TECHNOLOGIES</h5>
                   <p class="mb-5">
-                    We work
-                     in the advanced technologies in the Industries We are more focused on Excellence and delivering the services as per the client requirements.
+                    We work in the advanced technologies in the Industries We
+                    are more focused on Excellence and delivering the services
+                    as per the client requirements.
                   </p>
                   <a
                     class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto"
@@ -114,19 +84,17 @@
           <div
             class="overflow-hidden position-relative border-radius-lg bg-cover h-100"
             style="
-              background-image: url('https://demos.creative-tim.com/soft-ui-dashboard/assets/img/ivancik.jpg');
+              background-image: url(&quot;https://demos.creative-tim.com/soft-ui-dashboard/assets/img/ivancik.jpg&quot;);
             "
           >
             <span class="mask bg-gradient-dark"></span>
             <div class="card-body position-relative z-index-1 p-3 h-100">
               <div class="d-flex flex-column h-100">
-                <h5 class="text-white font-weight-bolder mb-4 pt-2">
-                  DMS
-                </h5>
+                <h5 class="text-white font-weight-bolder mb-4 pt-2">DMS</h5>
                 <p class="text-white mb-5">
-                  DMS can  store, manage and track electronic
-                   documents and electronic images of paper-based information captured through
-                    the use of a document scanner.
+                  DMS can store, manage and track electronic documents and
+                  electronic images of paper-based information captured through
+                  the use of a document scanner.
                 </p>
                 <a
                   class="text-white font-weight-bold ps-1 mb-0 icon-move-left mt-auto"
@@ -166,7 +134,7 @@
                 ],
                 datasets: {
                   label: 'Users',
-                  data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
+                  data: [10, 200, 100, 220, 500, 100, 400, 230, 500],
                 },
               }"
               :items="[
@@ -176,17 +144,17 @@
                     component: faUsers,
                   },
                   label: 'USERS',
-                  progress: { content: '37K', percentage: 60 },
+                  progress: { content: this.userCount, percentage: 60 },
                 },
                 {
                   icon: { color: 'info', component: faHandPointer },
                   label: 'GROUPS',
-                  progress: { content: '2m', percentage: 90 },
+                  progress: { content: this.groupCount, percentage: 90 },
                 },
                 {
                   icon: { color: 'warning', component: faCreditCard },
                   label: 'FILES',
-                  progress: { content: '435$', percentage: 30 },
+                  progress: { content: this.fileSizeCount, percentage: 30 },
                 },
                 // {
                 //   icon: { color: 'danger', component: faScrewdriverWrench },
@@ -221,7 +189,7 @@
               datasets: [
                 {
                   label: 'Group Files',
-                  data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+                  data: [20, 40, 300, 220, 500, 250, 400, 230, 500],
                 },
                 {
                   label: 'User Files',
@@ -233,10 +201,10 @@
         </div>
       </div>
     </div>
-    <div class="row my-4">
-      <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
-        <projects-card />
-      </div>
+    <div class="my-4">
+      <!-- <div class="col-lg-8 col-md-6 mb-md-0 mb-4"> -->
+      <projects-card />
+      <!-- </div> -->
       <!-- <div class="col-lg-4 col-md-6">
         <timeline-list
           class="h-100"
@@ -302,6 +270,7 @@ import {
   faCreditCard,
   faScrewdriverWrench,
 } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 export default {
   name: "dashboard-default",
   data() {
@@ -311,6 +280,36 @@ export default {
       faScrewdriverWrench,
       faUsers,
       faHandPointer,
+      groupCount: "",
+      userCount: "",
+      fileSizeCount: "",
+      details:[
+      {
+        title:'Total Uploads',
+        value:'0',
+        icon:'mdi mdi-upload-box-outline',
+        backendKey: 'userUploadedCount'
+      },
+      {
+        title:'Groups Assigned',
+        value:'0',
+        icon:'mdi mdi-account-group',
+        backendKey: 'noOfGroupAssigned' 
+      },
+      {
+        title:'Files Occupied',
+        value:'0',
+        icon:'mdi mdi-file-multiple',
+        backendKey: 'userFileOccupiedSize'
+      },
+      {
+        title:'Group Files Occupied',
+        value:'0',
+        icon:'mdi mdi-file-multiple',
+        backendKey: 'userGroupFileOccupiedSize'
+      }
+      ],
+      fetchUserDetails:null,
       sales: {
         us: {
           country: "United States",
@@ -351,5 +350,68 @@ export default {
     TimelineList,
     TimelineItem,
   },
+  mounted() {
+    this.getAllDetails();
+    this.getUserDetails();
+  },
+
+  methods: {
+    async getAllDetails() {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const apiUrl = `http://localhost:61050/dms/file/getCount`;
+      const token = this.$store.getters.getUserToken;
+      await axios
+        .get(apiUrl, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) => {
+          this.fileSizeCount = response.data.fileSizeCount;
+          this.userCount = response.data.userCount;
+          this.groupCount = response.data.groupCount;
+        })
+        .catch((error) => console.error("Error occured by", error));
+    },
+
+    async getUserDetails() {   
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const apiUrl = `http://localhost:61050/dms/dashboard/getUserUploadedDetails`;
+      const token = this.$store.getters.getUserToken;
+      await axios
+        .get(apiUrl, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) => {
+          this.fetchUserDetails=response.data;
+
+          this.details.forEach(detail => {
+          // Update value based on backend data if backendData is defined
+          if (detail.backendKey === 'userFileOccupiedSize' || detail.backendKey === 'userGroupFileOccupiedSize') {
+            detail.value = this.fetchUserDetails[detail.backendKey] + 'kb';
+          } else {
+            detail.value = this.fetchUserDetails[detail.backendKey];
+          }
+        });
+      })
+        .catch((error) => console.error("Error occured by", error));
+    },
+
+   
+  },
 };
 </script>
+
+<style scoped>
+.icon-shape > span {
+  position: relative;
+  color: #fff;
+  font-size: 2rem;
+}
+
+.icon-shape {
+  background-image: linear-gradient(310deg, #17ad37 0%, #98ec2d 100%);
+}
+</style>

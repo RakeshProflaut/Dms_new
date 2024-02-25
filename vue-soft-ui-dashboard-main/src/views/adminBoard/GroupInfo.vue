@@ -475,7 +475,7 @@ export default {
 
     async openAccess(value) {
       this.selectedGroupId = value;
-      const apiUrl = `http://localhost:61050/dms/group/getUserByGroupId/${value}`;
+      const apiUrl = `http://localhost:61050/dms/group/getAllUsers`;
       const token = this.$store.getters.getUserToken;
       await axios
         .get(apiUrl, {
@@ -484,6 +484,7 @@ export default {
           },
         })
         .then((response) => {
+          console.log('ressssposeAccess',response.data);
           this.accessUsers = response.data;
           this.assignedUsers = [];
           this.getAssignedUsers();

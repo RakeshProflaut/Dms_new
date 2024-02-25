@@ -465,7 +465,13 @@ export default {
           });
           this.openAccessBox = true;
         })
-        .catch((error) => console.log("error occured by", error));
+        .catch((error) => 
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: error.response.data[0].errorMessage,
+          }));
+        
     },
 
     getFilterAccessGroup() {

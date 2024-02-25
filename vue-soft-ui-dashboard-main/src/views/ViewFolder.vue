@@ -675,7 +675,7 @@ export default {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #9cccca; /* color of the handle */
+  background: #5cc06e; /* color of the handle */
 }
 
 /* Handle on hover */

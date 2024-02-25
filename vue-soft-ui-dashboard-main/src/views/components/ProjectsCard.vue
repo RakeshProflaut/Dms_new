@@ -49,83 +49,49 @@
           <thead>
             <tr>
               <th
+                style="font-size: 0.7rem !important"
+                v-for="header in headers"
+                :key="header.key"
                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                :style="{
+                  'padding-inline-start':
+                    header.key === 'groupMembers'? '8px !important' : '',
+                    'text-align':header.key === 'completion' ?'center':'left'
+                }"
               >
-                Group Name
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-              >
-                Group Members
-              </th>
-              <th
-                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >
-                 Groups <br/> file size
-              </th>
-              <th
-                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >
-                Completion
+                {{ header.title }}
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr style="text-align: left;" v-for="(groupDetail,index) in groupDetails"
+                :key="index">
               <td>
                 <div class="d-flex px-2 py-1">
-                  <!-- <div>
-                    <soft-avatar :img="img1" size="sm" class="me-3" alt="xd" />
-                  </div> -->
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">Soft UI XD Version</h6>
+                  <div class="d-flex flex-column justify-content-center pl-3">
+                    <h6 class="mb-0 text-sm">{{groupDetail.groupName }}</h6>
                   </div>
                 </div>
               </td>
               <td>
                 <div class="avatar-group mt-2">
                   <a
+                   v-for="(groupMember,index) in groupDetail.groupMembers" :key="index"
                     href="javascript:;"
                     class="avatar avatar-xs rounded-circle"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
-                    data-bs-original-title="Ryan Tompson"
+                    :title="groupMember"
+                    style="position: relative;"
                   >
-                    <img :src="img2" rounded-circle alt="team1" />
-                  </a>
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Romina Hadid"
-                  >
-                    <img :src="img3" alt="team2" />
-                  </a>
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Alexander Smith"
-                  >
-                    <img :src="img4" alt="team3" />
-                  </a>
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Jessica Doe"
-                  >
-                    <img :src="img5" rounded-circle alt="team4" />
+                    <img src="@/assets/img/user.png" rounded-circle alt="team1"/>
                   </a>
                 </div>
               </td>
-              <td class="align-middle text-center text-sm">
-                <span class="text-xs font-weight-bold">14,000kb</span>
+              <td class="">
+                <span class="text-xs font-weight-bold pl-5">{{groupDetail.groupUploadedFileSize }}kb</span>
               </td>
-              <td class="align-middle">
+              <td class="">
                 <div class="d-flex align-items-center justify-content-center">
                   <span class="text-xs font-weight-bold mx-2">60%</span>
                   <div>
@@ -134,291 +100,6 @@
                       class="mx-auto"
                       variant="gradient"
                       :percentage="60"
-                    />
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <!-- <div>
-                    <soft-avatar
-                      :img="img6"
-                      size="sm"
-                      class="me-3"
-                      alt="atlassian"
-                    />
-                  </div> -->
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">Add Progress Track</h6>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="avatar-group mt-2">
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Romina Hadid"
-                  >
-                    <img :src="img7" alt="team5" />
-                  </a>
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Jessica Doe"
-                  >
-                    <img :src="img8" alt="team6" />
-                  </a>
-                </div>
-              </td>
-              <td class="align-middle text-center text-sm">
-                <span class="text-xs font-weight-bold">3,000kb</span>
-              </td>
-              <td class="align-middle">
-                <div class="d-flex align-items-center justify-content-center">
-                  <span class="text-xs font-weight-bold mx-2">10%</span>
-                  <div>
-                    <soft-progress
-                      color="info"
-                      class="mx-auto"
-                      variant="gradient"
-                      :percentage="10"
-                    />
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <!-- <div>
-                    <soft-avatar
-                      :img="img9"
-                      size="sm"
-                      class="me-3"
-                      alt="team7"
-                    />
-                  </div> -->
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">Fix Platform Errors</h6>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="avatar-group mt-2">
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Romina Hadid"
-                  >
-                    <img :src="img10" alt="team8" />
-                  </a>
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Jessica Doe"
-                  >
-                    <img :src="img11" alt="team9" />
-                  </a>
-                </div>
-              </td>
-              <td class="align-middle text-center text-sm">
-                <span class="text-xs font-weight-bold">Not set</span>
-              </td>
-              <td class="align-middle">
-                <div class="d-flex align-items-center justify-content-center">
-                  <span class="text-xs font-weight-bold mx-2">100%</span>
-                  <div>
-                    <soft-progress
-                      color="success"
-                      class="mx-auto"
-                      variant="gradient"
-                      :percentage="100"
-                    />
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <!-- <div>
-                    <soft-avatar
-                      :img="img12"
-                      class="me-3"
-                      size="sm"
-                      alt="spotify"
-                    />
-                  </div> -->
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">Launch our Mobile App</h6>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="avatar-group mt-2">
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Ryan Tompson"
-                  >
-                    <img :src="img13" alt="user1" />
-                  </a>
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Romina Hadid"
-                  >
-                    <img :src="img14" alt="user2" />
-                  </a>
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Alexander Smith"
-                  >
-                    <img :src="img15" alt="user3" />
-                  </a>
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Jessica Doe"
-                  >
-                    <img :src="img16" alt="user4" />
-                  </a>
-                </div>
-              </td>
-              <td class="align-middle text-center text-sm">
-                <span class="text-xs font-weight-bold">20,500kb</span>
-              </td>
-              <td class="align-middle">
-                <div class="d-flex align-items-center justify-content-center">
-                  <span class="text-xs font-weight-bold mx-2">100%</span>
-                  <div>
-                    <soft-progress
-                      color="success"
-                      class="mx-auto"
-                      variant="gradient"
-                      :percentage="100"
-                    />
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <!-- <div>
-                    <soft-avatar
-                      :img="img17"
-                      rounded-circle
-                      class="me-3"
-                      size="sm"
-                      alt="jira"
-                    />
-                  </div> -->
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">Add the New Pricing Page</h6>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="avatar-group mt-2">
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Ryan Tompson"
-                  >
-                    <img :src="img18" alt="user5" />
-                  </a>
-                </div>
-              </td>
-              <td class="align-middle text-center text-sm">
-                <span class="text-xs font-weight-bold">500kb</span>
-              </td>
-              <td class="align-middle">
-                <div class="d-flex align-items-center justify-content-center">
-                  <span class="text-xs font-weight-bold mx-2">25%</span>
-                  <div>
-                    <soft-progress
-                      color="info"
-                      class="mx-auto"
-                      variant="gradient"
-                      :percentage="25"
-                    />
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <!-- <div>
-                    <soft-avatar
-                      :img="img19"
-                      class="me-3"
-                      size="sm"
-                      alt="invision"
-                    />
-                  </div> -->
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">Redesign New Online Shop</h6>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="avatar-group mt-2">
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Ryan Tompson"
-                  >
-                    <img :src="img20" alt="user6" />
-                  </a>
-                  <a
-                    href="javascript:;"
-                    class="avatar avatar-xs rounded-circle"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-original-title="Jessica Doe"
-                  >
-                    <img :src="img21" alt="user7" />
-                  </a>
-                </div>
-              </td>
-              <td class="align-middle text-center text-sm">
-                <span class="text-xs font-weight-bold">2,000kb</span>
-              </td>
-              <td class="align-middle">
-                <div class="d-flex align-items-center justify-content-center">
-                  <span class="text-xs font-weight-bold mx-2">40%</span>
-                  <div>
-                    <soft-progress
-                      color="info"
-                      class="mx-auto"
-                      variant="gradient"
-                      :percentage="40"
                     />
                   </div>
                 </div>
@@ -433,63 +114,79 @@
 
 <script>
 import setTooltip from "@/assets/js/tooltip.js";
-import SoftAvatar from "@/components/SoftAvatar.vue";
+import axios from "axios";
 import SoftProgress from "@/components/SoftProgress.vue";
-import img1 from "../../assets/img/small-logos/logo-xd.svg";
-import img2 from "../../assets/img/team-1.jpg";
-import img3 from "@/assets/img/team-2.jpg";
-import img4 from "../../assets/img/team-3.jpg";
-import img5 from "../../assets/img/team-4.jpg";
-import img6 from "../../assets/img/small-logos/logo-atlassian.svg";
-import img7 from "../../assets/img/team-2.jpg";
-import img8 from "../../assets/img/team-4.jpg";
-import img9 from "../../assets/img/small-logos/logo-slack.svg";
-import img10 from "../../assets/img/team-3.jpg";
-import img11 from "../../assets/img/team-1.jpg";
-import img12 from "../../assets/img/small-logos/logo-spotify.svg";
-import img13 from "../../assets/img/team-4.jpg";
-import img14 from "../../assets/img/team-3.jpg";
-import img15 from "../../assets/img/team-4.jpg";
-import img16 from "../../assets/img/team-1.jpg";
-import img17 from "../../assets/img/small-logos/logo-jira.svg";
-import img18 from "../../assets/img/team-4.jpg";
-import img19 from "../../assets/img/small-logos/logo-invision.svg";
-import img20 from "../../assets/img/team-1.jpg";
-import img21 from "../../assets/img/team-4.jpg";
+import SoftAvatar from "@/components/SoftAvatar.vue";
+
 
 export default {
   name: "projects-card",
   data() {
     return {
-      img1,
-      img2,
-      img3,
-      img4,
-      img5,
-      img6,
-      img7,
-      img8,
-      img9,
-      img10,
-      img11,
-      img12,
-      img13,
-      img14,
-      img15,
-      img16,
-      img17,
-      img18,
-      img19,
-      img20,
-      img21,
+      groupDetails:null,
+      headers: [
+        {
+          key: "groupName",
+          title: "Group Name",
+        },
+        {
+          key: "groupMembers",
+          title: "group members",
+        },
+        {
+          key: "groupsFileSize",
+          title: "Group File size",
+        },
+        {
+          key: "completion",
+          title: "completion",
+        },
+      ],
     };
   },
   components: {
-    SoftAvatar,
     SoftProgress,
+    SoftAvatar
   },
   mounted() {
     setTooltip();
+    this.getUserGroupDetails();
+  },
+
+  methods: {
+    async getUserGroupDetails() {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const apiUrl = `http://localhost:61050/dms/dashboard/getUserGroupDetails`;
+      const token = this.$store.getters.getUserToken;
+      await axios
+        .get(apiUrl, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) =>{
+          this.groupDetails=response.data,
+          console.log(response.data);
+
+        }
+      )
+        .catch((error) => console.error("Error occured by", error));
+    },
   },
 };
 </script>
+<style scoped>
+.avatar:hover::after {
+  content: attr(title); /* Display the title attribute content */
+  position: absolute;
+  background-color: #000;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  top: -130%; /* Position the tooltip below the avatar */
+  left: 100%; /* Center the tooltip horizontally */
+  transform: translateX(-50%); /* Adjust horizontally centered position */
+  white-space: nowrap; /* Prevent line breaks */
+  z-index: 999; /* Ensure the tooltip appears above other content */
+}
+</style>

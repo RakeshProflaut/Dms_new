@@ -33,12 +33,23 @@
                       name="username"
                     />
                     <label>Password</label>
-                    <input
-                    type="password"
-                    v-model="user.password"
-                      placeholder="Password"
-                      name="password"
-                    />
+                    <div class="input-with-icon">
+                      <div class="passwordContainer">
+                        <input
+                        :type="isVisible ? 'password' : 'text'"
+                        v-model="user.password"
+                        placeholder="Password"
+                        name="password"
+                        />
+                      </div>
+                      <span class="eyeIcon"> 
+                        <i id="visiblityBtn" @click="toggleVisibility">
+                          <span id="eyeicon" class="material-symbols-outlined">{{
+                            isVisible ? "visibility_off" : "visibility"
+                          }}</span>
+              </i>
+            </span>
+          </div>
                     <soft-switch id="rememberMe" name="rememberMe"  @input="handleSwitchInput" checked >                      
                       Force Login
                     </soft-switch>
@@ -66,6 +77,9 @@
                       :to="{ name: 'AdminSign In' }"
                       class="text-success text-gradient font-weight-bold"
                       >Admin Sign In</router-link
+                    >
+                    <a style="margin-left: 2%;" href="#" 
+                    >Forgot Password?</a
                     >
                   </p>
                 </div>
@@ -125,6 +139,7 @@ export default {
   data(){
     return{
       showLoader: false,
+      isVisible: true,
       user:{
         userName: "",
         password: "",
@@ -145,6 +160,10 @@ export default {
   },
   methods: {
     ...mapMutations(["toggleEveryDisplay", "toggleHideConfig"]),
+
+    toggleVisibility() {
+      this.isVisible = !this.isVisible;
+    },
     async createPost(event) {
       console.log(this.user);
       if (this.user.userName !== "" && this.user.password !== "") {
@@ -254,6 +273,37 @@ export default {
 }
 #app > main > main > section > div > div > div > div:nth-child(2) > div > div{
   transform: none;
+}
+.input-with-icon{
+  position: relative;
+
+}
+.passwordContainer{
+  position: relative;
+}
+.passwordContainer >input{ 
+  display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.4rem;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #d2d6da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.5rem;
+}
+
+.eyeIcon{
+  position: absolute;
+  top: 60%;
+  right: 10px; /* Adjust this value as needed to align the icon */
+  transform: translateY(-50%);
+  cursor: pointer;
 }
 
 .loader-overlay {

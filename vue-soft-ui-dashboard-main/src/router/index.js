@@ -16,13 +16,17 @@ import AccessRights from "@/views/adminBoard/AccessRights.vue"
 import Folders from "@/views/Folders.vue"
 import Search from "@/views/Search.vue"
 import Portal from "@/views/Portal.vue"
+import ImageUpscaling from "@/views/ImageUpscaling.vue"
+import Ocr from "@/views/Ocr.vue"
 import ViewFolder from "@/views/ViewFolder.vue"
-import LicenceManagement from "@/views/LicenceManagement.vue"
-import WorkflowManagement from "@/views/WorkflowManagement.vue"
-import Ckyc from "@/views/Ckyc.vue"
-import DCDRConfigur from "@/views/DCDRConfigur.vue"
-import DigitalSignature from "@/views/DigitalSignature.vue"
-import MountPoints from "@/views/MountPoints.vue"
+import LicenceManagement from "@/views/adminBoard/LicenceManagement.vue"
+import WorkflowManagement from "@/views/adminBoard/WorkflowManagement.vue"
+import Ckyc from "@/views/adminBoard/Ckyc.vue"
+import DCDRConfigur from "@/views/adminBoard/DCDRConfigur.vue"
+import DigitalSignature from "@/views/adminBoard/DigitalSignature.vue"
+import MountPoints from "@/views/adminBoard/MountPoints.vue"
+
+
 
 
 
@@ -77,7 +81,17 @@ const routes = [
         path: "/portal",
         name: "Portal",
         component:Portal, 
-      },      
+      },
+      {
+        path: "/imageUpscaling",
+        name: "Image Upscaling",
+        component:ImageUpscaling, 
+      },   
+      {
+        path: "/ocr",
+        name: "Ocr",
+        component:Ocr, 
+      },         
       {
         path: "/tables",
         name: "Tables",

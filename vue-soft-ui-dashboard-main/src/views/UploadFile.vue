@@ -7,57 +7,57 @@
     </div>
     <div class="pt-2 text-center card-header text-uppercase">
       <h5>{{ this.selectedfolder.folderName }} Folder</h5>
-    </div>    
+    </div>
     <div class="card-body">
-        <div>
-          <label>Name *</label>
+      <div>
+        <label>Name *</label>
+        <input
+          type="text"
+          style="width: 70%"
+          v-model="uploadDetails.docName"
+          placeholder="Document Name"
+          required
+          :readonly="showFirstPane"
+        />
+      </div>
+      <div class="fileinput" v-if="showFirstPane === false">
+        <label>Choose File *</label>
+        <input
+          type="file"
+          name="myfile"
+          id="fileUpload"
+          style="width: 70%"
+          @change="convertToBase64"
+          :accept="acceptedExtensions"
+        />
+      </div>
+      <div>
+        <label>Metadata Name*</label>
+        <input
+          type="text"
+          style="width: 70%"
+          v-model="this.uploadDetails.metadata[0].tableName"
+          placeholder="Document Name"
+          required
+          readonly
+        />
+      </div>
+      <div class="textFields">
+        <div v-for="(fieldNam, index) in fieldNames" :key="index">
+          <label :for="fieldNam.fieldName">{{ fieldNam.fieldName }}</label>
           <input
-            type="text"
-            style="width: 70%"
-            v-model="uploadDetails.docName"
-            placeholder="Document Name"
-            required
+            :type="fieldNam.fieldType === 'integer' ? 'number' : 'text'"
+            :id="fieldNam.fieldName"
+            v-model="fieldNam.value"
+            style="width: 90%"
+            :required="true"
             :readonly="showFirstPane"
           />
         </div>
-        <div class="fileinput" v-if="showFirstPane === false">
-          <label>Choose File *</label>
-          <input
-            type="file"
-            name="myfile"
-            id="fileUpload"
-            style="width: 70%"
-            @change="convertToBase64"
-            :accept="acceptedExtensions"
-          />
-        </div>
-        <div >
-          <label>Metadata Name*</label>
-          <input
-            type="text"
-            style="width: 70%"
-            v-model=" this.uploadDetails.metadata[0].tableName"
-            placeholder="Document Name"
-            required
-            readonly
-          />
-        </div>
-        <div class="textFields">
-          <div v-for="(fieldNam, index) in fieldNames" :key="index">
-            <label :for="fieldNam.fieldName">{{ fieldNam.fieldName }}</label>
-            <input
-            :type="fieldNam.fieldType === 'integer' ? 'number' : 'text'"
-              :id="fieldNam.fieldName"
-              v-model="fieldNam.value"
-              style="width: 90%"
-              :required="true"
-              :readonly="showFirstPane"
-            />
-          </div>
-        </div>
-        <div class="text-center">
-          <button @click="submitData">Upload</button>
-        </div>
+      </div>
+      <div class="text-center">
+        <button @click="submitData">Upload</button>
+      </div>
     </div>
   </div>
 </template>
@@ -105,7 +105,7 @@ export default {
       },
     };
   },
-  computed: {   
+  computed: {
 
   acceptedExtensions() {
     const extensions = this.uploadDetails.extention.split(',');
@@ -139,7 +139,7 @@ export default {
       };
     },
 
-   
+
 
     productDialogClose() {
       this.$emit("closeUploadDialogeBox", false);
@@ -173,15 +173,21 @@ export default {
         .catch((error) => console.error("Error occured by", error));
     },
 
-  
+
 
     async submitData() {
       this.uploadDetails.metadata[0].fields = this.fieldNames;
       this.uploadDetails.metadata[0].fileExtension =
         this.uploadDetails.extention;
       console.log("finaluploaddddddddddd", this.uploadDetails);
+
       const apiUrl = "http://localhost:61050/dms/file/upload";
       const token = this.$store.getters.getUserToken;
+
+      const checkFiledsValue=this.fieldNames.every(ele=>ele.value !=='');
+
+      if(Object.values(this.uploadDetails).every((value) => value !== "")&&checkFiledsValue)
+      {
       await axios
         .post(apiUrl, this.uploadDetails, {
           headers: {
@@ -191,25 +197,45 @@ export default {
         .then((response) => {
           console.log("response", response.data);
           this.uploadedDocId = response.data.id;
-          this.$emit('showLoader',true);                  
-           
-        
+          this.$emit('showLoader',true);
+
+
         })
-        .catch((error) => console.log("error occured by", error));
-    },
+        .catch((error) =>   Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: error.response.data.errorMessage,
+          }));
+    }else{
+      const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          customClass: "swal-wide",
+          height: "30px",
+          background: "hsl(0, 43%, 52%)",
+          color: "white",
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
 
-  
-
-
-  
-  },
-};
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Please Fill all the Fields!",
+        });
+    }
+  }
+}
+}
 </script>
 
 <style scoped>
-
-.card-body{
-    width: 100%;
+.card-body {
+  width: 100%;
 }
 .mb-3 > input {
   display: block;
@@ -261,11 +287,7 @@ input {
   text-transform: uppercase;
   background-size: 150%;
   background-position-x: 25%;
-  background-image: linear-gradient(
-    310deg,
-    #82d616,
-    #5CC06E
-  ) !important;
+  background-image: linear-gradient(310deg, #82d616, #5cc06e) !important;
   margin-top: 16px !important;
   border-radius: 1rem;
   padding: 8px 0px;
@@ -336,7 +358,7 @@ input {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #5CC06E; /* color of the handle */
+  background: #5cc06e; /* color of the handle */
 }
 
 /* Handle on hover */

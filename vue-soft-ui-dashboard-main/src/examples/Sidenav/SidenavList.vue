@@ -45,6 +45,20 @@
             <document />
           </template>
         </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="Image Upscaling" :to="{ name: 'Image Upscaling' }">
+          <template #icon>
+            <document />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="Ocr" :to="{ name: 'Ocr' }">
+          <template #icon>
+            <document />
+          </template>
+        </sidenav-collapse>
       </li>      
       <!-- <li class="nav-item">
         <sidenav-collapse navText="Tables" :to="{ name: 'Tables' }">

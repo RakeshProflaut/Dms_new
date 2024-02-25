@@ -5,10 +5,12 @@
     :class="isBlur ? isBlur : 'shadow-none my-2 navbar-transparent w-100'"
   >
     <div class="container">
+    
       <span
         class="navbar-brand font-weight-bolder ms-lg-0 ms-3"
         :class="isBlur ? 'text-dark' : 'text-white'"
       >
+      <img class="logoImg" src="logo-ct.png"/>
         PROFLAUT
       </span>
       <button
@@ -133,5 +135,8 @@ export default {
 .navbar-vertical .navbar-brand > img, .navbar-vertical .navbar-brand-img {
     max-width: 108%;
     max-height: 3rem !important;
+}
+.logoImg{
+  width: 35px;
 }
 </style>
