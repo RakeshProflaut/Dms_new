@@ -1,6 +1,7 @@
 <template>
+  <div class="">
   <div class="container-fluid">
-    <div
+    <!-- <div
       class="mt-4 page-header min-height-300 border-radius-xl"
       :style="{
         backgroundImage:
@@ -9,8 +10,8 @@
       }"
     >
       <span class="mask bg-gradient-success opacity-6"></span>
-    </div>
-    <div class="mx-4 overflow-hidden card card-body blur shadow-blur mt-n6">
+    </div> -->
+    <div class="mx-4 overflow-hidden card card-body blur shadow-blur mt-n3">
       <div class="row gx-4">
         <div class="col-auto">
           <div class="avatar avatar-xl position-relative">
@@ -196,7 +197,7 @@
   </div>
   <div class="py-4 container-fluid">
     <div class="mt-3 row">
-      <div class="col-12 col-md-6 col-xl-4">
+      <div class="col-12 col-md-6">
         <div class="card h-100">
           <div class="p-3 pb-0 card-header">
             <h6 class="mb-0">Platform Settings</h6>
@@ -275,15 +276,15 @@
           </div>
         </div>
       </div>
-      <div class="mt-4 col-12 col-md-6 col-xl-4 mt-md-0">
+      <div class="mt-4 col-12 col-md-6 mt-md-0">
         <profile-info-card
           title="Profile Information"
           description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
           :info="{
-            fullName: 'Alec M. Thompson',
-            mobile: '(44) 123 1234 123',
-            email: 'alecthompson@mail.com',
-            location: 'USA',
+            fullName:this.userInfos.userName,
+            mobile: this.userInfos.mobileNo,
+            email: this.userInfos.email,
+            location: this.userInfos.location,
           }"
           :social="[
             {
@@ -304,239 +305,10 @@
             tooltip: 'Edit Profile',
           }"
         />
-      </div>
-      <!-- <div class="mt-4 col-12 col-xl-4 mt-xl-0">
-        <div class="card h-100">
-          <div class="p-3 pb-0 card-header">
-            <h6 class="mb-0">Conversations</h6>
-          </div>
-          <div class="p-3 card-body">
-            <ul class="list-group">
-              <li
-                class="px-0 mb-2 border-0 list-group-item d-flex align-items-center"
-              >
-                <soft-avatar
-                  class="me-3"
-                  :img="sophie"
-                  alt="kal"
-                  border-radius="lg"
-                  shadow="regular"
-                />
-                <div
-                  class="d-flex align-items-start flex-column justify-content-center"
-                >
-                  <h6 class="mb-0 text-sm">Sophie B.</h6>
-                  <p class="mb-0 text-xs">Hi! I need more information..</p>
-                </div>
-                <a
-                  class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                  href="javascript:;"
-                  >Reply</a
-                >
-              </li>
-              <li
-                class="px-0 mb-2 border-0 list-group-item d-flex align-items-center"
-              >
-                <soft-avatar
-                  class="me-3"
-                  :img="marie"
-                  alt="kal"
-                  border-radius="lg"
-                  shadow="regular"
-                />
-                <div
-                  class="d-flex align-items-start flex-column justify-content-center"
-                >
-                  <h6 class="mb-0 text-sm">Anne Marie</h6>
-                  <p class="mb-0 text-xs">Awesome work, can you..</p>
-                </div>
-                <a
-                  class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                  href="javascript:;"
-                  >Reply</a
-                >
-              </li>
-              <li
-                class="px-0 mb-2 border-0 list-group-item d-flex align-items-center"
-              >
-                <soft-avatar
-                  class="me-3"
-                  :img="ivana"
-                  alt="kal"
-                  border-radius="lg"
-                  shadow="regular"
-                />
-                <div
-                  class="d-flex align-items-start flex-column justify-content-center"
-                >
-                  <h6 class="mb-0 text-sm">Ivanna</h6>
-                  <p class="mb-0 text-xs">About files I can..</p>
-                </div>
-                <a
-                  class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                  href="javascript:;"
-                  >Reply</a
-                >
-              </li>
-              <li
-                class="px-0 mb-2 border-0 list-group-item d-flex align-items-center"
-              >
-                <soft-avatar
-                  class="me-3"
-                  :img="peterson"
-                  alt="kal"
-                  border-radius="lg"
-                  shadow="regular"
-                />
-                <div
-                  class="d-flex align-items-start flex-column justify-content-center"
-                >
-                  <h6 class="mb-0 text-sm">Peterson</h6>
-                  <p class="mb-0 text-xs">Have a great afternoon..</p>
-                </div>
-                <a
-                  class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                  href="javascript:;"
-                  >Reply</a
-                >
-              </li>
-              <li
-                class="px-0 border-0 list-group-item d-flex align-items-center"
-              >
-                <soft-avatar
-                  class="me-3"
-                  :img="nick"
-                  alt="kal"
-                  border-radius="lg"
-                  shadow="regular"
-                />
-                <div
-                  class="d-flex align-items-start flex-column justify-content-center"
-                >
-                  <h6 class="mb-0 text-sm">Nick Daniel</h6>
-                  <p class="mb-0 text-xs">Hi! I need more information..</p>
-                </div>
-                <a
-                  class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                  href="javascript:;"
-                  >Reply</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div> -->
-    </div>
-    <!-- <div class="mt-4 row">
-      <div class="col-12">
-        <div class="mb-4 card">
-          <div class="p-3 pb-0 card-header">
-            <h6 class="mb-1">Projects</h6>
-            <p class="text-sm">Architects design houses</p>
-          </div>
-          <div class="p-3 card-body">
-            <div class="row">
-              <default-project-card
-                title="Modern"
-                :image="img1"
-                label="Project #2"
-                description="As Uber works through a huge amount of internal
-                management turmoil."
-                :authors="[
-                  {
-                    image: team1,
-                    name: 'Elena Morison',
-                  },
-                  {
-                    image: team2,
-                    name: 'Ryan Milly',
-                  },
-                  {
-                    image: team3,
-                    name: 'Nick Daniel',
-                  },
-                  {
-                    image: team4,
-                    name: 'Peterson',
-                  },
-                ]"
-                :action="{
-                  color: 'success',
-                  label: 'View Project',
-                }"
-              />
-
-              <default-project-card
-                title="Scandinavian"
-                :image="img2"
-                label="Project #1"
-                description="Music is something that every person has his or her own
-                      specific opinion about."
-                :authors="[
-                  {
-                    image: team3,
-                    name: 'Nick Daniel',
-                  },
-                  {
-                    image: team4,
-                    name: 'Peterson',
-                  },
-                  {
-                    image: team1,
-                    name: 'Elena Morison',
-                  },
-                  {
-                    image: team2,
-                    name: 'Ryan Milly',
-                  },
-                ]"
-                :action="{
-                  color: 'success',
-                  label: 'View Project',
-                }"
-              />
-
-              <default-project-card
-                title="Minimalist"
-                :image="img3"
-                label="Project #3"
-                description="Different people have different taste, and various types
-                      of music."
-                :authors="[
-                  {
-                    image: team4,
-                    name: 'Peterson',
-                  },
-                  {
-                    image: team3,
-                    name: 'Nick Daniel',
-                  },
-                  {
-                    image: team1,
-                    name: 'Elena Morison',
-                  },
-                  {
-                    image: team2,
-                    name: 'Ryan Milly',
-                  },
-                ]"
-                :action="{
-                  color: 'success',
-                  label: 'View Project',
-                }"
-              />
-
-              <div class="mb-4 col-xl-3 col-md-6 mb-xl-0">
-                <place-holder-card
-                  :title="{ text: 'New project', variant: 'h5' }"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
+      </div>     
   </div>
+</div>
+</div>
 </template>
 
 <script>
@@ -564,6 +336,7 @@ import DefaultProjectCard from "./components/DefaultProjectCard.vue";
 import PlaceHolderCard from "@/examples/Cards/PlaceHolderCard.vue";
 import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
+import axios from "axios";
 
 export default {
   name: "ProfileOverview",
@@ -577,6 +350,7 @@ export default {
   data() {
     return {
       showMenu: false,
+      userInfos:{},
       sophie,
       marie,
       ivana,
@@ -599,9 +373,61 @@ export default {
     this.$store.state.isAbsolute = true;
     setNavPills();
     setTooltip(this.$store.state.bootstrap);
+    this.getUserInfo();
   },
   beforeUnmount() {
     this.$store.state.isAbsolute = false;
   },
+  methods:{
+    async getUserInfo() {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const apiUrl = `http://localhost:61050/dms/group/getUser`;
+      const token = this.$store.getters.getUserToken;
+      try {
+        const response = await axios.get(apiUrl, {
+          headers: {
+            token: token,
+          },
+        });
+        this.userInfos = response.data;
+        console.log(this.userInfos.email);
+      } catch (error) {
+        console.error("Error occured by", error);
+      }
+    },
+}
 };
 </script>
+
+<style scoped>
+
+
+.min-height-300 {
+min-height: 85px !important;
+}
+
+.card .card-header {
+padding: 1rem !important;
+}
+
+::-webkit-scrollbar {
+  width: .5px; /* width of the scrollbar */
+  border-radius: 13px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #5cc06e; /* color of the handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #5cc06e; /* color of the handle on hover */
+}
+
+</style>

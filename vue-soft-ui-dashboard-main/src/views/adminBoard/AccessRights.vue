@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
       <div
         class="mt-4 page-header min-height-300 border-radius-xl"
         :style="{
@@ -8,7 +8,7 @@
             'url(' + require('@/assets/img/curved-images/curved14.jpg') + ')',
           backgroundPositionY: '50%',
         }"
-      ></div>
+      ></div> -->
       <!-- <div class="mx-4 overflow-hidden card card-body blur shadow-blur mt-n6">
         <div class="row gx-4">
           <div class="col-auto">
@@ -29,12 +29,13 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div> 
     </div>
+  -->
     <div class="container-fluid">
       <div class="row" style="margin-top: 0.5rem !important">
         <div class="col-12">
-          <div class="card mb-4" style="height: 492px !important">
+          <div class="card mb-4" style="height: 465px !important">
             <div style="display: flex; justify-content: space-between">
               <div class="card-header">
                 <h4>Access Rights</h4>
@@ -466,7 +467,7 @@ export default {
 }
 .tableContaier {
   position: relative;
-  height: 366px;
+  height: 339px;
   overflow-x: auto;
 }
 

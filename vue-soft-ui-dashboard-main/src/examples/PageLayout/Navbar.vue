@@ -7,7 +7,7 @@
     <div class="container">
     
       <span
-        class="navbar-brand font-weight-bolder ms-lg-0 ms-3"
+        class="navbar-brand font-weight-bolder ms-lg-0 ms-3  align-self-center"
         :class="isBlur ? 'text-dark' : 'text-white'"
       >
       <img class="logoImg" src="logo-ct.png"/>
@@ -46,14 +46,14 @@
           
           </li> -->
           <li class="nav-item">
-            <router-link class="nav-link me-2" to="/sign-up">
+            <!-- <router-link class="nav-link me-2" to="/sign-up">
               <i
                 class="fas fa-user-circle opacity-6 me-1"
                 aria-hidden="true"
                 :class="isBlur ? 'text-dark' : 'text-white'"
               ></i>
               Sign Up
-            </router-link>
+            </router-link> -->
           </li> 
           <li class="nav-item">
             <router-link class="nav-link me-2" to="/adminSign-in">
@@ -129,7 +129,7 @@ export default {
 
 <style scoped>
 #app > main > div.container.top-0.position-sticky.z-index-sticky > div > div > nav{
-  width: 50%;
+  width: 40%;
 }
 
 .navbar-vertical .navbar-brand > img, .navbar-vertical .navbar-brand-img {

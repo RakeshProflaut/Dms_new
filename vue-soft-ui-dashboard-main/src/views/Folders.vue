@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
       <div
         class="mt-4 page-header min-height-300 border-radius-xl"
         :style="{
@@ -11,12 +11,12 @@
       >
         <span class="mask bg-gradient-success opacity-6"></span>
       </div>      
-    </div>
+    </div> -->
     <div class="mt-3 row"></div>
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <div class="card mb-4" style="height: 489px !important">
+          <div class="card mb-4" style="height: 460px !important">
             <div style="display: flex; justify-content: space-between">
               <div class="card-header text-uppercase">
                 <h4>{{ this.currentFolderName }}</h4>
@@ -700,7 +700,7 @@ body > div.v-overlay-container > div > div.v-overlay__content > div {
 
 .tableContaier {
   position: relative;
-  height: 360px;
+  height: 335px;
   overflow-x: auto;
 }
 

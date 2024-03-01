@@ -86,12 +86,12 @@
                                    
                   >
                     <!-- Don't have an account? -->
-                    <router-link
+                    <!-- <router-link
                       :to="{ name: 'Sign Up' }"
                       class="text-success  font-weight-bold"
                       style="color:#5FC0FF !important;" 
                       >Sign Up</router-link
-                    >
+                    > -->
                     <a style="margin-left: 2%;" href="#" 
                     >Forgot Password?</a>
                   </p>

@@ -10,7 +10,7 @@
       </div>
     </div>
   </div>
-  <main class="mt-0 main-content main-content-bg">
+  <main class="mt-0 main-content main-content-bg min-vh-100">
     <section>
       <div class="page-header min-vh-75">
         <div class="container">
@@ -87,10 +87,10 @@
             </div>
             <div class="col-md-6">
               <div
-                class="top-0 oblique position-absolute h-100 d-md-block d-none me-n8"
+                class="top-0 oblique position-absolute h-100   d-md-block d-none"
               >
                 <div
-                  class="bg-cover oblique-image position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
+                  class="bg-cover oblique-image position-absolute   h-100 w-100 z-index-0"
                   :style="{
                     backgroundImage:
                       'url(' +
@@ -254,6 +254,7 @@ export default {
 </script>
 
 <style scoped>
+
 .text-start >input{
   display: block;
     width: 100%;

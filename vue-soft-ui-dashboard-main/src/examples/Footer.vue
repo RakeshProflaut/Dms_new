@@ -1,5 +1,5 @@
 <template>
-  <footer class="py-3 footer" style="padding-bottom: 0px !important;">
+  <footer class="footer" style="padding-bottom: 0px !important;">
     <div class="container-fluid">
       <div class="nav nav-footer justify-content-center justify-content-lg-end">      
         <div class="col-lg-6">

@@ -1,25 +1,26 @@
 <template>
-  <div class="py-4 container-fluid">
-    <div class="row">
+  <div>   
+    <div class="py-4 container-fluid">
+      <div class="row">
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4" v-for="(detail,index) in details" :key="index">
         <div class="mb-4 card">
           <div class="p-3 card-body">
             <div class="d-flex flex-row-reverse justify-content-between">
               <div>
                 <div
-                  class="text-center shadow icon icon-shape border-radius-md"
+                class="text-center shadow icon icon-shape border-radius-md"
                 >
-                  <span
-                    :class="detail.icon"
-                    aria-hidden="true"
-                  ></span>
-                </div>
+                <span
+                :class="detail.icon"
+                aria-hidden="true"
+                ></span>
               </div>
-              <div>
-                <div class="numbers">
-                  <p class="mb-0 text-sm text-capitalize font-weight-bold">
-                   {{ detail.title }}
-                  </p>
+            </div>
+            <div>
+              <div class="numbers">
+                <p class="mb-0 text-sm text-capitalize font-weight-bold">
+                  {{ detail.title }}
+                </p>
                   <h5 class="mb-0 font-weight-bolder">
                     {{ detail.value }}
                     <span class="text-sm font-weight-bolder"> </span>
@@ -30,9 +31,9 @@
         </div>
       </div>
     </div>
-    </div>
+  </div>
     <div class="row">
-      <div class="col-lg-7 mb-lg-0 mb-4">
+      <!-- <div class="col-lg-7 mb-lg-0 mb-4">
         <div class="card">
           <div class="card-body p-3">
             <div class="row">
@@ -46,14 +47,14 @@
                     as per the client requirements.
                   </p>
                   <a
-                    class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto"
-                    href="http://www.proflaut.com/"
+                  class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto"
+                  href="http://www.proflaut.com/"
                   >
                     Read More
                     <i
                       class="fas fa-arrow-right text-sm ms-1"
                       aria-hidden="true"
-                    ></i>
+                      ></i>
                   </a>
                 </div>
               </div>
@@ -63,7 +64,7 @@
                     src="../assets/img/shapes/waves-white.svg"
                     class="position-absolute h-100 w-50 top-0 d-lg-block d-none"
                     alt="waves"
-                  />
+                    />
                   <div
                     class="position-relative d-flex align-items-center justify-content-center h-100"
                   >
@@ -78,15 +79,15 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-lg-5">
+      </div> -->
+      <!-- <div class="col-lg-5">
         <div class="card h-100 p-3">
           <div
-            class="overflow-hidden position-relative border-radius-lg bg-cover h-100"
+          class="overflow-hidden position-relative border-radius-lg bg-cover h-100"
             style="
-              background-image: url(&quot;https://demos.creative-tim.com/soft-ui-dashboard/assets/img/ivancik.jpg&quot;);
+            background-image: url(&quot;https://demos.creative-tim.com/soft-ui-dashboard/assets/img/ivancik.jpg&quot;);
             "
-          >
+            >
             <span class="mask bg-gradient-dark"></span>
             <div class="card-body position-relative z-index-1 p-3 h-100">
               <div class="d-flex flex-column h-100">
@@ -97,47 +98,32 @@
                   the use of a document scanner.
                 </p>
                 <a
-                  class="text-white font-weight-bold ps-1 mb-0 icon-move-left mt-auto"
-                  href="javascript:;"
+                class="text-white font-weight-bold ps-1 mb-0 icon-move-left mt-auto"
+                href="javascript:;"
                 >
-                  Read more
-                  <i
-                    class="fas fa-arrow-right text-sm ms-1"
-                    aria-hidden="true"
-                  ></i>
-                </a>
-              </div>
+                Read more
+                <i
+                class="fas fa-arrow-right text-sm ms-1"
+                aria-hidden="true"
+                ></i>
+              </a>
             </div>
           </div>
+          </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="mt-4 row">
       <div class="mb-4 col-lg-5 mb-lg-0">
         <div class="card z-index-2">
           <div class="p-3 card-body">
             <reports-bar-chart
-              id="chart-bar"
-              title="active Users"
-              description="(<strong>+23%</strong>) than last week"
-              :chart="{
-                labels: [
-                  'Apr',
-                  'May',
-                  'Jun',
-                  'Jul',
-                  'Aug',
-                  'Sep',
-                  'Oct',
-                  'Nov',
-                  'Dec',
-                ],
-                datasets: {
-                  label: 'Users',
-                  data: [10, 200, 100, 220, 500, 100, 400, 230, 500],
-                },
-              }"
-              :items="[
+            v-if="userReportData && userReportData.length > 0"
+            id="chart-bar"
+            title="active Users"
+            description="(<strong>+23%</strong>) than last week"
+            :chart="reportData"
+            :items="[
                 {
                   icon: {
                     color: 'primary',
@@ -157,11 +143,11 @@
                   progress: { content: this.fileSizeCount, percentage: 30 },
                 },
                 // {
-                //   icon: { color: 'danger', component: faScrewdriverWrench },
-                //   label: 'Items',
-                //   progress: { content: '43', percentage: 50 },
-                // },
-              ]"
+                  //   icon: { color: 'danger', component: faScrewdriverWrench },
+                  //   label: 'Items',
+                  //   progress: { content: '43', percentage: 50 },
+                  // },
+                ]"
             />
           </div>
         </div>
@@ -170,14 +156,14 @@
         <!-- line chart -->
         <div class="card z-index-2">
           <gradient-line-chart
-            id="chart-line"
-            title="Gradient Line Chart"
-            description="<i class='fa fa-arrow-up text-success'></i>
-      <span class='font-weight-bold'>4% more</span> in 2021"
-            :chart="{
-              labels: [
-                'Apr',
-                'May',
+          id="chart-line"
+          title="Gradient Line Chart"
+          description="<i class='fa fa-arrow-up text-success'></i>
+          <span class='font-weight-bold'>4% more</span> in 2021"
+          :chart="{
+            labels: [
+              'Apr',
+              'May',
                 'Jun',
                 'Jul',
                 'Aug',
@@ -203,18 +189,18 @@
     </div>
     <div class="my-4">
       <!-- <div class="col-lg-8 col-md-6 mb-md-0 mb-4"> -->
-      <projects-card />
-      <!-- </div> -->
-      <!-- <div class="col-lg-4 col-md-6">
-        <timeline-list
+        <projects-card />
+        <!-- </div> -->
+        <!-- <div class="col-lg-4 col-md-6">
+          <timeline-list
           class="h-100"
           title="Orders overview"
           description="<i class='fa fa-arrow-up text-success' aria-hidden='true'></i>
-        <span class='font-weight-bold'>24%</span> this month"
-        >
+          <span class='font-weight-bold'>24%</span> this month"
+          >
           <timeline-item
-            color="success"
-            icon="bell-55"
+          color="success"
+          icon="bell-55"
             title="$2400 Design changes"
             date-time="22 DEC 7:20 PM"
           />
@@ -223,36 +209,37 @@
             icon="html5"
             title="New order #1832412"
             date-time="21 DEC 11 PM"
-          />
+            />
           <TimelineItem
-            color="info"
+          color="info"
             icon="cart"
             title="Server payments for April"
             date-time="21 DEC 9:34 PM"
           />
           <TimelineItem
-            color="warning"
-            icon="credit-card"
-            title="New card added for order #4395133"
-            date-time="20 DEC 2:20 AM"
+          color="warning"
+          icon="credit-card"
+          title="New card added for order #4395133"
+          date-time="20 DEC 2:20 AM"
           />
           <TimelineItem
             color="primary"
             icon="key-25"
             title="Unlock packages for development"
             date-time="18 DEC 4:54 AM"
-          />
-          <TimelineItem
+            />
+            <TimelineItem
             color="info"
             icon="check-bold"
             title="Notifications unread"
             date-time="15 DEC"
-          />
-        </timeline-list>
-      </div> -->
+            />
+          </timeline-list>
+        </div> -->
+      </div>
     </div>
   </div>
-</template>
+  </template>
 <script>
 import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 import ReportsBarChart from "@/examples/Charts/ReportsBarChart.vue";
@@ -264,6 +251,10 @@ import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
 import BR from "../assets/img/icons/flags/BR.png";
+import { markRaw } from 'vue';
+import setTooltip from "@/assets/js/tooltip.js";
+import setNavPills from "@/assets/js/nav-pills.js";
+
 import {
   faHandPointer,
   faUsers,
@@ -283,6 +274,15 @@ export default {
       groupCount: "",
       userCount: "",
       fileSizeCount: "",
+      reportData:{
+              labels:[],                
+              datasets: {
+                  label: 'Users',
+                  data:[],
+                },
+            },
+      userReportLabel:null,
+      userReportData:null,      
       details:[
       {
         title:'Total Uploads',
@@ -350,9 +350,18 @@ export default {
     TimelineList,
     TimelineItem,
   },
+  created(){
+    this.getUserReport();
+  },
   mounted() {
+    setNavPills();
+    this.$store.state.isAbsolute = true;
+    setTooltip(this.$store.state.bootstrap);
     this.getAllDetails();
     this.getUserDetails();
+  },
+  beforeUnmount() {
+    this.$store.state.isAbsolute = false;
   },
 
   methods: {
@@ -399,6 +408,31 @@ export default {
         .catch((error) => console.error("Error occured by", error));
     },
 
+    async getUserReport() {   
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const apiUrl = `http://localhost:61050/dms/dashboard/usersGraph`;
+      const token = this.$store.getters.getUserToken;
+      await axios
+        .get(apiUrl, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) => {
+          const userReportData = response.data.map(ele => ele.count);
+          const userReportLabels = response.data.map(ele => ele.date);
+          this.reportData.labels=markRaw(userReportLabels);
+          this.reportData.datasets = {
+                label: 'Users',
+                data:markRaw(userReportData)
+            };
+            this.userReportData=markRaw(userReportData);
+          console.log("userReportData",this.reportData.datasets.data);
+        
+      })
+        .catch((error) => console.error("Error occured by", error));
+    },
+
    
   },
 };
@@ -411,7 +445,50 @@ export default {
   font-size: 2rem;
 }
 
+.min-height-300 {
+  min-height: 75px !important;
+}
+
+.card .card-header {
+  padding: 1rem !important;
+}
 .icon-shape {
   background-image: linear-gradient(310deg, #17ad37 0%, #98ec2d 100%);
 }
+
+.container-fluid {
+    height: 78vh;
+    width: 100%;
+    overflow-y:scroll !important;
+    overflow-x: hidden;
+}
+
+.container{
+     width: 100%;
+    padding-right: var(--bs-gutter-x, 1.5rem);
+    padding-left: var(--bs-gutter-x, 1.5rem);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+::-webkit-scrollbar {
+  width: .3px; /* width of the scrollbar */
+  border-radius: 13px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #5cc06e; /* color of the handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #5cc06e; /* color of the handle on hover */
+}
+
 </style>

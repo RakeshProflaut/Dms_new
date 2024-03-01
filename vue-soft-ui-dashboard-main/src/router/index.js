@@ -25,6 +25,7 @@ import Ckyc from "@/views/adminBoard/Ckyc.vue"
 import DCDRConfigur from "@/views/adminBoard/DCDRConfigur.vue"
 import DigitalSignature from "@/views/adminBoard/DigitalSignature.vue"
 import MountPoints from "@/views/adminBoard/MountPoints.vue"
+import AdminProfile from "@/views/adminBoard/AdminProfile.vue"
 
 
 
@@ -182,6 +183,11 @@ const routes = [
         path: "/mountPoints",
         name: "Mount Points",
         component:MountPoints, 
+      },
+      {
+        path: "/adminProfile",
+        name: "Admin Profile",
+        component:AdminProfile,
       },
     ]
 

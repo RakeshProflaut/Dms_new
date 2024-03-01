@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
       <div
         class="mt-4 page-header min-height-300 border-radius-xl"
         :style="{
@@ -9,11 +9,11 @@
           backgroundPositionY: '50%',
         }"
       ></div>
-    </div>
+    </div> -->
     <div class="container-fluid">
       <div class="row" style="margin-top: 0.5rem !important">
         <div class="col-12">
-          <div class="card mb-4" style="height: 492px !important">
+          <div class="card mb-4" style="height: 465px !important">
             <div style="display: flex; justify-content: space-between">
               <div class="card-header text-uppercase">
                 <h4>Mount Points</h4>
@@ -644,7 +644,7 @@ export default {
 
 .tableContaier {
   position: relative;
-  height: 347px;
+  height: 319px;
   overflow-x: auto;
 }
 .table-header {

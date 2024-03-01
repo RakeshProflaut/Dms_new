@@ -1,7 +1,6 @@
 <template>
   <div>
-
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
       <div
         class="mt-4 page-header min-height-300 border-radius-xl"
         :style="{
@@ -11,11 +10,11 @@
         }"
       >
     </div>
-  </div>
+  </div> -->
   <div class="container-fluid">
       <div class="row" style="margin-top: 0.5rem !important;">
         <div class="col-12">
-          <div class="card mb-4" style="height: 492px !important;background-color: #76b7d173;">
+          <div class="card mb-4" style="height: 465px !important;background-color: #76b7d173;">
             <v-card style="width: 30%; border-radius: 3%;">
                 <div>
                   <div class="container" style="width: 100%; height: 90%;padding-right: 0;">                 

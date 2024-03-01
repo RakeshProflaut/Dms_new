@@ -59,7 +59,14 @@
             <document />
           </template>
         </sidenav-collapse>
-      </li>      
+      </li>
+      <!-- <li class="nav-item">
+        <sidenav-collapse navText="Profile" :to="{ name: 'Profile' }" class="side">
+          <template #icon>
+            <customer-support />
+          </template>
+        </sidenav-collapse>
+      </li>       -->
       <!-- <li class="nav-item">
         <sidenav-collapse navText="Tables" :to="{ name: 'Tables' }">
           <template #icon>
@@ -99,14 +106,7 @@
         >
           PAGES
         </h6>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Profile" :to="{ name: 'Profile' }" class="side">
-          <template #icon>
-            <customer-support />
-          </template>
-        </sidenav-collapse>
-      </li>
+      </li>     
       <li class="nav-item">
         <sidenav-collapse navText="Sign In" :to="{ name: 'Sign In' }">
           <template #icon>
@@ -188,6 +188,8 @@ export default {
       const routeArr = this.$route.path.split("/");
       return routeArr[1];
     },
+
+    
   },
 };
 </script>

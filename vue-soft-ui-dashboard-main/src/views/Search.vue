@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
       <div
         class="mt-4 page-header min-height-300 border-radius-xl"
         :style="{
@@ -10,7 +10,7 @@
         }"
       >
         <span class="mask bg-gradient-success opacity-6"></span>
-      </div>
+      </div> -->
       <!-- <div class="mx-4 overflow-hidden card card-body blur shadow-blur mt-n6">
         <div class="row gx-4">
           <div class="col-auto">
@@ -31,24 +31,25 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div> 
     </div>
+  -->
     <div class="mt-3 row"></div>
     <div class="container-fluid">
       <div class="row"  style="margin-top: .2rem !important;">
         <div class="col-12">
-          <div class="card mb-4" style="height: 484px !important">
+          <div class="card mb-4" style="height: 460px !important">
             <div class="card-header text-center pb-0 text-uppercase">
               <h4>Search Document</h4>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="upperBody">
-                <div>
+                <div style="flex-basis: 30%;">
                   <div style="">
                     <label>Metadata*</label>
                     <v-select
                       variant="outlined"
-                      style="width: 40%; font-size: 10px"
+                      style="width: 80%; font-size: 10px"
                       v-model="selectedMetadata"
                       :items="metaTables"
                       item-title="tableName"
@@ -398,9 +399,7 @@ export default {
   width: 100%;
   justify-content: space-evenly;
 }
-.upperBody > div {
-  flex-basis: 45%;
-}
+
 /* div.card-body .v-input__control .v-field__field {
     max-height: 30px !important;
 } */
@@ -427,7 +426,7 @@ label {
   text-transform: uppercase;
 }
 .textFields {
-  flex-basis: 50%;
+  flex-basis: 64%;
   display: flex;
   flex-wrap: wrap;
   column-gap: 5%;

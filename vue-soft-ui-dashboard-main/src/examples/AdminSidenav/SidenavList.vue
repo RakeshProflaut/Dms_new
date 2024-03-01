@@ -74,13 +74,13 @@
           </template>
         </sidenav-collapse>
       </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Profile" :to="{ name: 'Profile' }">
+      <!-- <li class="nav-item">
+        <sidenav-collapse navText="Profile" :to="{ name: 'Admin Profile' }">
           <template #icon>
             <customer-support />
           </template>
         </sidenav-collapse>
-      </li>
+      </li> -->
       <!-- <li class="mt-3 nav-item">
         <h6
           class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
@@ -126,9 +126,6 @@ import Spaceship from "../../components/Icon/Spaceship.vue";
 
 export default {
   name: "SidenavList",
-  props: {
-    cardBg: String,
-  },
   data() {
     return {
       title: "Soft UI Dashboard PRO",
