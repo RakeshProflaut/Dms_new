@@ -31,7 +31,7 @@ mounted() {
   methods:{
     getNotification(){
       Swal.fire({
-  title: "No Authorisation to this Field",
+  title: "No Authorisation to this Menu",
   showClass: {
     popup: `
       animate__animated

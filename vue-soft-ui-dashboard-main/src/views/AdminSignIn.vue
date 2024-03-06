@@ -5,8 +5,7 @@
         <navbar
           is-blur="blur blur-rounded my-3 py-2 start-0 end-0 mx-4 shadow"
           btn-background="bg-gradient-success"
-          :dark-mode="true"
-        />
+          :dark-mode="true" />
       </div>
     </div>
   </div>
@@ -268,7 +267,7 @@ export default {
 </script>
 
 <style scoped>
-.text-start > input {
+/* .text-start > input {
   display: block;
   width: 100%;
   padding: 0.5rem 0.75rem;
@@ -317,7 +316,7 @@ export default {
 .eyeIcon{
   position: absolute;
   top: 60%;
-  right: 10px; /* Adjust this value as needed to align the icon */
+  right: 10px;
   transform: translateY(-50%);
   cursor: pointer;
 }
@@ -426,8 +425,106 @@ export default {
     transform: rotate(945deg);
     opacity: 0;
   }
-}
+} */
 </style>
+
+
+
+<template>
+  <div class="container top-0 position-sticky z-index-sticky">
+    <div class="row">
+      <div class="col-12">
+        <navbar
+        is-blur="blur blur-rounded my-3 py-2 start-0 end-0 mx-4 shadow"
+        btn-background="bg-gradient-success"
+        :dark-mode="true"
+        />         
+      </div>
+    </div>
+  </div>
+  <main class="mt-0 main-content main-content-bg">
+    <section>
+      <div class="page-header min-vh-75">
+        <div class="container">
+          <div class="row">
+            <div class="mx-auto col-xl-4 col-lg-5 col-md-6 d-flex flex-column">
+              <div class="mt-8 card card-plain">
+                <div class="pb-0 card-header text-start">
+                  <h3 class="font-weight-bolder text-success text-gradient">
+                    Welcome back
+                  </h3>
+                  <p class="mb-0">Enter your username and password to sign in</p>
+                </div>
+                <div class="card-body">
+                  <form role="form" class="text-start">
+                    <label>Username</label>
+                    <input
+                    type="text"
+                    v-model="user.userName"
+                      placeholder="Username"
+                      name="username"
+                    />
+                    <label>Password</label>
+                    <input
+                    type="password"
+                    v-model="user.password"
+                      placeholder="Password"
+                      name="password"
+                    />
+                    <soft-switch id="rememberMe" name="rememberMe"  @input="handleSwitchInput" checked >                      
+                      Force Login
+                    </soft-switch>
+                    <div class="text-center">
+                      <router-link
+                  :to="{ name: 'Dashboard' }"
+                  class="text-dark font-weight-bolder"
+                >
+                      <soft-button
+                        class="my-4 mb-2"
+                        variant="gradient"
+                        color="success"
+                        full-width
+                        @click="createPost"
+                        >Sign in
+                      </soft-button>
+                      </router-link>
+                    </div>
+                  </form>
+                </div>
+                <div class="px-1 pt-0 text-center card-footer px-lg-2">
+                  <p class="mx-auto mb-4 text-sm">
+                    <!-- Don't have an account? -->
+                    <router-link
+                      :to="{ name: 'Sign Up' }"
+                      class="text-success text-gradient font-weight-bold"
+                      >Admin Sign In</router-link
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div
+                class="top-0 oblique position-absolute h-100 d-md-block d-none me-n8"
+              >
+                <div
+                  class="bg-cover oblique-image position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
+                  :style="{
+                    backgroundImage:
+                      'url(' +
+                      require('@/assets/img/curved-images/curved9.jpg') +
+                      ')',
+                  }"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <app-footer />
+</template>
 
 
 

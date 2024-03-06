@@ -32,6 +32,8 @@ import axios from "axios";
 import { registerLicense } from '@syncfusion/ej2-base';
 import { RichTextEditorPlugin } from '@syncfusion/ej2-vue-richtexteditor';
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+import VueApexCharts from "vue3-apexcharts";
+
 
 
 const vuetify = createVuetify({
@@ -47,6 +49,7 @@ const appInstance = createApp(App);
 appInstance.use(store);
 appInstance.use(RichTextEditorPlugin);
 appInstance.use(router);
+appInstance.use(VueApexCharts)
 appInstance.use(vuetify);
 appInstance.use(SoftUIDashboard);
 appInstance.use(Vue2Editor);

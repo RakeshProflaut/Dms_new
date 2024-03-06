@@ -129,7 +129,7 @@ export default {
 
 <style scoped>
 #app > main > div.container.top-0.position-sticky.z-index-sticky > div > div > nav{
-  width: 40%;
+  width: 45%;
 }
 
 .navbar-vertical .navbar-brand > img, .navbar-vertical .navbar-brand-img {

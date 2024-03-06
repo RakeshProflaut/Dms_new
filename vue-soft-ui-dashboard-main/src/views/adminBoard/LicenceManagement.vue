@@ -31,7 +31,7 @@
                           />
                         </div>
                         <div class="mb-3">
-                          <label>Expire Date</label>
+                          <label>Expiry Date</label>
                           <input
                             type="text"
                             v-model="expiryData"

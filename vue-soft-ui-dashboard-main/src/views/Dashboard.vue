@@ -1,40 +1,39 @@
 <template>
-  <div>   
-    <div class="py-4 container-fluid">
+  <div>
+    <div class="py-2 container-fluid">
       <div class="row">
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4" v-for="(detail,index) in details" :key="index">
-        <div class="mb-4 card">
-          <div class="p-3 card-body">
-            <div class="d-flex flex-row-reverse justify-content-between">
-              <div>
-                <div
-                class="text-center shadow icon icon-shape border-radius-md"
-                >
-                <span
-                :class="detail.icon"
-                aria-hidden="true"
-                ></span>
-              </div>
-            </div>
-            <div>
-              <div class="numbers">
-                <p class="mb-0 text-sm text-capitalize font-weight-bold">
-                  {{ detail.title }}
-                </p>
-                  <h5 class="mb-0 font-weight-bolder">
-                    {{ detail.value }}
-                    <span class="text-sm font-weight-bolder"> </span>
-                  </h5>
+        <div
+          class="col-xl-3 col-sm-6 mb-xl-0 mb-4"
+          v-for="(detail, index) in details.slice(0, 4)"
+          :key="index"
+        >
+          <div class="mb-1 card">
+            <div class="p-3 card-body">
+              <div class="d-flex flex-row-reverse justify-content-between">
+                <div>
+                  <div
+                    class="text-center shadow icon icon-shape border-radius-md"
+                  >
+                    <span :class="detail.icon" aria-hidden="true"></span>
+                  </div>
+                </div>
+                <div>
+                  <div class="numbers">
+                    <p class="mb-0 text-sm text-capitalize font-weight-bold">
+                      {{ detail.title }}
+                    </p>
+                    <h5 class="mb-0 font-weight-bolder">
+                      {{ detail.value }}
+                      <span class="text-sm font-weight-bolder"> </span>
+                    </h5>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-    <div class="row">
-      <!-- <div class="col-lg-7 mb-lg-0 mb-4">
-        <div class="card">
+      </div>   
+            <!-- 
           <div class="card-body p-3">
             <div class="row">
               <div class="col-lg-6">
@@ -80,7 +79,7 @@
           </div>
         </div>
       </div> -->
-      <!-- <div class="col-lg-5">
+            <!-- <div class="col-lg-5">
         <div class="card h-100 p-3">
           <div
           class="overflow-hidden position-relative border-radius-lg bg-cover h-100"
@@ -110,38 +109,67 @@
             </div>
           </div>
           </div>
-        </div>
-      </div> -->
-    </div>
-    <div class="mt-4 row">
-      <div class="mb-4 col-lg-5 mb-lg-0">
+        -->         
+      <div class="mt-4 row" style="">
+      <div class="mb-4 col-lg-5">
         <div class="card z-index-2">
+          <div class="row justify-content-center ml-1">
+        <div
+          v-for="(detail, index) in details.slice(4)"
+          :key="index"
+        >
+          <div class="mb-1 card" style="width:">
+            <div class="p-3 card-body">
+              <div class="d-flex flex-row-reverse justify-content-between">
+                <div>
+                  <div
+                    class="text-center shadow icon icon-shape border-radius-md"
+                  >
+                    <span :class="detail.icon" aria-hidden="true"></span>
+                  </div>
+                </div>
+                <div>
+                  <div class="numbers">
+                    <p class="mb-0 text-sm text-capitalize font-weight-bold">
+                      {{ detail.title }}
+                    </p>
+                    <h5 class="mb-0 font-weight-bolder">
+                      {{ detail.value }}
+                      <span class="text-sm font-weight-bolder"> </span>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>  
           <div class="p-3 card-body">
             <reports-bar-chart
             v-if="userReportData && userReportData.length > 0"
             id="chart-bar"
-            title="active Users"
+            title="Average File Size "
             description="(<strong>+23%</strong>) than last week"
             :chart="reportData"
             :items="[
-                {
-                  icon: {
-                    color: 'primary',
-                    component: faUsers,
-                  },
-                  label: 'USERS',
-                  progress: { content: this.userCount, percentage: 60 },
-                },
-                {
-                  icon: { color: 'info', component: faHandPointer },
-                  label: 'GROUPS',
-                  progress: { content: this.groupCount, percentage: 90 },
-                },
-                {
-                  icon: { color: 'warning', component: faCreditCard },
-                  label: 'FILES',
-                  progress: { content: this.fileSizeCount, percentage: 30 },
-                },
+                // {
+                //   icon: {
+                //     color: 'primary',
+                //     component: faUsers,
+                //   },
+                //   label: 'USERS',
+                //   progress: { content: this.userCount, percentage: 60 },
+                // },
+                // {
+                //   icon: { color: 'info', component: faHandPointer },
+                //   label: 'GROUPS',
+                //   progress: { content: this.groupCount, percentage: 90 },
+                // },
+                // {
+                //   icon: { color: 'warning', component: faCreditCard },
+                //   label: 'FILES',
+                //   progress: { content: this.fileSizeCount, percentage: 30 },
+                // },
                 // {
                   //   icon: { color: 'danger', component: faScrewdriverWrench },
                   //   label: 'Items',
@@ -152,14 +180,16 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-7">
-        <!-- line chart -->
+      <div class="col-lg-7">   
         <div class="card z-index-2">
           <gradient-line-chart
           id="chart-line"
-          title="Gradient Line Chart"
+          title="Upload/Download Speed Line Chart"
           description="<i class='fa fa-arrow-up text-success'></i>
-          <span class='font-weight-bold'>4% more</span> in 2021"
+          <span class='font-weight-bold'>Uploads</span> in 2024
+        <i class='fa fa-arrow-down text-success'></i>
+          <span class='font-weight-bold'>Downloads</span> in 2024
+          "
           :chart="{
             labels: [
               'Apr',
@@ -187,11 +217,22 @@
         </div>
       </div>
     </div>
+    
     <div class="my-4">
-      <!-- <div class="col-lg-8 col-md-6 mb-md-0 mb-4"> -->
-        <projects-card />
-        <!-- </div> -->
-        <!-- <div class="col-lg-4 col-md-6">
+      <div class="card" style="height:14.5rem;">
+        <div class="p-3 pb-0 card-header" style="padding: 0.5rem !important;">          
+          <h6>Transaction Reports</h6>
+              </div>
+              <div style="overflow-x: auto;">                
+                <apexchart
+                type="bar"
+                height="180rem"
+                width="1020px"
+                :options="stackedChartOptions"
+                :series="stackedSeries"
+                ></apexchart>
+              </div>    
+          <!-- <div class="col-lg-4 col-md-6">
           <timeline-list
           class="h-100"
           title="Orders overview"
@@ -235,11 +276,33 @@
             date-time="15 DEC"
             />
           </timeline-list>
-        </div> -->
+        --></div>
       </div>
+      <div class="row justify-content-center" style="padding-top: .1rem;">
+        <div class="col-lg-7 mb-lg-0 mb-4">
+          <div
+            class="card"
+            style="
+              display: flex !important;
+              flex-direction: row !important ;
+              padding: 0.5rem;
+            "
+          >
+            <div class="health">Health :</div>
+            <div class="marquee">
+              <div class="marquee-content">No Issues Till Now !!!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="my-4">
+      <div class="card" style="height:14.5rem;">
+          <projects-card />
+          </div>
+          </div>
     </div>
   </div>
-  </template>
+</template>
 <script>
 import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 import ReportsBarChart from "@/examples/Charts/ReportsBarChart.vue";
@@ -251,7 +314,7 @@ import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
 import BR from "../assets/img/icons/flags/BR.png";
-import { markRaw } from 'vue';
+import { markRaw } from "vue";
 import setTooltip from "@/assets/js/tooltip.js";
 import setNavPills from "@/assets/js/nav-pills.js";
 
@@ -270,46 +333,122 @@ export default {
       faCreditCard,
       faScrewdriverWrench,
       faUsers,
-      faHandPointer,
-      groupCount: "",
-      userCount: "",
-      fileSizeCount: "",
-      reportData:{
-              labels:[],                
-              datasets: {
-                  label: 'Users',
-                  data:[],
-                },
+      faHandPointer,   
+      reportData: {
+        labels: [],
+        datasets: {
+          label: "Users",
+          data: [],
+        },
+      },
+      userReportLabel: null,
+      userReportData: null,
+      stackedChartOptions: {
+        chart: {
+          type: "bar",
+          height: 350,
+          stacked: true,
+        },
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+        dataLabels: {
+          formatter: (val) => {
+            return val / 1000 + "K";
+          },
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+          },
+        },
+        xaxis: {
+          categories: [
+            "2017",
+            "2018",
+            "2019",
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2023",
+          ],
+        },
+        fill: {
+          opacity: 1,
+        },
+        colors: ["#80c7fd", "#008FFB", "#80f1cb", "#00E396"],
+        yaxis: {
+          labels: {
+            formatter: (val) => {
+              return val / 1000 + "K";
             },
-      userReportLabel:null,
-      userReportData:null,      
-      details:[
-      {
-        title:'Total Uploads',
-        value:'0',
-        icon:'mdi mdi-upload-box-outline',
-        backendKey: 'userUploadedCount'
+          },
+        },
+        legend: {
+          position: "top",
+          horizontalAlign: "left",
+        },
       },
-      {
-        title:'Groups Assigned',
-        value:'0',
-        icon:'mdi mdi-account-group',
-        backendKey: 'noOfGroupAssigned' 
-      },
-      {
-        title:'Files Occupied',
-        value:'0',
-        icon:'mdi mdi-file-multiple',
-        backendKey: 'userFileOccupiedSize'
-      },
-      {
-        title:'Group Files Occupied',
-        value:'0',
-        icon:'mdi mdi-file-multiple',
-        backendKey: 'userGroupFileOccupiedSize'
-      }
+      stackedSeries: [
+        {
+          name: "Uploads",
+          group: "budget",
+          data: [13000, 36000, 20000, 8000, 13000, 27000, 45000, 53000],
+        },
+
+        {
+          name: "Downloads",
+          group: "budget",
+          data: [44000, 55000, 41000, 67000, 22000, 43000, 52000, 35000],
+        },
       ],
-      fetchUserDetails:null,
+      details: [
+        {
+          title: "Total Uploads",
+          value: "0",
+          icon: "mdi mdi-upload-box-outline",
+          backendKey: "userUploadedCount",
+        },
+        {
+          title: "Total Downloads",
+          value: "0",
+          icon: "mdi mdi-download-box-outline",
+          backendKey: "userDownloadCount",
+        },
+        {
+          title: "Total Folders",
+          value: "0",
+          icon: "mdi mdi-folder-outline",
+          backendKey: "userFolderCreated",
+        },
+        {
+          title: "Files Occupied",
+          value: "0",
+          icon: "mdi mdi-file-multiple",
+          backendKey: "userFileOccupiedSize",
+        },
+        // {
+        //   title: "Average File Size Upload",
+        //   value: "0",
+        //   icon: "mdi mdi-file-multiple",
+        //   backendKey: "averageFileUploade",
+        // },
+        {
+          title: "Average File Upload Speed",
+          value: "0",
+          icon: "mdi mdi-tray-arrow-up",
+          backendKey: "averageUploadSpeed",
+        },
+        {
+          title: "Average File Download Speed",
+          value: "0",
+          icon: "mdi mdi-tray-arrow-down",
+          backendKey: "averageDownloadSpeed",
+        },
+      ],
+      fetchUserDetails: null,
       sales: {
         us: {
           country: "United States",
@@ -350,7 +489,7 @@ export default {
     TimelineList,
     TimelineItem,
   },
-  created(){
+  created() {
     this.getUserReport();
   },
   mounted() {
@@ -367,7 +506,7 @@ export default {
   methods: {
     async getAllDetails() {
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      const apiUrl = `http://localhost:61050/dms/file/getCount`;
+      const apiUrl = `http://localhost:61050/dms/dashboard/getUserFullDetails`; 
       const token = this.$store.getters.getUserToken;
       await axios
         .get(apiUrl, {
@@ -376,16 +515,14 @@ export default {
           },
         })
         .then((response) => {
-          this.fileSizeCount = response.data.fileSizeCount;
-          this.userCount = response.data.userCount;
-          this.groupCount = response.data.groupCount;
+          console.log("responseData",response.data);
         })
         .catch((error) => console.error("Error occured by", error));
     },
 
-    async getUserDetails() {   
+    async getUserDetails() {
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      const apiUrl = `http://localhost:61050/dms/dashboard/getUserUploadedDetails`;
+      const apiUrl = `http://localhost:61050/dms/dashboard/getUserFullDetails`;
       const token = this.$store.getters.getUserToken;
       await axios
         .get(apiUrl, {
@@ -394,21 +531,15 @@ export default {
           },
         })
         .then((response) => {
-          this.fetchUserDetails=response.data;
-
-          this.details.forEach(detail => {
-          // Update value based on backend data if backendData is defined
-          if (detail.backendKey === 'userFileOccupiedSize' || detail.backendKey === 'userGroupFileOccupiedSize') {
-            detail.value = this.fetchUserDetails[detail.backendKey] + 'kb';
-          } else {
-            detail.value = this.fetchUserDetails[detail.backendKey];
-          }
-        });
-      })
+          this.fetchUserDetails = response.data;
+          this.details.forEach((detail) => {          
+              detail.value = this.fetchUserDetails[detail.backendKey];
+          });
+        })
         .catch((error) => console.error("Error occured by", error));
     },
 
-    async getUserReport() {   
+    async getUserReport() {
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
       const apiUrl = `http://localhost:61050/dms/dashboard/usersGraph`;
       const token = this.$store.getters.getUserToken;
@@ -419,21 +550,18 @@ export default {
           },
         })
         .then((response) => {
-          const userReportData = response.data.map(ele => ele.count);
-          const userReportLabels = response.data.map(ele => ele.date);
-          this.reportData.labels=markRaw(userReportLabels);
+          const userReportData = response.data.map((ele) => ele.count);
+          const userReportLabels = response.data.map((ele) => ele.date);
+          this.reportData.labels = markRaw(userReportLabels);
           this.reportData.datasets = {
-                label: 'Users',
-                data:markRaw(userReportData)
-            };
-            this.userReportData=markRaw(userReportData);
-          console.log("userReportData",this.reportData.datasets.data);
-        
-      })
+            label: "Users",
+            data: markRaw(userReportData),
+          };
+          this.userReportData = markRaw(userReportData);
+          console.log("userReportData", this.reportData.datasets.data);
+        })
         .catch((error) => console.error("Error occured by", error));
-    },
-
-   
+    },    
   },
 };
 </script>
@@ -457,22 +585,22 @@ export default {
 }
 
 .container-fluid {
-    height: 78vh;
-    width: 100%;
-    overflow-y:scroll !important;
-    overflow-x: hidden;
+  height: 78vh;
+  width: 100%;
+  overflow-y: scroll !important;
+  overflow-x: hidden;
 }
 
-.container{
-     width: 100%;
-    padding-right: var(--bs-gutter-x, 1.5rem);
-    padding-left: var(--bs-gutter-x, 1.5rem);
-    margin-right: auto;
-    margin-left: auto;
+.container {
+  width: 100%;
+  padding-right: var(--bs-gutter-x, 1.5rem);
+  padding-left: var(--bs-gutter-x, 1.5rem);
+  margin-right: auto;
+  margin-left: auto;
 }
 
 ::-webkit-scrollbar {
-  width: .3px; /* width of the scrollbar */
+  width: 0.3px; /* width of the scrollbar */
   border-radius: 13px;
 }
 
@@ -489,6 +617,48 @@ export default {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #5cc06e; /* color of the handle on hover */
+}
+
+.marquee {
+  overflow: hidden;
+  flex-basis: 90%;
+}
+
+.marquee-content {
+  white-space: nowrap;
+  animation: marquee 9s linear infinite;
+  color: #53ca33;
+  font-weight: 700;
+  text-shadow:
+    -200px 0 50px rgba(83, 202, 51, 0.8),
+    /* Left shadow */ 200px 0 20px rgba(83, 202, 51, 0.8),
+    /* Right shadow */ 0 0 10px rgba(83, 202, 51, 0.8),
+    /* Center shadow */ 0 0 20px rgba(83, 202, 51, 0.8),
+    /* Additional outer glow */ 0 0 30px rgba(83, 202, 51, 0.8),
+    /* Additional outer glow */ 0 0 40px rgba(83, 202, 51, 0.8),
+    /* Additional outer glow */ 0 0 50px rgba(83, 202, 51, 0.8); /* Additional outer glow */
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.health {
+  flex-basis: 15%;
+  margin-left: 2%;
+  color: #67748e;
+  text-transform: capitalize !important;
+  font-weight: 700 !important;
+}
+
+.chart-container {
+  width: 100%; /* Set width to 100% */
+  height: 300px; /* Specify a fixed height */
 }
 
 </style>

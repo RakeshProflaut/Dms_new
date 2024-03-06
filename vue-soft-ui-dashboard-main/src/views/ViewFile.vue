@@ -11,7 +11,7 @@
     <div   class="newButton">
         <!-- <span  class="mdi mdi-file-download"></span> -->
         <span :class="['mdi',this.extensionIcon]"></span>
-        <span @click="downloadFile" style="margin-left: 3%;" class="mdi mdi-download-circle"></span>
+        <span @click="sendDocId" style="margin-left: 3%;" class="mdi mdi-download-circle"></span>
         <span class="mdi mdi-information-box"
          style="margin-left: 3%"
           @click="docViewBox =true">
@@ -82,7 +82,6 @@ components:{
 
 mounted() {
     this.showDocument();   
-    console.log("extesionIcon",this.extensionIcon);
   },
 
   props: {
@@ -179,11 +178,13 @@ closeDocView(value) {
 
 
 
-downloadFile() {
+async downloadFile(event) {
     console.log("dowlpadfile extenion",this.imageDetails.extention);
-    console.log("dowlpadfile name",this.imageDetails.docName);
+    console.log("dowlpadfile name",this.imageDetails);
+    axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";   
 
-    try {
+    try { 
+
         let fileType;
         let fileName;
 
@@ -225,6 +226,32 @@ downloadFile() {
     } catch (error) {
         console.error('Error downloading file:', error);
     }
+    
+
+
+   
+},
+
+async sendDocId(event){  
+  axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+  // event.preventDefault();
+      await axios
+        .post(
+          `http://localhost:61050/dms/file/downloadHistory?docId=1`,
+          {},
+          {
+            headers: {
+              token: this.$store.getters.getUserToken,
+            },
+          }
+        )
+        .then((response) => {
+          console.log("dowload status", response.data.status);
+          this.downloadFile(event)        
+        })
+        .catch((error) => console.error("Error occured by", error));
+     
+
 }
 
   },

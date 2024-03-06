@@ -16,7 +16,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <div class="card mb-4" style="height: 460px !important">
+          <div class="card mb-4" style="height: 465px !important">
             <div style="display: flex; justify-content: space-between">
               <div class="card-header text-uppercase">
                 <h4>{{ this.currentFolderName }}</h4>
@@ -417,8 +417,8 @@ export default {
         });
         console.log("subbFodler",response.data);
         this.folders = response.data.subFolderPath;
-        const currentfolderName=this.secondaryFolders.find(ele=>ele.folderID ===this.selectedFolderId);
-        console.log("currentFolderrr",currentfolderName.folderName);
+        // const currentfolderName=this.secondaryFolders.find(ele=>ele.folderID ===this.selectedFolderId);
+        // console.log("currentFolderrr",currentfolderName.folderName);
         // this.currentFolderName=renderFolderName[0].folderName;
       } catch (error) {
         Swal.fire({

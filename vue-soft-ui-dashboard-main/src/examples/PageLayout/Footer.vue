@@ -1,6 +1,6 @@
 <template>
   <footer class="footer text-right">    
-          <p class="mr-5 text-secondary pt-1" style="padding-bottom: !important;">
+          <p class="mr-5 text-secondary pt-2" style="padding-bottom: !important;">
             ©powered by PROFLAUT Technologies
           </p>
   </footer>
@@ -20,6 +20,7 @@ export default {
   background-color: #f8f9fe;
   padding: 10px 0;
   text-align: center;
+  padding-top: 3%;
 }
 
 /* Adjustments for small screens */

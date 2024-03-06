@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div
     class="w-auto h-auto collapse navbar-collapse max-height-vh-100"
     id="sidenav-collapse-main"
@@ -11,20 +11,7 @@
           </template>
         </sidenav-collapse>
       </li>
-      <!-- <li class="nav-item">
-        <sidenav-collapse navText="Workflow" :to="{ name: 'Dms' }">
-          <template #icon>
-            <document />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Dms" :to="{ name: 'Dms' }">
-          <template #icon>
-            <document />
-          </template>
-        </sidenav-collapse>
-      </li> -->
+    
       <li class="nav-item">
         <sidenav-collapse navText="Directory" :to="{ name: 'Folders' }">
           <template #icon>
@@ -60,92 +47,25 @@
           </template>
         </sidenav-collapse>
       </li>
-      <!-- <li class="nav-item">
-        <sidenav-collapse navText="Profile" :to="{ name: 'Profile' }" class="side">
-          <template #icon>
-            <customer-support />
-          </template>
-        </sidenav-collapse>
-      </li>       -->
-      <!-- <li class="nav-item">
-        <sidenav-collapse navText="Tables" :to="{ name: 'Tables' }">
-          <template #icon>
-            <office />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Billing" :to="{ name: 'Billing' }">
-          <template #icon>
-            <credit-card />
-          </template>
-        </sidenav-collapse>
-      </li> -->
-
-      <!-- <li class="nav-item">
-        <sidenav-collapse
-          navText="Virtual Reality"
-          :to="{ name: 'Virtual Reality' }"
-        >
-          <template #icon>
-            <box3d />
-          </template>
-        </sidenav-collapse>
-      </li> -->
-      <!-- <li class="nav-item">
-        <sidenav-collapse navText="RTL" :to="{ name: 'Rtl' }">
-          <template #icon>
-            <settings />
-          </template>
-        </sidenav-collapse>
-      </li> -->
-      <!-- <li class="mt-3 nav-item">
-        <h6
-          class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
-          :class="this.$store.state.isRTL ? 'me-4' : 'ms-2'"
-        >
-          PAGES
-        </h6>
-      </li>     
-      <li class="nav-item">
-        <sidenav-collapse navText="Sign In" :to="{ name: 'Sign In' }">
-          <template #icon>
-            <document />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="AdminSign In" :to="{ name: 'AdminSign In' }">
-          <template #icon>
-            <document />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Sign Up" :to="{ name: 'Sign Up' }">
-          <template #icon>
-            <spaceship />
-          </template>
-        </sidenav-collapse>
-      </li> -->
     </ul>
   </div>
-  <!-- <div class="pt-3 mx-3 mt-3 sidenav-footer">
-    <sidenav-card
-      :class="cardBg"
-      textPrimary="Need Help?"
-      textSecondary="Please check our docs"
-      route="https://www.creative-tim.com/learning-lab/vue/overview/soft-ui-dashboard/"
-      label="Documentation"
-      icon="ni ni-diamond"
-    />
-    <a
-      class="btn bg-gradient-success mt-4 w-100"
-      href="https://www.creative-tim.com/product/vue-soft-ui-dashboard-pro?ref=vsud"
-      type="button"
-      >Upgrade to pro</a
-    >
-  </div> -->
+  
+</template> -->
+
+<template>
+  <div class="w-auto h-auto collapse navbar-collapse max-height-vh-100" id="sidenav-collapse-main">
+    <ul class="navbar-nav">
+      <li class="nav-item" v-for="(item, index) in sidenavItems" :key="index">
+        <sidenav-collapse :navText="item.text" :to="item.to" :active="activeTab === item.text" @click="setActiveTab(item.text)"
+        :style="getActiveStyle(item)"
+        >
+          <template #icon>
+            <component :is="item.icon" /> 
+          </template>
+        </sidenav-collapse>
+      </li>
+    </ul>
+  </div>
 </template>
 <script>
 import SidenavCollapse from "./SidenavCollapse.vue";
@@ -166,10 +86,21 @@ export default {
   },
   data() {
     return {
-      title: "Soft UI Dashboard PRO",
-      controls: "dashboardsExamples",
       isActive: "active",
+      sidenavItems: [
+        { text: 'Dashboard', to: { name: 'Dashboard' }, icon: Shop },
+        { text: 'Directory', to: { name: 'Folders' }, icon: Office },
+        { text: 'Search', to: { name: 'Search' }, icon: CreditCard },
+        { text: 'Portal', to: { name: 'Portal' }, icon: CustomerSupport },
+        { text: 'Image Upscaling', to: { name: 'Image Upscaling' }, icon: Document },
+        { text: 'OCR', to: { name: 'Ocr' }, icon: Spaceship }
+      ],
+      activeTab: null    
     };
+  },
+  created() {
+    // Set the activeTab to the name of the "User Information" tab
+    this.activeTab ='Dashboard';
   },
   components: {
     SidenavCollapse,
@@ -189,6 +120,21 @@ export default {
       return routeArr[1];
     },
 
+    setActiveTab(tabName) {
+      this.activeTab = tabName;
+    },
+    getActiveStyle(item) {
+      if (this.activeTab === item.text) {
+        return {
+          backgroundColor: '#fff',
+          fontWeight: '600',
+          boxShadow: '0 20px 27px 0 rgba(0, 0, 0, 0.05)',
+          borderRadius: '0.5rem',
+          color: '#53CA33'
+        };
+      }
+      return {}; // Return empty object for non-active items
+    },
     
   },
 };
@@ -208,6 +154,8 @@ export default {
     box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
     border-radius: 0.5rem;
 }
+
+
 
 
 
