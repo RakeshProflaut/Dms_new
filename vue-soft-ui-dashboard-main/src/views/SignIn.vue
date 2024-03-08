@@ -44,7 +44,7 @@
                       </div>
                       <span class="eyeIcon"> 
                         <i id="visiblityBtn" @click="toggleVisibility">
-                          <span id="eyeicon" class="material-symbols-outlined">{{
+                          <span  style="font-size: 19px;" id="eyeicon" class="material-symbols-outlined">{{
                             isVisible ? "visibility_off" : "visibility"
                           }}</span>
               </i>
@@ -90,7 +90,7 @@
                 class="top-0 oblique position-absolute h-100   d-md-block d-none"
               >
                 <div
-                  class="bg-cover oblique-image position-absolute   h-100 w-100 z-index-0"
+                  class="bg-cover oblique-image position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
                   :style="{
                     backgroundImage:
                       'url(' +

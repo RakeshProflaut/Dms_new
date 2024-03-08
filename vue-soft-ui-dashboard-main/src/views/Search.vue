@@ -38,7 +38,7 @@
     <div class="container-fluid">
       <div class="row"  style="margin-top: .2rem !important;">
         <div class="col-12">
-          <div class="card mb-4" style="height: 460px !important">
+          <div class="card" style="height: 507px !important">
             <div class="card-header text-center pb-0 text-uppercase">
               <h4>Search Document</h4>
             </div>

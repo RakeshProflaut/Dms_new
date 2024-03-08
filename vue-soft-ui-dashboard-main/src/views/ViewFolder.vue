@@ -38,7 +38,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <div class="card mb-4" style="height: 460px !important">
+          <div class="card" style="height: 510px !important">
             <div style="display: flex; justify-content: space-between">
               <div class="card-header text-uppercase">
                 <h4>{{ this.folderName }}</h4>
@@ -549,7 +549,7 @@ export default {
 }
 .tableContaier {
   position: relative;
-  height: 349px;
+  height: 395px;
   overflow-x: auto;
 }
 

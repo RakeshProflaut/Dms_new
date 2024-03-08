@@ -8,7 +8,7 @@
       <div class="right">
         <!-- <v-btn :ripple="false" @click="editItem(item)">Upload</v-btn>  
           <v-btn :ripple="false" @click="sendUpdatedData">Save</v-btn> -->        
-          <v-btn v-if="imageDetails.extention =='pdf'" :ripple="false"  @click="openEditDoc">Edit</v-btn>
+          <v-btn v-if="editOption" :ripple="false"  @click="openEditDoc">Edit</v-btn>
         <v-btn :ripple="false" @click="productDialogClose">Close</v-btn>
       </div>
     </div>
@@ -25,8 +25,8 @@
                 </v-card>
               </v-dialog>
             </div> -->
-            <div v-if="editdoc">
-              <div id="webviewer" ref="viewer"></div>
+            <div v-if="editdoc" class="editDoc">
+            <web-viewer :initialDoc="fileData"/>
             </div>
             <div v-else style="flex-basis: 95%;height: 100%;width: 100%;">            
               <iframe
@@ -91,30 +91,19 @@ import { Splitpanes, Pane } from "splitpanes";
 import "splitpanes/dist/splitpanes.css";
 import axios from "axios";
 import DocTab from "./DocTab.vue";
-import { ref, onMounted } from "vue";
-  import WebViewer from "@pdftron/webviewer";
-
+import WebViewer from "@/views/WebViewer.vue"
 
 export default {
   name: "viewDocument",
   mounted() {
-    this.showDocument();
-    const path = `${process.env.BASE_URL}webviewer`;
-    WebViewer({ 
-      path, 
-      enableOfficeEditing:true,
-      initialDoc: this.imageDetails.image, 
-      licenseKey: 'demo:1709638961050:7f255e8c03000000003f037e7ea52f75245cf1967d95fa3948ed0d4065'
-    }, this.$refs.viewer).then((instance) => {
-      console.log("WebViewer instance created:", instance);
-    }).catch(error => {
-      console.error("Error initializing WebViewer:", error);
-    });
+    this.showDocument();    
   },
   components: {
     Splitpanes,
     Pane,
     DocTab,
+    WebViewer,
+    WebViewer
   },
 
   props: {
@@ -127,8 +116,10 @@ export default {
     return {
       base64Data: null,
       docContent: "",
+      editOption:false,
       imageDetails: "",
       metaDetails: "",
+      fileData:'',
       fieldNames: [],
       viewer:null,
       editdoc:false,
@@ -187,19 +178,24 @@ export default {
           this.metaDetails = response.data.metaDetails;
           this.fieldNames = this.metaDetails.fieldNames;
           console.log("fieldsss", response.data);
+          if(this.imageDetails.extention =='pdf'||this.imageDetails.extention =='docx'){
+          this.editOption=true;
+    };
 
           const { image, extention } = this.imageDetails; 
           const iframe = document.getElementById("iframeId");
          if (image && extention) {
           iframe.style.display = "block";
         if (extention === 'pdf') {
+          this.fileData = "data:application/pdf;base64," + image;
           iframe.src = "data:application/pdf;base64," + image;
         } else if (['jpg', 'jpeg', 'png'].includes(extention)) {
           iframe.src = "data:image/" + extention + ";base64," + image;
         }
-        else if (extention === 'doc') {
+        else if (extention === 'docx') {
           // Handle displaying .docx file
-          this.convertDocxToPdf(image, iframe);
+          this.fileData = "data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64," + image;
+
         }  else {
           // Handle other file types if needed
           console.error("Unsupported file format");
@@ -213,13 +209,7 @@ export default {
 
     },
     openEditDoc(){
-      this.editdoc =true;
-      if (this.viewer) {
-        // Access this.viewer properties here
-        console.log("Viewer is ready:", this.viewer);
-      } else {
-        console.error("Viewer is not yet initialized");
-      }
+      this.editdoc =true;     
     },   
 
     productDialogClose() {
@@ -246,6 +236,16 @@ export default {
     0 20px 27px 0 rgba(0, 0, 0, 0.05) !important;
 }
 
+.editDoc{
+  width: 100%;
+  height: 100%;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin: 0 auto;
+}
 .header {
   flex-basis: 10%;
   display: flex;

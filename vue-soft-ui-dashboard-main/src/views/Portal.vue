@@ -38,7 +38,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <div class="card mb-4" style="height: 460px !important">
+            <div class="card" style="height: 510px !important">
               <div v-show="viewFolderButton" class="newButton">
                 <v-btn @click="openFolderDialogeBox = true">Create Folder</v-btn>
                 <v-btn @click="getAllFolders">Back</v-btn>
@@ -669,7 +669,7 @@ async downloadFileinlocal(base64,filename) {
 
   .tableContaier{
   position: relative;
-  height: 390px;
+  height: 432px;
   overflow-x: auto;
 }
   

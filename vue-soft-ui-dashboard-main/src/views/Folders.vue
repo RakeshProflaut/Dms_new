@@ -16,7 +16,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <div class="card mb-4" style="height: 465px !important">
+          <div class="card" style="height: 510px !important">
             <div style="display: flex; justify-content: space-between">
               <div class="card-header text-uppercase">
                 <h4>{{ this.currentFolderName }}</h4>
@@ -698,9 +698,12 @@ body > div.v-overlay-container > div > div.v-overlay__content > div {
   flex-direction: column;
 }
 
+/* .v-pagination__list{
+  margin-bottom: 0px !important;
+} */
 .tableContaier {
   position: relative;
-  height: 335px;
+  height: 378px;
   overflow-x: auto;
 }
 

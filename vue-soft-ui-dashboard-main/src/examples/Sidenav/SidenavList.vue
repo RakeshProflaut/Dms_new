@@ -53,14 +53,21 @@
 </template> -->
 
 <template>
-  <div class="w-auto h-auto collapse navbar-collapse max-height-vh-100" id="sidenav-collapse-main">
+  <div
+    class="w-auto h-auto collapse navbar-collapse max-height-vh-100"
+    id="sidenav-collapse-main"
+  >
     <ul class="navbar-nav">
       <li class="nav-item" v-for="(item, index) in sidenavItems" :key="index">
-        <sidenav-collapse :navText="item.text" :to="item.to" :active="activeTab === item.text" @click="setActiveTab(item.text)"
-        :style="getActiveStyle(item)"
+        <sidenav-collapse
+          :navText="item.text"
+          :to="item.to"
+          :active="activeTab === item.text"
+          @click="setActiveTab(item.text)"
+          :style="getActiveStyle(item)"
         >
           <template #icon>
-            <component :is="item.icon" /> 
+            <component :is="item.icon" />
           </template>
         </sidenav-collapse>
       </li>
@@ -77,6 +84,11 @@ import CreditCard from "../../components/Icon/CreditCard.vue";
 import CustomerSupport from "../../components/Icon/CustomerSupport.vue";
 import Document from "../../components/Icon/Document.vue";
 import Spaceship from "../../components/Icon/Spaceship.vue";
+import Search from "../../components/Icon/Search.vue";
+import ImageUpscale from "../../components/Icon/ImageUpscale.vue";
+import Ocr from "../../components/Icon/Ocr.vue";
+
+
 // import Settings from "../../components/Icon/Settings.vue";
 
 export default {
@@ -88,29 +100,36 @@ export default {
     return {
       isActive: "active",
       sidenavItems: [
-        { text: 'Dashboard', to: { name: 'Dashboard' }, icon: Shop },
-        { text: 'Directory', to: { name: 'Folders' }, icon: Office },
-        { text: 'Search', to: { name: 'Search' }, icon: CreditCard },
-        { text: 'Portal', to: { name: 'Portal' }, icon: CustomerSupport },
-        { text: 'Image Upscaling', to: { name: 'Image Upscaling' }, icon: Document },
-        { text: 'OCR', to: { name: 'Ocr' }, icon: Spaceship }
+        { text: "Dashboard", to: { name: "Dashboard" }, icon: Shop },
+        { text: "Directory", to: { name: "Folders" }, icon: Office },
+        { text: "Search", to: { name: "Search" }, icon: Search },
+        { text: "Portal", to: { name: "Portal" }, icon: CustomerSupport },
+        {
+          text: "Image Upscaling",
+          to: { name: "Image Upscaling" },
+          icon: ImageUpscale,
+        },
+        { text: "OCR", to: { name: "Ocr" }, icon: Ocr },
       ],
-      activeTab: null    
+      activeTab: null,
     };
   },
   created() {
     // Set the activeTab to the name of the "User Information" tab
-    this.activeTab ='Dashboard';
+    this.activeTab = "Dashboard";
   },
   components: {
     SidenavCollapse,
     // SidenavCard,
     Shop,
     Office,
+    Search,
     CreditCard,
     // Box3d,
     CustomerSupport,
+    Ocr,
     Document,
+    ImageUpscale,
     Spaceship,
     // Settings,
   },
@@ -126,37 +145,28 @@ export default {
     getActiveStyle(item) {
       if (this.activeTab === item.text) {
         return {
-          backgroundColor: '#fff',
-          fontWeight: '600',
-          boxShadow: '0 20px 27px 0 rgba(0, 0, 0, 0.05)',
-          borderRadius: '0.5rem',
-          color: '#53CA33'
+          backgroundColor: "#fff",
+          fontWeight: "600",
+          boxShadow: "0 20px 27px 0 rgba(0, 0, 0, 0.05)",
+          borderRadius: "0.5rem",
+          color: "#53CA33",
         };
       }
       return {}; // Return empty object for non-active items
     },
-    
   },
 };
 </script>
 
-
 <style scoped>
-
-
 .navbar-vertical.navbar-expand-xs .navbar-nav > .nav-item:hover {
   color: #344767;
 }
 
 .navbar-vertical .navbar-nav .nav-link:hover {
   background-color: #fff;
-    font-weight: 600;
-    box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
-    border-radius: 0.5rem;
+  font-weight: 600;
+  box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
 }
-
-
-
-
-
 </style>

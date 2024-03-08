@@ -48,7 +48,7 @@
                       </div>
                       <span class="eyeIcon"> 
                         <i id="visiblityBtn" @click="toggleVisibility">
-                          <span id="eyeicon" class="material-symbols-outlined">{{
+                          <span style="font-size: 19px;" id="eyeicon" class="material-symbols-outlined">{{
                             isVisible ? "visibility_off" : "visibility"
                           }}</span>
               </i>
@@ -267,7 +267,7 @@ export default {
 </script>
 
 <style scoped>
-/* .text-start > input {
+ .text-start > input {
   display: block;
   width: 100%;
   padding: 0.5rem 0.75rem;
@@ -425,10 +425,10 @@ export default {
     transform: rotate(945deg);
     opacity: 0;
   }
-} */
+} 
 </style>
 
-
+<!-- 
 
 <template>
   <div class="container top-0 position-sticky z-index-sticky">
@@ -493,7 +493,8 @@ export default {
                 </div>
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
-                    <!-- Don't have an account? -->
+                    Don't have an account? -->
+                    <!-- 
                     <router-link
                       :to="{ name: 'Sign Up' }"
                       class="text-success text-gradient font-weight-bold"
@@ -524,7 +525,7 @@ export default {
     </section>
   </main>
   <app-footer />
-</template>
+</template> -->
 
 
 

@@ -13,7 +13,7 @@
     <div class="container-fluid">
       <div class="row" style="margin-top: 0.5rem !important">
         <div class="col-12">
-          <div class="card mb-4" style="height: 465px !important">
+          <div class="card" style="height: 514px !important">
             <div style="display: flex; justify-content: space-between">
               <div class="card-header text-uppercase">
                 <h4>Group Information</h4>
@@ -743,7 +743,7 @@ export default {
 
 .tableContaier {
   position: relative;
-  height: 319px;
+  height: 363px;
   overflow-x: auto;
 }
 .table-header {

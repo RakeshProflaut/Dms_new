@@ -145,10 +145,13 @@
         </div>
       </div>  
           <div class="p-3 card-body">
+            <div class=" pb-0 card-header" style="padding: 0!important;">          
+          <h6>Average File Size Chart</h6>
+              </div>
             <reports-bar-chart
             v-if="userReportData && userReportData.length > 0"
             id="chart-bar"
-            title="Average File Size "
+            title=""
             description="(<strong>+23%</strong>) than last week"
             :chart="reportData"
             :items="[
@@ -183,6 +186,7 @@
       <div class="col-lg-7">   
         <div class="card z-index-2">
           <gradient-line-chart
+          v-if="uploadDownloadLabel && uploadDownloadLabel.length > 0"
           id="chart-line"
           title="Upload/Download Speed Line Chart"
           description="<i class='fa fa-arrow-up text-success'></i>
@@ -191,25 +195,15 @@
           <span class='font-weight-bold'>Downloads</span> in 2024
           "
           :chart="{
-            labels: [
-              'Apr',
-              'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec',
-              ],
+            labels:this.uploadDownloadLabel,
               datasets: [
                 {
-                  label: 'Group Files',
-                  data: [20, 40, 300, 220, 500, 250, 400, 230, 500],
+                  label: 'Upload Speed(ms)',
+                  data: this.avgUploadSpeed,
                 },
                 {
-                  label: 'User Files',
-                  data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
+                  label: 'Download Speed(ms)',
+                  data:this.avgDownloadSpeed,
                 },
               ],
             }"
@@ -219,9 +213,9 @@
     </div>
     
     <div class="my-4">
-      <div class="card" style="height:14.5rem;">
+      <div class="card" style="height:14.5rem;" v-if="this.stackedSeries[0].data && this.stackedSeries[0].data.length > 0">
         <div class="p-3 pb-0 card-header" style="padding: 0.5rem !important;">          
-          <h6>Transaction Reports</h6>
+          <h6>Total Uploads And Downloads Data</h6>
               </div>
               <div style="overflow-x: auto;">                
                 <apexchart
@@ -276,7 +270,8 @@
             date-time="15 DEC"
             />
           </timeline-list>
-        --></div>
+        -->
+      </div>
       </div>
       <div class="row justify-content-center" style="padding-top: .1rem;">
         <div class="col-lg-7 mb-lg-0 mb-4">
@@ -333,7 +328,8 @@ export default {
       faCreditCard,
       faScrewdriverWrench,
       faUsers,
-      faHandPointer,   
+      faHandPointer,
+      uploadDownloadLabel:null,   
       reportData: {
         labels: [],
         datasets: {
@@ -341,8 +337,13 @@ export default {
           data: [],
         },
       },
+      avgUploadSpeed:null,
+      avgDownloadSpeed:null,
       userReportLabel: null,
       userReportData: null,
+      totalUpload:null,
+      totalDownloads:null,
+      totalUploadAndDownloadLabel:null,
       stackedChartOptions: {
         chart: {
           type: "bar",
@@ -355,7 +356,7 @@ export default {
         },
         dataLabels: {
           formatter: (val) => {
-            return val / 1000 + "K";
+            return val;
           },
         },
         plotOptions: {
@@ -364,16 +365,7 @@ export default {
           },
         },
         xaxis: {
-          categories: [
-            "2017",
-            "2018",
-            "2019",
-            "2020",
-            "2021",
-            "2022",
-            "2023",
-            "2023",
-          ],
+          categories:[],
         },
         fill: {
           opacity: 1,
@@ -382,7 +374,7 @@ export default {
         yaxis: {
           labels: {
             formatter: (val) => {
-              return val / 1000 + "K";
+              return val;
             },
           },
         },
@@ -395,13 +387,13 @@ export default {
         {
           name: "Uploads",
           group: "budget",
-          data: [13000, 36000, 20000, 8000, 13000, 27000, 45000, 53000],
+          data: [],
         },
 
         {
           name: "Downloads",
           group: "budget",
-          data: [44000, 55000, 41000, 67000, 22000, 43000, 52000, 35000],
+          data: [],
         },
       ],
       details: [
@@ -489,10 +481,11 @@ export default {
     TimelineList,
     TimelineItem,
   },
-  created() {
-    this.getUserReport();
-  },
+
   mounted() {
+    this.getUserReport();
+    this.getUploadDownloadSpeed();
+    this.getUploadsAndDownloads();
     setNavPills();
     this.$store.state.isAbsolute = true;
     setTooltip(this.$store.state.bootstrap);
@@ -515,7 +508,7 @@ export default {
           },
         })
         .then((response) => {
-          console.log("responseData",response.data);
+          // console.log("responseData",response.data);
         })
         .catch((error) => console.error("Error occured by", error));
     },
@@ -550,15 +543,52 @@ export default {
           },
         })
         .then((response) => {
-          const userReportData = response.data.map((ele) => ele.count);
+          const userReportData = response.data.map((ele) => ele.avgFileUpload);
           const userReportLabels = response.data.map((ele) => ele.date);
-          this.reportData.labels = markRaw(userReportLabels);
+          this.reportData.labels =(userReportLabels);
           this.reportData.datasets = {
-            label: "Users",
-            data: markRaw(userReportData),
+            label: "Average File Size",
+            data:(userReportData),
           };
-          this.userReportData = markRaw(userReportData);
-          console.log("userReportData", this.reportData.datasets.data);
+          this.userReportData =(userReportData);
+        })
+        .catch((error) => console.error("Error occured by", error));
+    },    
+    async getUploadDownloadSpeed() {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const apiUrl = `http://localhost:61050/dms/dashboard/linearGraph`;
+      const token = this.$store.getters.getUserToken;
+      await axios
+        .get(apiUrl, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) => {
+          this.uploadDownloadLabel = response.data.map((ele) => ele.date);
+          this.avgDownloadSpeed=response.data.map((ele) => ele.avgDownloadSpeed);
+          this.avgUploadSpeed=response.data.map((ele) => ele.avgUploadSpeed);
+          console.log("uploadDownloadSpeed",this.uploadDownloadLabel);       
+        })
+        .catch((error) => console.error("Error occured by", error));
+    },    
+    async getUploadsAndDownloads() {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const apiUrl = `http://localhost:61050/dms/dashboard/totalUploDown`;
+      const token = this.$store.getters.getUserToken;
+      await axios
+        .get(apiUrl, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) => {
+          this.stackedChartOptions.xaxis.categories = response.data.map((ele) => ele.date);
+          console.log("upppppploooooads",this.stackedChartOptions.xaxis.categories);
+          this.stackedSeries[0].data=response.data.map((ele) => ele.TotalUpload);
+          this.stackedSeries[1].data=response.data.map((ele) => ele.TotalDownload);
+          console.log("uploadDownloadSpeed",  this.stackedSeries[0].data);       
+
         })
         .catch((error) => console.error("Error occured by", error));
     },    

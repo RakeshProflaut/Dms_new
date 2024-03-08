@@ -42,6 +42,8 @@
           :class="`w-${percentage}`"
           role="progressbar"
           :aria-valuenow="percentage"
+
+          
           aria-valuemin="0"
           aria-valuemax="100"
           ></div>
@@ -96,7 +98,6 @@ export default {
   },
   mounted() {
     var ctx = document.getElementById(this.id).getContext("2d");
-    console.log("chart",this.chart);
 
     let chartStatus = Chart.getChart(this.id);
     if (chartStatus != undefined) {

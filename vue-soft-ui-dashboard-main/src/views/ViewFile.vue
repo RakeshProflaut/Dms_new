@@ -164,7 +164,7 @@ mounted() {
     } else if (this.imageDetails.extention === "pdf") {
         this.extensionIcon = 'mdi-file-pdf-box';
     }
-    else if (this.imageDetails.extention == "doc") {
+    else if (this.imageDetails.extention == "docx") {
         this.extensionIcon = 'mdi-file-word-box';
     }
     else {
@@ -201,9 +201,9 @@ async downloadFile(event) {
         } else if (this.imageDetails.extention === 'xls') {
             fileType = 'application/vnd.ms-excel';
             fileName = `${this.imageDetails.docName}.xls`;;
-        }  else if (this.imageDetails.extention == 'doc') {
+        }  else if (this.imageDetails.extention == 'docx') {
           fileType = 'application/msword'; 
-            fileName = `${this.imageDetails.docName}.doc`;
+            fileName = `${this.imageDetails.docName}.docx`;
         } else {
             throw new Error('Unsupported file type');
         }
@@ -237,7 +237,7 @@ async sendDocId(event){
   // event.preventDefault();
       await axios
         .post(
-          `http://localhost:61050/dms/file/downloadHistory?docId=1`,
+          `http://localhost:61050/dms/file/downloadHistory/${this.selectedDocId}`,
           {},
           {
             headers: {

@@ -136,8 +136,8 @@ export default {
       ],
       selectedOptions: [
         {
-          text: "Word(doc)",
-          value: "doc",
+          text: "Word(docx)",
+          value: "docx",
         },
         {
           text: "PDF",

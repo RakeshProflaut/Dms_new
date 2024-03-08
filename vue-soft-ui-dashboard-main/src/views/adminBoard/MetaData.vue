@@ -35,8 +35,7 @@
     <div class="container-fluid">
       <div class="row" style="margin-top: 0.5rem !important">
         <div class="col-12">
-          <div class="card mb-4" style="height: 465px !important">
-
+          <div class="card" style="height: 514px !important">
             <div style="display: flex;justify-content: space-between;">
               <div class="card-header">
                 <h4>Meta Data</h4>
@@ -348,7 +347,7 @@ export default {
 }
 .tableContaier{
   position: relative;
-  height: 339px;
+  height: 380px;
   overflow-x: auto;
 }
 
