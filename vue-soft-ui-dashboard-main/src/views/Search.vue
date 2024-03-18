@@ -85,6 +85,7 @@
                 </div>
               </div>
               <div class="table-responsive" v-if="openSearchTable">
+                <div class="tableContaier">
                 <table class="table align-items-center mb-0">
                   <thead class="table-header">
                     <tr>
@@ -130,26 +131,30 @@
                     </tr>
                   </tbody>
                 </table>
+                </div>
+                <div>
                   <v-pagination
                   v-model="page"
                   :length="pages"
                   @input="updateDisplayedData"
                   ></v-pagination>                
-                </div>             
+                </div>
               </div>
-            </div>
-          </div>
-
-          <v-dialog v-model="docViewBox"  style=" z-index: 1001">
+              </div>
+            <v-dialog v-model="docViewBox"  style=" z-index: 1001">
+              <div style="position: relative; left: 67%">
+        <button class="closebtn" @click="docViewBox = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
         <v-card style="width: 35%;margin: 0 auto; border-radius: 3%">
           <view-file-vue
           :selectedDocId="selectedDocId"
           v-on:closeDocViewBox="closeDocViewBox"
           />
         </v-card>
-      </v-dialog>
-
-          <!-- <v-dialog v-model="openUploadDialogeBox" 
+      </v-dialog>      
+      <!-- <v-dialog v-model="openUploadDialogeBox" 
         style=" z-index: 1001">
         <v-card style="width: 35%;margin: 0 auto; border-radius: 3%">
           <upload-file
@@ -158,19 +163,21 @@
           />
         </v-card>
       </v-dialog> -->
-        </div>
-      </div>
-      <div v-if="showLoader" class="loader-overlay">
-        <div v-if="showLoader" class="loader">
-          <div class="circle"></div>
-          <div class="circle"></div>
-          <div class="circle"></div>
+    </div>
+  </div>
+</div>
+  <div v-if="showLoader" class="loader-overlay">
+    <div v-if="showLoader" class="loader">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
           <div class="circle"></div>
           <div class="circle"></div>
         </div>
         <div class="bg"></div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -400,6 +407,8 @@ export default {
   justify-content: space-evenly;
 }
 
+
+
 /* div.card-body .v-input__control .v-field__field {
     max-height: 30px !important;
 } */
@@ -425,6 +434,19 @@ input {
 label {
   text-transform: uppercase;
 }
+
+.closebtn {
+  width: 22px;
+  height: 22px;
+  color: #d11313;
+  font-size: 30px;
+  opacity: 1;
+}
+
+.closebtn:hover {
+  opacity: .5;
+}
+
 .textFields {
   flex-basis: 64%;
   display: flex;
@@ -459,11 +481,13 @@ label {
 }
 
 .table-responsive {
-  flex-basis: 50%;
-  height: 350px;
+  display: flex;
+  flex-direction: column;
+}
+.tableContaier {
   position: relative;
+  height: 180px;
   overflow-x: auto;
-  overflow: auto;
 }
 
 .table-header {

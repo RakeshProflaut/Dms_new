@@ -4,7 +4,7 @@
       class="text-center bg-white shadow icon icon-shape icon-sm border-radius-md d-flex align-items-center justify-content-center"
       :class="this.$store.state.isRTL ? ' ms-2' : 'me-2'"
     >
-      <slot class="icon" name="icon"></slot>
+    <mdi :icon="navIcon"/>
     </div>
     <span
       class="nav-link-text"
@@ -14,6 +14,7 @@
   </router-link>
 </template>
 <script>
+import { mdi } from 'material-design-icons-iconfont/dist/material-design-icons.css';
 export default {
   name: "sidenav-collapse",
   props: {
@@ -30,6 +31,10 @@ export default {
     return {
       isExpanded: false,
     };
+  },
+  components: {
+    // Import the MDI component
+    mdi,
   },
 };
 </script>

@@ -154,31 +154,15 @@
             title=""
             description="(<strong>+23%</strong>) than last week"
             :chart="reportData"
-            :items="[
-                // {
-                //   icon: {
-                //     color: 'primary',
-                //     component: faUsers,
-                //   },
-                //   label: 'USERS',
-                //   progress: { content: this.userCount, percentage: 60 },
-                // },
-                // {
-                //   icon: { color: 'info', component: faHandPointer },
-                //   label: 'GROUPS',
-                //   progress: { content: this.groupCount, percentage: 90 },
-                // },
-                // {
-                //   icon: { color: 'warning', component: faCreditCard },
-                //   label: 'FILES',
-                //   progress: { content: this.fileSizeCount, percentage: 30 },
-                // },
-                // {
-                  //   icon: { color: 'danger', component: faScrewdriverWrench },
-                  //   label: 'Items',
-                  //   progress: { content: '43', percentage: 50 },
-                  // },
-                ]"
+            :items="[]"
+            />
+            <reports-bar-chart
+            v-else
+            id="chart-bar"
+            title=""
+            description="(<strong>+23%</strong>) than last week"
+            :chart="reportData"
+            :items="[]"
             />
           </div>
         </div>
@@ -187,6 +171,29 @@
         <div class="card z-index-2">
           <gradient-line-chart
           v-if="uploadDownloadLabel && uploadDownloadLabel.length > 0"
+          id="chart-line"
+          title="Upload/Download Speed Line Chart"
+          description="<i class='fa fa-arrow-up text-success'></i>
+          <span class='font-weight-bold'>Uploads</span> in 2024
+        <i class='fa fa-arrow-down text-success'></i>
+          <span class='font-weight-bold'>Downloads</span> in 2024
+          "
+          :chart="{
+            labels:this.uploadDownloadLabel,
+              datasets: [
+                {
+                  label: 'Upload Speed(ms)',
+                  data: this.avgUploadSpeed,
+                },
+                {
+                  label: 'Download Speed(ms)',
+                  data:this.avgDownloadSpeed,
+                },
+              ],
+            }"
+          />
+          <gradient-line-chart
+          v-else
           id="chart-line"
           title="Upload/Download Speed Line Chart"
           description="<i class='fa fa-arrow-up text-success'></i>
@@ -225,52 +232,21 @@
                 :options="stackedChartOptions"
                 :series="stackedSeries"
                 ></apexchart>
-              </div>    
-          <!-- <div class="col-lg-4 col-md-6">
-          <timeline-list
-          class="h-100"
-          title="Orders overview"
-          description="<i class='fa fa-arrow-up text-success' aria-hidden='true'></i>
-          <span class='font-weight-bold'>24%</span> this month"
-          >
-          <timeline-item
-          color="success"
-          icon="bell-55"
-            title="$2400 Design changes"
-            date-time="22 DEC 7:20 PM"
-          />
-          <TimelineItem
-            color="danger"
-            icon="html5"
-            title="New order #1832412"
-            date-time="21 DEC 11 PM"
-            />
-          <TimelineItem
-          color="info"
-            icon="cart"
-            title="Server payments for April"
-            date-time="21 DEC 9:34 PM"
-          />
-          <TimelineItem
-          color="warning"
-          icon="credit-card"
-          title="New card added for order #4395133"
-          date-time="20 DEC 2:20 AM"
-          />
-          <TimelineItem
-            color="primary"
-            icon="key-25"
-            title="Unlock packages for development"
-            date-time="18 DEC 4:54 AM"
-            />
-            <TimelineItem
-            color="info"
-            icon="check-bold"
-            title="Notifications unread"
-            date-time="15 DEC"
-            />
-          </timeline-list>
-        -->
+              </div>        
+      </div>
+      <div class="card" style="height:14.5rem;" v-else>
+        <div class="p-3 pb-0 card-header" style="padding: 0.5rem !important;">          
+          <h6>Total Uploads And Downloads Data</h6>
+              </div>
+              <div style="overflow-x: auto;">                
+                <apexchart
+                type="bar"
+                height="180rem"
+                width="1020px"
+                :options="stackedChartOptions"
+                :series="stackedSeries"
+                ></apexchart>
+              </div>        
       </div>
       </div>
       <div class="row justify-content-center" style="padding-top: .1rem;">
@@ -483,6 +459,7 @@ export default {
   },
 
   mounted() {
+    window.addEventListener("popstate", this.handleBackButton);
     this.getUserReport();
     this.getUploadDownloadSpeed();
     this.getUploadsAndDownloads();
@@ -493,6 +470,7 @@ export default {
     this.getUserDetails();
   },
   beforeUnmount() {
+    window.removeEventListener("popstate", this.handleBackButton);
     this.$store.state.isAbsolute = false;
   },
 
@@ -591,7 +569,46 @@ export default {
 
         })
         .catch((error) => console.error("Error occured by", error));
-    },    
+    },
+
+    handleBackButton(event) {
+      alert("Hi")
+    if (this.$store.state.reachedLandingPage) {
+      event.preventDefault();
+      // Display logout popup
+      // You can call a method to show your logout popup here
+      this.putLogout();
+    }
+  },
+
+  async putLogout() {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      console.log("token", this.$store.getters.getUserToken);
+      console.log("userid", this.$store.getters.getUserId);
+      console.log("templete", this.$store.getters.getTemplets);
+      const templete = this.$store.getters.getTemplets;
+
+      await axios
+        .delete(
+          `http://localhost:61050/dms/access/logout/${this.$store.getters.getUserId}`,
+          {
+            headers: {
+              token: this.$store.getters.getUserToken,
+            },
+          }
+        )
+        .then(() => {
+          setTimeout(() => {
+            if (templete === "user") {
+              this.$router.push({ name: "Sign In" });
+            } else {
+              this.$router.push({ name: "AdminSign In" });
+            }
+          }, 500);
+        })
+        .catch((error) => console.error("Error occured by", error));
+    },
+  
   },
 };
 </script>

@@ -238,6 +238,8 @@ export default {
     this.$store.state.isAbsolute = true;
     setTooltip(this.$store.state.bootstrap);
     this.isAdmin(); 
+    window.addEventListener("popstate", this.handlePopstate);
+
   },
   data() {
     return {
@@ -254,7 +256,9 @@ export default {
   },
   beforeUnmount() {
     this.$store.state.isAbsolute = false;
+    window.removeEventListener("popstate", this.handlePopstate);
   },
+
   methods: {
     ...mapMutations(["navbarMinimize", "toggleConfigurator"]),
     ...mapActions(["toggleSidebarColor"]),

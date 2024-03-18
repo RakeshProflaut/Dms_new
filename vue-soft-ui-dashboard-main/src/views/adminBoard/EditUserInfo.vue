@@ -1,11 +1,6 @@
 <template>
-  <div class="folderContainer">
-    <div>
-      <button class="closebtn" @click="$emit('closeEditBox', false)">
-        <i class="bx bx-x" style="position: relative; top: -40%"></i>
-      </button>
-    </div>
-    <div class="pt-2 text-center card-header">
+  <div class="folderContainer">   
+    <div class="pt-1 text-center card-header">
       <h5>Edit User Creation</h5>
     </div>
 
@@ -55,7 +50,7 @@
             v-model="userDetails.location"
           />
         </div>
-        <div class="mb-3 switch">
+        <div class="switch">
           <div
             style="
               display: flex;
@@ -76,7 +71,7 @@
             ></v-switch>
           </div>
         </div>
-        <div class="mb-3 switch">
+        <div class="switch">
           <div
             style="
               display: flex;
@@ -98,7 +93,7 @@
           </div>
         </div>
 
-        <div class="mb-3 switch">
+        <div class="switch">
           <div
             style="
               display: flex;
@@ -222,7 +217,6 @@ export default {
   border: 0;
   cursor: pointer;
   width: 100% !important;
-  margin-bottom: 8px !important;
   letter-spacing: -0.025rem;
   text-transform: uppercase;
   background-size: 150%;

@@ -1,10 +1,5 @@
 <template>
-  <div class="folderContainer">
-    <div>
-      <button class="closebtn" @click="productDialogClose">
-        <i class="bx bx-x" style="position: relative; top: -40%"></i>
-      </button>
-    </div>
+  <div class="folderContainer"> 
     <div class="pt-2 text-center card-header text-uppercase">
       <!-- <h5>{{ this.selectedfolder.folderName }} Folder</h5> -->
     </div>

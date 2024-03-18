@@ -1,14 +1,8 @@
 <template>
-  <div class="folderContainer">
-    <div>
-      <button class="closebtn" @click="$emit('closeDialogeBox', false)">
-        <i class="bx bx-x" style="position: relative; top: -40%"></i>
-      </button>
-    </div>
-    <div class="pt-2 text-center card-header">
+  <div class="folderContainer">   
+    <div class="text-center card-header">
       <h5>User Creation</h5>
     </div>
-
     <div class="card-body">
         <div class="mb-3">
           <input
@@ -28,7 +22,28 @@
             v-model="userdetails.email"
           />
         </div>
-        <div class="mb-3">
+        <div class=" mb-3 input-with-icon">
+                      <div class="passwordContainer">
+                        <input
+                        :type="isVisible ? 'password' : 'text'"
+                        v-model="userdetails.password"
+                        placeholder="Password"
+                        name="password"
+                        @input="validatePassword"
+                        />
+                      </div>
+                      <span class="eyeIcon"> 
+                        <i id="visiblityBtn" @click="toggleVisibility">
+                          <span style="font-size: 19px;" id="eyeicon" class="material-symbols-outlined">{{
+                            isVisible ? "visibility_off" : "visibility"
+                          }}</span>
+              </i>
+            </span>
+            <div v-if="showPasswordWarning" class="warning-text">Password must contain at least 8 characters, 1 uppercase letter, 1 special character, and 1 number.</div>
+
+          </div>
+
+        <!-- <div class="mb-3">
           <input
             v-model="userdetails.password"
             id="password"
@@ -36,7 +51,7 @@
             placeholder="Password"
             aria-label="Password"
           />
-        </div>
+        </div> -->
         <div class="mb-3">
           <input
             id="name"
@@ -55,7 +70,7 @@
             v-model="userdetails.location"
           />
         </div>
-        <div class="mb-3 switch">
+        <div class="switch">
           <div
             style="
               display: flex;
@@ -76,7 +91,7 @@
             ></v-switch>
           </div>
         </div>
-        <div class="mb-3 switch">
+        <div class="switch">
           <div
             style="
               display: flex;
@@ -97,7 +112,7 @@
             ></v-switch>
           </div>
         </div>
-        <div class="mb-3 switch">
+        <div class="switch">
           <div
             style="
               display: flex;
@@ -150,12 +165,33 @@ export default {
         location: "",
         mobileNo: "",
       },
+      isVisible: true,
+      showPasswordWarning: false 
     };
   },
 
   methods: {
+    toggleVisibility() {
+      this.isVisible = !this.isVisible;
+    },
+
+    validatePassword() {
+      console.log("userdetailsssPasswordd",this.userdetails.password);
+      const password = this.userdetails.password;
+      // Regular expression for password validation
+      const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,}$/;
+      if (passwordRegex.test(password)) {
+        // Password meets the criteria
+        this.showPasswordWarning = false;
+      } else {
+        // Password does not meet the criteria
+        this.showPasswordWarning = true;
+      }
+    },
     async submitData(event) {
       event.preventDefault();
+      this.validatePassword();
+      if (!this.showPasswordWarning){
       const apiUrl = "http://localhost:61050/dms/access/signup";
       const token = this.$store.getters.getUserToken;
       console.log("token", token);
@@ -186,16 +222,14 @@ export default {
           didOpen: (toast) => {
             toast.onmouseenter = Swal.stopTimer;
             toast.onmouseleave = Swal.resumeTimer;
-          },
-          onBeforeOpen: (toast) => {
-            toast.style.zIndex = 10000;
-          },
+          },          
         });
         Toast.fire({
           icon: "error",
           title: "Please Fill all the Fields!",
         });
       }
+    }
     },
     updateWebAccess() {
       this.userdetails.webAccess =
@@ -237,7 +271,6 @@ export default {
   border: 0;
   cursor: pointer;
   width: 100% !important;
-  margin-bottom: 8px !important;
   letter-spacing: -0.025rem;
   text-transform: uppercase;
   background-size: 150%;
@@ -251,7 +284,7 @@ export default {
     0 2px 4px -1px rgba(0, 0, 0, 0.07);
 }
 .mb-3{
-  margin-bottom: 9px !important;
+  margin-bottom: 7px !important;
 }
 .mb-3 > input {
   display: block;
@@ -288,6 +321,39 @@ export default {
   z-index: 1 !important;
   /* top:-206px */
 }
+
+.passwordContainer{
+  position: relative;
+}
+
+.input-with-icon{
+  position: relative;
+
+}
+.eyeIcon {
+  position: absolute;
+  right: 10px;
+  transform: translateY(-100%);
+  cursor: pointer;
+}
+.warning-text {
+  color: red;
+  font-size: 10px;
+}
+.passwordContainer > input {
+  display: block;
+  width: calc(100% - 0px); /* Adjust width to accommodate eye icon */
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4rem;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #d2d6da;
+  border-radius: 0.5rem;
+}
+
 
 .container {
   position: relative;
@@ -420,3 +486,4 @@ export default {
   }
 }
 </style>
+

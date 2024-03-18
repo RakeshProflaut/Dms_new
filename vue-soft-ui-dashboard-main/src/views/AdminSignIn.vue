@@ -9,7 +9,7 @@
       </div>
     </div>
   </div>
-  <main class="mt-0 main-content main-content-bg">
+  <main class="mt-0 main-content main-content-bg  min-vh-100">
     <section>
       <div class="page-header min-vh-75">
         <div class="container">
@@ -83,14 +83,7 @@
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm"
                                    
-                  >
-                    <!-- Don't have an account? -->
-                    <!-- <router-link
-                      :to="{ name: 'Sign Up' }"
-                      class="text-success  font-weight-bold"
-                      style="color:#5FC0FF !important;" 
-                      >Sign Up</router-link
-                    > -->
+                  >                  
                     <a style="margin-left: 2%;" href="#" 
                     >Forgot Password?</a>
                   </p>
@@ -99,13 +92,11 @@
             </div>
             <div class="col-md-6">
               <div
-                class="top-0 oblique position-absolute h-100 d-md-block d-none me-n8"
+                class="top-0 oblique position-absolute h-100  d-md-block d-none"
               >
                 <div
                   class="bg-cover oblique-image position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
                   :style="{
-                    backgroundSize: auto,
-                    backgroundRepeat: no - repeat,
                     backgroundImage:
                       'url(' +
                       require('@/assets/img/curved-images/curved8.jpg') +
@@ -131,7 +122,6 @@
 </div>
   <app-footer/>
 </template>
-
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -185,6 +175,7 @@ export default {
           const response =await axios.post("http://localhost:61050/dms/access/login", this.user);
           this.showLoader = true;
                await new Promise(resolve => setTimeout(resolve, 3000));
+          this.$store.commit("setReachedLandingPage", true);
           this.$store.commit("userToken", response.data.token);
             this.$store.commit("userId", response.data.userId);
             this.$store.commit("adminName", this.user.userName);

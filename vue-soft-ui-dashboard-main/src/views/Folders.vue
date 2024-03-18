@@ -171,20 +171,14 @@
               </div>
             </div>
             <v-dialog v-model="openFolderDialogeBox" style="z-index: 1001">
+              <div style="position: relative; left: 65%">
+        <button class="closebtn" @click="openFolderDialogeBox = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
               <v-card style="width: 28%; margin: 0 auto; border-radius: 3%">
                 <div>
-                  <div class="folderContainer">
-                    <div>
-                      <button
-                        class="closebtn"
-                        @click="openFolderDialogeBox = false"
-                      >
-                        <i
-                          class="bx bx-x"
-                          style="position: relative; top: -40%"
-                        ></i>
-                      </button>
-                    </div>
+                  <div class="folderContainer">                
                     <div class="pt-10 text-center card-header">
                       <h5>Folder Name</h5>
                     </div>
@@ -629,19 +623,17 @@ body > div.v-overlay-container > div > div.v-overlay__content > div {
 }
 
 .closebtn {
-  position: relative;
-  left: 4%;
-  float: right;
   width: 22px;
   height: 22px;
   color: #d11313;
   font-size: 30px;
-  opacity: 0.3;
+  opacity: 1;
 }
 
 .closebtn:hover {
-  opacity: 1;
+  opacity: .5;
 }
+
 
 .container {
   position: relative;
@@ -698,9 +690,7 @@ body > div.v-overlay-container > div > div.v-overlay__content > div {
   flex-direction: column;
 }
 
-/* .v-pagination__list{
-  margin-bottom: 0px !important;
-} */
+
 .tableContaier {
   position: relative;
   height: 378px;

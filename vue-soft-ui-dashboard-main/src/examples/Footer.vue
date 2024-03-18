@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer" style="padding-top: .3% !important;">
+  <footer class="footer"  style="padding-top: .3% !important;">
     <div class="container-fluid">
       <div class="nav nav-footer justify-content-center justify-content-lg-end">      
         <div class="col-lg-6">
@@ -12,7 +12,7 @@
           >
             ©powered by
             <a
-              href="https://www.creative-tim.com"
+              href="https://www.proflaut.com"
               class="font-weight-bold"
               target="_blank"
               >PROFLAUT</a

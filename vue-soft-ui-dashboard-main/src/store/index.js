@@ -4,7 +4,9 @@ import bootstrap from "bootstrap/dist/js/bootstrap.min.js";
 export default createStore({
   state: {
     hideConfigButton: false,
+    reachedLandingPage: false,
     token: null,
+    folderDetails:{},
     userId: null,
     userName:"",
     templete:"",
@@ -30,6 +32,9 @@ export default createStore({
     toggleConfigurator(state) {
       state.showConfig = !state.showConfig;
     },
+    setReachedLandingPage(state, value) {
+      state.reachedLandingPage = value;
+    },
     setData(state, newData) {
       state.token = newData;
     },
@@ -47,6 +52,9 @@ export default createStore({
     },
     templeteStatus(state, templeteStatus) {
       return (state.templete = templeteStatus);
+    },
+    setFolderDetails(state, obj) {
+      state.folderDetails = obj;
     },
     navbarMinimize(state) {
       const sidenav_show = document.querySelector(".g-sidenav-show");
@@ -92,6 +100,9 @@ export default createStore({
     setGlobalData(state, newData) {
       state.token = newData; // Mutation to update the global data
     },
+    setFolderDetails({ commit }, obj) {
+      commit('setObject', obj);
+    },
   },
   getters: {
     getUserToken(state) {
@@ -108,6 +119,9 @@ export default createStore({
     },
     getTemplets(state) {
       return state.templete;
+    },
+    getFolderDetails(state) {
+      return state.folderDetails;
     },
   },
 });

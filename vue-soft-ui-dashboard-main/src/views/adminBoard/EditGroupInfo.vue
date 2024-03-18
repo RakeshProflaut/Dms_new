@@ -1,12 +1,7 @@
 <template>
   <v-card style="width: 28%; border-radius: 3%">
     <div>
-      <div class="container" style="width: 100%; height: 100%">
-        <div>
-          <button class="closebtn"  @click="$emit('closeEditBox', false)">
-            <i class="bx bx-x" style="position: relative; top: 20%"></i>
-          </button>
-        </div>
+      <div class="container" style="width: 100%; height: 100%">    
         <div class="pt-10 text-center card-header">
           <h5> Edit Group</h5>
         </div>

@@ -26,6 +26,7 @@ import DCDRConfigur from "@/views/adminBoard/DCDRConfigur.vue"
 import DigitalSignature from "@/views/adminBoard/DigitalSignature.vue"
 import MountPoints from "@/views/adminBoard/MountPoints.vue"
 import AdminProfile from "@/views/adminBoard/AdminProfile.vue"
+import Scanner from "@/views/Scanner.vue"
 
 
 
@@ -92,7 +93,7 @@ const routes = [
         path: "/ocr",
         name: "Ocr",
         component:Ocr, 
-      },         
+      },               
       {
         path: "/tables",
         name: "Tables",
@@ -124,7 +125,12 @@ const routes = [
         path: "/sign-up",
         name: "Sign Up",
         component: SignUp,
-      },   
+      }, 
+      {
+        path: "/scanner",
+        name: "Scanner",
+        component:Scanner, 
+      },    
      
     ]
   }, 

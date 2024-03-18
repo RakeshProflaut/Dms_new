@@ -1,13 +1,5 @@
 <template>
-  <div style="display: flex; flex-direction: column">
-    <div>
-      <button class="closebtn" @click="dialogeBoxtoggle">
-        <i
-          class="bx bx-x"
-          style="position: relative; top: -30%; left: -20%"
-        ></i>
-      </button>
-    </div>
+  <div style="display: flex; flex-direction: column">   
     <div class="pt-1 text-center card-header">
       <h5>{{ metaDataName }}</h5>
     </div>

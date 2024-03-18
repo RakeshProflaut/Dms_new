@@ -72,8 +72,7 @@
                 </div>
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
-                    <!-- Don't have an account? -->
-                    <router-link
+                      <router-link
                       :to="{ name: 'AdminSign In' }"
                       class="text-success text-gradient font-weight-bold"
                       >Admin Sign In</router-link
@@ -110,7 +109,7 @@
   <div class='circle'></div>
   <div class='circle'></div>
   <div class='circle'></div>
-  <div class='circle'></div>
+  <div class='circle'></div>  
   <div class='circle'></div>
 </div>
   <div class="bg"></div>
@@ -173,7 +172,7 @@ export default {
           this.showLoader = true;
           console.log("loader",this.showLoader);
           await new Promise(resolve => setTimeout(resolve, 3000));
-
+            this.$store.commit("setReachedLandingPage", true);
             this.$store.commit("userToken", response.data.token);
             this.$store.commit("userId", response.data.userId);
             this.$store.commit("userName", this.user.userName);
@@ -302,7 +301,7 @@ export default {
 .eyeIcon{
   position: absolute;
   top: 60%;
-  right: 10px; /* Adjust this value as needed to align the icon */
+  right: 10px; 
   transform: translateY(-50%);
   cursor: pointer;
 }

@@ -8,35 +8,30 @@
       <div class="right">
         <!-- <v-btn :ripple="false" @click="editItem(item)">Upload</v-btn>  
           <v-btn :ripple="false" @click="sendUpdatedData">Save</v-btn> -->        
-          <v-btn v-if="editOption" :ripple="false"  @click="openEditDoc">Edit</v-btn>
-        <v-btn :ripple="false" @click="productDialogClose">Close</v-btn>
+          <v-btn v-if="editdoc" :ripple="false"  @click="updateDoc">Save</v-btn>
+          <v-btn v-if="editOption" :ripple="false"  @click="openEditDoc">Edit</v-btn>          
+          <v-btn :ripple="false" @click="productDialogClose">Close</v-btn>
       </div>
     </div>
     <div class="body">
       <splitpanes class="default-theme" vertical>
         <pane style="">
-          <div class="fileBlock">           
-            <!-- <div class="fileContainer"> -->
-            <!-- <div class="fileEditbtn">
-              <v-btn @click="editdialogeToggle = true">Edit</v-btn>
-              <v-dialog v-model="editdialogeToggle">
-                <v-card>
-                  <edit-item v-on:closeDialogeBox="closeDialogeBox" />
-                </v-card>
-              </v-dialog>
-            </div> -->
+          <div class="fileBlock">
             <div v-if="editdoc" class="editDoc">
-            <web-viewer :initialDoc="fileData"/>
-            </div>
-            <div v-else style="flex-basis: 95%;height: 100%;width: 100%;">            
-              <iframe
-              id="iframeId"
-              style="display: none;margin-left: 8%"
-              ></iframe>
-            </div>
-          </div>
-          <!-- </div> -->
-        </pane>
+            <web-viewer
+              ref="upadateDocument"
+               :fileDetails="docData"  
+               :initialDoc="fileData"
+               @closeDocView="closeViewDoc"
+               />
+            </div> 
+            <div v-else style="height: 100%; width: 100%;">            
+  <div v-if="isImage" class="imageContainer">
+    <img class="viewImage" :src="fileData" />
+  </div>
+  <iframe v-else id="iframeId" style="display: none; margin-left: 8%; width: 100%; height: 100%;"></iframe>
+</div>
+</div>        </pane>
         <pane style="">
           <div class="card-body px-0 pt-0 pb-2">
             <div class="textFileds" style="flex-basis:50%;">
@@ -48,6 +43,7 @@
                   id="name"
                   v-model="metaDetails.tableName"
                   placeholder="Name"
+                  readonly
                 />
               </div>
               <!-- <div style="margin-right: 5%">
@@ -71,7 +67,7 @@
                   v-model="fieldNam.value"
                   style="width: 100%"
                   :required="true"
-                  readonly
+                  :readonly="isReadOnly"
                   class="extensionField"
                   />
                 </div>
@@ -89,6 +85,7 @@
 <script>
 import { Splitpanes, Pane } from "splitpanes";
 import "splitpanes/dist/splitpanes.css";
+import Swal from "sweetalert2";
 import axios from "axios";
 import DocTab from "./DocTab.vue";
 import WebViewer from "@/views/WebViewer.vue"
@@ -116,10 +113,13 @@ export default {
     return {
       base64Data: null,
       docContent: "",
+      isReadOnly:true,
       editOption:false,
-      imageDetails: "",
+      imageDetails:"",
       metaDetails: "",
+      docData:null,
       fileData:'',
+      isImage:false,
       fieldNames: [],
       viewer:null,
       editdoc:false,
@@ -177,7 +177,7 @@ export default {
           this.imageDetails = response.data.image;
           this.metaDetails = response.data.metaDetails;
           this.fieldNames = this.metaDetails.fieldNames;
-          console.log("fieldsss", response.data);
+          this.docData=response.data;
           if(this.imageDetails.extention =='pdf'||this.imageDetails.extention =='docx'){
           this.editOption=true;
     };
@@ -190,7 +190,8 @@ export default {
           this.fileData = "data:application/pdf;base64," + image;
           iframe.src = "data:application/pdf;base64," + image;
         } else if (['jpg', 'jpeg', 'png'].includes(extention)) {
-          iframe.src = "data:image/" + extention + ";base64," + image;
+          this.fileData = "data:image/" + extention + ";base64," + image;
+           this.isImage = true;
         }
         else if (extention === 'docx') {
           // Handle displaying .docx file
@@ -203,18 +204,40 @@ export default {
       }       
         })
         .catch((error) => console.error("Error occured by", error));
+          },
 
-   
-
-
-    },
+          updateDoc(){
+            this.$refs.upadateDocument.sendDocumentToBackend();
+          },
     openEditDoc(){
+      this.isReadOnly=false;
       this.editdoc =true;     
     },   
 
     productDialogClose() {
       this.$emit("closeDocView", false);
     },
+    closeViewDoc(){
+      this.$emit("closeDocView", false);
+      const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              background: "#4fb945",
+              color: "white",
+              timer: 2000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Edited successfully",
+            });
+
+    }
   },
 };
 </script>
@@ -433,55 +456,9 @@ select {
 height: 150px; */
 }
 
-/* .splitpanes__pane {
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
-  transition:
-    background-color 0.3s ease,
-    transform 0.3s ease; /* Added transition */
-/* } */ 
-
-
-/* .splitpanes__pane {
-  display: flex;
-  flex-direction: column;
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-} */
 
 
 
-/* 
-
-.fileEditbtn {
-  flex-basis: 10%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-right: 3%;
-  width: 100%;
-  height: 100%;
-} */
-
-/* .fileEditbtn > .v-btn {
-  color: #fff;
-  font-weight: bold;
-  background: #87e42e;
-  transition: 0.5s ease;
-  box-shadow:
-    0 0.25rem 0.375rem -0.0625rem rgba(20, 20, 20, 0.12),
-    0 0.125rem 0.25rem -0.0625rem rgba(20, 20, 20, 0.07) !important;
-}
-
-.fileEditbtn > .v-btn:hover {
-  cursor: pointer;
-  color: #344767;
-  background-image: linear-gradient(270deg, #17ad37 0%, #98ec2d 100%);
-} */
 
 .fileBlock {
   display: flex;
@@ -534,6 +511,21 @@ height: 150px; */
   cursor: pointer;
   color: #344767;
   background-image: linear-gradient(270deg, #17ad37 0%, #98ec2d 100%);
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  padding: 5% 0px;
+}
+
+.imageContainer >img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  object-fit: contain;
 }
 
 .v-blur {

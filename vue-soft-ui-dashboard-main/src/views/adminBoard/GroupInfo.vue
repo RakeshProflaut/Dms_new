@@ -1,6 +1,7 @@
 <template>
   <div>
-    <!-- <div class="container-fluid">
+    <div class="container-fluid">
+    <!--
       <div
         class="mt-4 page-header min-height-300 border-radius-xl"
         :style="{
@@ -9,7 +10,8 @@
           backgroundPositionY: '50%',
         }"
       ></div>
-    </div> -->
+    -->
+    </div> 
     <div class="container-fluid">
       <div class="row" style="margin-top: 0.5rem !important">
         <div class="col-12">
@@ -85,6 +87,9 @@
                               ></span>
                             </div>
                           </template>
+                          <template v-else-if="header.key === 'sno'">
+                            {{ rowIndex + 1 }}
+                          </template>
                           <template v-else-if="header.key === 'user'">
                             <div
                               @click="openAccess(data['id'])"
@@ -126,17 +131,14 @@
               v-model="openDialogeBox"
               style="display: flex; padding-left: 73%; z-index: 1001"
             >
+            <div style="position: relative; left: 27%">
+        <button class="closebtn" @click="openDialogeBox = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
               <v-card style="width: 28%; border-radius: 3%">
                 <div>
-                  <div class="container" style="width: 100%; height: 100%">
-                    <div>
-                      <button class="closebtn" @click="openDialogeBox = false">
-                        <i
-                          class="bx bx-x"
-                          style="position: relative; top: 20%"
-                        ></i>
-                      </button>
-                    </div>
+                  <div class="container" style="width: 100%; height: 100%">                  
                     <div class="pt-10 text-center card-header">
                       <h5>Group Registration</h5>
                     </div>
@@ -164,12 +166,15 @@
               v-model="openEditbox"
               style="display: flex; padding-left: 73%; z-index: 1001"
             >
+            <div style="position: relative; left: 27%">
+        <button class="closebtn" @click="openEditbox = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
             <edit-group-info
               @showLoader="handleEditShowLoader"
               v-on:closeEditBox="closeEditBox"
               :groupDetails="selectedGroupDetails" 
-
-
             />
 
             </v-dialog>
@@ -177,17 +182,14 @@
               v-model="openAccessBox"
               style="display: flex; padding-left: 73%; z-index: 1001"
             >
+            <div style="position: relative; left: 27%">
+        <button class="closebtn" @click="openAccessBox = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
               <v-card style="width: 28%; border-radius: 3%">
                 <div>
-                  <div class="container" style="width: 100%; height: 100%">
-                    <div>
-                      <button class="closebtn" @click="openAccessBox = false">
-                        <i
-                          class="bx bx-x"
-                          style="position: relative; top: 20%"
-                        ></i>
-                      </button>
-                    </div>
+                  <div class="container" style="width: 100%; height: 100%">                   
                     <div class="pt-10 text-center card-header">
                       <h5>Assign Users</h5>
                     </div>
@@ -298,7 +300,10 @@ export default {
       page: 1, // Current page
       itemsPerPage: 10, // Number of items per page
       headers: [
-        { key: "id", title: "ID" },
+      {
+          key: "sno",
+          title: "S.No",
+        },
         { key: "groupName", title: "GROUP NAME" },
         { key: "createdBy", title: "CREATED BY" },
         { key: "createdAt", title: "CREATED AT" },
@@ -659,6 +664,10 @@ export default {
   min-height: 75px !important;
 }
 
+.card .card-header {
+  padding: 1rem !important;
+}
+
 .newButton {
   display: flex;
   justify-content: flex-end;
@@ -703,18 +712,15 @@ export default {
 }
 
 .closebtn {
-  position: relative;
-  left: 6%;
-  float: right;
   width: 22px;
   height: 22px;
   color: #d11313;
   font-size: 30px;
-  opacity: 0.3;
+  opacity:1;
 }
 
 .closebtn:hover {
-  opacity: 1;
+  opacity: .3;
 }
 
 .text-center > button {

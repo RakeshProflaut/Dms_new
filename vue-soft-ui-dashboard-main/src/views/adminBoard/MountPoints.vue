@@ -121,19 +121,16 @@
             </div>
             <v-dialog
               v-model="openDialogeBox"
-              style="display: flex; padding-left: 73%; z-index: 1001"
+              style="padding-left: 73%; z-index: 1001"
             >
+            <div style="position: relative; left: 27%">
+        <button class="closebtn" @click="openDialogeBox = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
               <v-card style="width: 28%; border-radius: 3%">
                 <div>
-                  <div class="container" style="width: 100%; height: 100%">
-                    <div>
-                      <button class="closebtn" @click="openDialogeBox = false">
-                        <i
-                          class="bx bx-x"
-                          style="position: relative; top: 20%"
-                        ></i>
-                      </button>
-                    </div>
+                  <div class="container" style="width: 100%; height: 100%">                    
                     <div class="pt-10 text-center card-header">
                       <h5>Folder Path Creation</h5>
                     </div>
@@ -159,20 +156,17 @@
             </v-dialog>
             <v-dialog
               v-model="openAccessBox"
-              style="display: flex; padding-left: 73%; z-index: 1001"
+              style="padding-left: 73%; z-index: 1001"
             >
+            <div style="position: relative; left: 27%">
+        <button class="closebtn" @click="openAccessBox = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
               <v-card style="width: 28%; border-radius: 3%">
                 <div>
-                  <div class="container" style="width: 100%; height: 100%">
-                    <div>
-                      <button class="closebtn" @click="openAccessBox = false">
-                        <i
-                          class="bx bx-x"
-                          style="position: relative; top: 20%"
-                        ></i>
-                      </button>
-                    </div>
-                    <div class="pt-10 text-center card-header">
+                  <div class="container" style="width: 100%; height: 100%">                    
+                    <div class="pt-4 text-center card-header">
                       <h5>Allocate Folder</h5>
                     </div>
                     <div class="card-body">
@@ -604,9 +598,6 @@ export default {
 }
 
 .closebtn {
-  position: relative;
-  left: 6%;
-  float: right;
   width: 22px;
   height: 22px;
   color: #d11313;
@@ -618,18 +609,17 @@ export default {
   opacity: 1;
 }
 
+
 .text-center > button {
   color: #fff;
   border: 0;
   cursor: pointer;
   width: 50% !important;
-  margin-bottom: 8px !important;
   letter-spacing: -0.025rem;
   text-transform: uppercase;
   background-size: 150%;
   background-position-x: 25%;
   background-image: linear-gradient(310deg, #141727 0%, #3a416f 100%);
-  margin-top: 16px !important;
   border-radius: 1rem;
   padding: 8px 0px;
   box-shadow:

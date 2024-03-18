@@ -8,9 +8,12 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "vite": "node ./bin/vite"
+    "vite": "node ./bin/vite",
+    "move-static": "cp -a ./node_modules/@pdftron/webviewer/public/. ./dist/public/webviewer",
+    "mybuild": "mybuildscript && npm run move-static"
   },
   "dependencies": {
+    "@fancyapps/fancybox": "^3.5.7",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",

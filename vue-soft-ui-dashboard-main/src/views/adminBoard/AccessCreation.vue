@@ -1,13 +1,5 @@
 <template>
   <div style="display: flex; flex-direction: column">
-    <div>
-      <button class="closebtn" @click="dialogeBoxtoggle">
-        <i
-          class="bx bx-x"
-          style="position: relative; top: -30%; left: -20%"
-        ></i>
-      </button>
-    </div>
     <div class="pt-1 text-center card-header">
       <h5>Access Right Creation</h5>
     </div>
@@ -217,7 +209,7 @@ export default {
         this.viewAccess &&
         this.writeAccess != ""
       ) {
-        if (this.viewAccess == "Yes" || this.writeAccess == "yes") {
+        if (this.viewAccess == "Yes" || this.writeAccess == "Yes") {
           this.postAccess(event);
         } else {
           const Toast = Swal.mixin({
@@ -315,20 +307,7 @@ export default {
 </script>
 
 <style scoped>
-.closebtn {
-  position: relative;
-  /* left: 6%; */
-  float: right;
-  width: 22px;
-  height: 22px;
-  color: #d11313;
-  font-size: 30px;
-  opacity: 0.3;
-}
 
-.closebtn:hover {
-  opacity: 1;
-}
 
 .form {
   width: 100%;

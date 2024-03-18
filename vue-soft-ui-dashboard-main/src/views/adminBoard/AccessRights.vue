@@ -37,7 +37,7 @@
         <div class="col-12">
           <div class="card" style="height: 514px !important">
             <div style="display: flex; justify-content: space-between">
-              <div class="card-header">
+              <div class="card-header text-uppercase">
                 <h4>Access Rights</h4>
               </div>
               <div class="newButton">
@@ -195,6 +195,11 @@
             </div>
           </div>
           <v-dialog v-model="openDialogeBox" style="z-index: 1001">
+            <div style="position: relative; left: 64%">
+        <button class="closebtn" @click="openDialogeBox = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
             <v-card style="width: 28%; border-radius: 3%; margin: 0 auto">
               <access-creation
                 @showLoader="handleShowLoader"
@@ -205,6 +210,11 @@
             </v-card>
           </v-dialog>
           <v-dialog v-model="openTAccessDialoge" style="z-index: 1001">
+            <div style="position: relative; left: 70%">
+        <button class="closebtn" @click="openTAccessDialoge = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
             <v-card style="width: 40%; border-radius: 3%; margin: 0 auto">
               <view-access-vue
                 v-on:dialogeBox="userTableDialogBox"
@@ -213,7 +223,12 @@
             </v-card>
           </v-dialog>
           <v-dialog v-model="openEditbox" style="z-index: 1001">
-            <v-card style="width: 60%; border-radius: 3%; margin: 0 auto">
+            <div style="position: relative; left: 79%">
+        <button class="closebtn" @click="openEditbox = false">
+          <i class="bx bx-x" style="position: relative; top: 10%"></i>
+        </button>
+      </div>
+            <v-card style="width: 60%; border-radius: 3%; margin: 0 auto;">
               <edit-access
               @showLoader="handleEditShowLoader"
               v-on:closeEditBox="closeEditBox"
@@ -476,6 +491,19 @@ export default {
   top: 0;
   z-index: 1;
   background: #fff;
+}
+
+
+.closebtn {
+  width: 22px;
+  height: 22px;
+  color: #d11313;
+  font-size: 30px;
+  opacity: 1;
+}
+
+.closebtn:hover {
+  opacity: .3;
 }
 
 .loader-overlay {

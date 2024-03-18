@@ -77,6 +77,7 @@
     'font-weight-bolder text-uppercase': header.key === 'userName',}"
 :style="{
     'text-align': header.key === 'webAccess' || header.key === 'adminAccess' || header.key =='ldap' || header.key === 'group' || header.key === 'action' ? 'center' : 'left',
+    'padding': getCellPadding(data[header.key])
   }"
                       >
                         <template
@@ -111,7 +112,7 @@ background: linear-gradient(270deg, rgba(228,243,227,1) 0%, rgba(88,189,255,1) 9
                         <template v-else-if="header.key === 'action'">
                           <div
                             style="
-                              font-size: 0.7rem !important;
+                              font-size: 0.5rem !important;
                               height: 2rem !important;
                               "
                             class="text-secondary font-weight-bold text-xs"
@@ -125,7 +126,7 @@ background: linear-gradient(270deg, rgba(228,243,227,1) 0%, rgba(88,189,255,1) 9
                           <div
                             @click="openAccess(data['userId'])"
                             style="
-                              font-size: 0.7rem !important;
+                              font-size: 0.5rem !important;
                               height: 2rem !important;
                             "
                             class="text-secondary font-weight-bold text-xs"
@@ -153,6 +154,11 @@ background: linear-gradient(270deg, rgba(228,243,227,1) 0%, rgba(88,189,255,1) 9
           </div>
         </div>
         <v-dialog v-model="openDialogeBox" style="z-index: 1001">
+          <div style="position: relative; left:64%">
+        <button class="closebtn" @click="openDialogeBox = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
           <v-card style="width: 28%; border-radius: 3%; margin: 0 auto">
             <user-signup
               @showLoader="handleShowLoader"
@@ -161,6 +167,11 @@ background: linear-gradient(270deg, rgba(228,243,227,1) 0%, rgba(88,189,255,1) 9
           </v-card>
         </v-dialog>
         <v-dialog v-model="openEditbox" style="z-index: 1001">
+          <div style="position: relative; left: 64%">
+        <button class="closebtn" @click="openEditbox = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
           <v-card style="width: 28%; border-radius: 3%; margin: 0 auto">
             <edit-user-info-vue
               @showLoader="handleEditShowLoader"
@@ -173,14 +184,14 @@ background: linear-gradient(270deg, rgba(228,243,227,1) 0%, rgba(88,189,255,1) 9
           v-model="openAccessBox"
           style="display: flex; padding-left: 73%; z-index: 1001"
         >
+        <div style="position: relative; left: 27%">
+        <button class="closebtn" @click="openAccessBox = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
           <v-card style="width: 28%; border-radius: 3%">
             <div>
               <div class="container" style="width: 100%; height: 100%">
-                <div>
-                  <button class="closebtn" @click="openAccessBox = false">
-                    <i class="bx bx-x" style="position: relative; top: 20%"></i>
-                  </button>
-                </div>
                 <div class="pt-10 text-center card-header">
                   <h5>Assign Group</h5>
                 </div>
@@ -357,6 +368,16 @@ export default {
     };
   },
   methods: {
+
+    getCellPadding(content) {
+  const maxWidth = 17.8; 
+
+  const contentLength = content ? content.length : 0;
+
+  const padding = contentLength > maxWidth ? `${Math.max(1, 1 - (contentLength - maxWidth))}px` : '5px';
+
+  return `0 ${padding}`; 
+},
     async handleShowLoader(value) {
       // Update the isLoading data property based on the emitted value
       this.openDialogeBox = false;
@@ -747,19 +768,17 @@ export default {
   top: -15px;
 }
 .closebtn {
-  position: relative;
-  left: 6%;
-  float: right;
   width: 22px;
   height: 22px;
   color: #d11313;
   font-size: 30px;
-  opacity: 0.3;
+  opacity: 1;
 }
 
 .closebtn:hover {
-  opacity: 1;
+  opacity: .3;
 }
+
 
 .text-center > button {
   color: #fff;

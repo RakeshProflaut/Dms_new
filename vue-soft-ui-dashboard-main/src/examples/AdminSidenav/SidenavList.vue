@@ -1,108 +1,30 @@
-<!-- <template>
-  <div
-    class="w-auto h-auto collapse navbar-collapse max-height-vh-100"
-    id="sidenav-collapse-main"
-  >
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <sidenav-collapse navText="User Information" :to="{ name: 'User Information' }">
-          <template #icon>
-            <shop />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Group Information" :to="{ name: 'Group Information' }">
-          <template #icon>
-            <document />
-          </template>
-        </sidenav-collapse>
-      </li>      
-      <li class="nav-item">
-        <sidenav-collapse navText="Meta Data" :to="{name: 'Meta Data'}">
-          <template #icon>
-            <document/>
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Access Rights" :to="{name: 'Access Rights'}">
-          <template #icon>
-            <document/>
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Licence Management" :to="{ name: 'Licence Management' }">
-          <template #icon>
-            <document />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Worlflow Management" :to="{ name: 'Worlflow Management' }">
-          <template #icon>
-            <document />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="CKYC" :to="{ name: 'CKYC' }">
-          <template #icon>
-            <document />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="DC-DR Configure" :to="{ name: 'DCDR Configure' }">
-          <template #icon>
-            <document />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Digital Signature" :to="{ name: 'Digital Signature' }">
-          <template #icon>
-            <document />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Mount Points" :to="{ name:'Mount Points'}">
-          <template #icon>
-            <document />
-          </template>
-        </sidenav-collapse>
-      </li>    
-    </ul>
-  </div>
-
-</template> -->
-
 <template>
   <div class="w-auto h-auto collapse navbar-collapse max-height-vh-100" id="sidenav-collapse-main">
     <ul class="navbar-nav">
       <li class="nav-item" v-for="(item, index) in sidenavItems" :key="index">
-        <sidenav-collapse :navText="item.navText" :to="item.to" :active="activeTab === item.to.name" @click="setActiveTab(item.to.name)"
-                         :style="getActiveStyle(item)"
+        <router-link class="nav-link"       
+         :to="item.to"
+         :active="activeTab === item.to.name"
+         @click="setActiveTab(item.to.name)"
+         :style="getActiveStyle(item)"
         >
-          <template #icon>
-            <component :is="item.icon" /> 
-          </template>
-        </sidenav-collapse>
+        <div
+      class="text-center bg-white shadow icon icon-shape icon-sm border-radius-md d-flex align-items-center justify-content-center"
+      :class="this.$store.state.isRTL ? ' ms-2' : 'me-2'"
+    >
+        <i style="color: #3A416F;font-size: 1.2rem;" :class="item.icon"></i>
+    </div>
+    <span
+      class="nav-link-text"
+      :class="this.$store.state.isRTL ? ' me-1' : 'ms-1'"
+      >{{ item.navText }}</span
+    >
+        </router-link >
       </li>
     </ul>
   </div>
 </template>
 <script>
-import SidenavCollapse from "./SidenavCollapse.vue";
-import Shop from "../../components/Icon/Shop.vue";
-import Office from "../../components/Icon/Office.vue";
-import CreditCard from "../../components/Icon/CreditCard.vue";
-import CustomerSupport from "../../components/Icon/CustomerSupport.vue";
-import Document from "../../components/Icon/Document.vue";
-import Spaceship from "../../components/Icon/Spaceship.vue";
-
 export default {
   name: "SidenavList",
   data() {
@@ -111,32 +33,21 @@ export default {
       controls: "dashboardsExamples",
       isActive: "active",
       sidenavItems: [
-        { navText: 'User Information', to: { name: 'User Information' }, icon: Shop },
-        { navText: 'Group Information', to: { name: 'Group Information' }, icon: Document },
-        { navText: 'Meta Data', to: { name: 'Meta Data' }, icon: Document },
-        { navText: 'Access Rights', to: { name: 'Access Rights' }, icon: Document },
-        { navText: 'Licence Management', to: { name: 'Licence Management' }, icon: Document },
-        { navText: 'Worlflow Management', to: { name: 'Worlflow Management' }, icon: Document },
-        { navText: 'CKYC', to: { name: 'CKYC' }, icon: Document },
-        { navText: 'DC-DR Configuration', to: { name: 'DCDR Configure' }, icon: Document },
-        { navText: 'Digital Signature', to: { name: 'Digital Signature' }, icon: Document },
-        { navText: 'Mount Points', to: { name: 'Mount Points' }, icon: Document }
+        { navText: 'User Information', to: { name: 'User Information' }, icon:'mdi mdi-account' },
+        { navText: 'Group Information', to: { name: 'Group Information' }, icon: 'mdi mdi-account-group' },
+        { navText: 'Meta Data', to: { name: 'Meta Data' }, icon: 'mdi mdi-file-document' },
+        { navText: 'Access Rights', to: { name: 'Access Rights' }, icon: 'mdi mdi-lock' },
+        { navText: 'Licence Management', to: { name: 'Licence Management' }, icon: 'mdi mdi-key-variant' },
+        { navText: 'Worlflow Management', to: { name: 'Worlflow Management' }, icon: 'mdi mdi-cog-sync' },
+        { navText: 'CKYC', to: { name: 'CKYC' }, icon: 'mdi mdi-account-check' },
+        { navText: 'DC-DR Configuration', to: { name: 'DCDR Configure' }, icon: 'mdi mdi-server-network' },
+        { navText: 'Digital Signature', to: { name: 'Digital Signature' }, icon: "mdi mdi-draw" },
+        { navText: 'Mount Points', to: { name: 'Mount Points' }, icon: 'mdi mdi-usb-flash-drive' }
       ],
       activeTab: null    
     };
   },
-  components: {
-    SidenavCollapse,
-    // SidenavCard,
-    Shop,
-    Office,
-    CreditCard,
-    // Box3d,
-    CustomerSupport,
-    Document,
-    Spaceship,
-    // Settings,
-  },
+ 
   created() {
     // Set the activeTab to the name of the "User Information" tab
     this.activeTab = 'User Information';
@@ -168,6 +79,14 @@ export default {
 <style scoped>
 .navbar-vertical.navbar-expand-xs .navbar-nav > .nav-item:hover {
   color: #344767;
+}
+
+.nav-link:hover >div{
+  background: #55B6F6 !important;
+}
+
+.nav-link:hover i{
+  color: white !important;
 }
 
 .navbar-vertical .navbar-nav .nav-link:hover {

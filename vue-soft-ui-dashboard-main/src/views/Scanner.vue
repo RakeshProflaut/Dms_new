@@ -43,9 +43,8 @@
               <div class="card-header text-uppercase">
                 <h4>{{ this.folderName }}</h4>
               </div>
-              <div v-if="this.write === 'Yes'" class="newButton">
+              <div  class="newButton">
                 <v-btn @click="openUploadDialogeBox = true"> Upload </v-btn>
-                <v-btn @click="navigateBack">Back</v-btn>
               </div>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
@@ -151,12 +150,7 @@
               </div>
             </div>
           </div>
-          <v-dialog v-model="docViewBox" style="z-index: 1001">
-            <div style="position: relative; left: 67%">
-        <button class="closebtn" @click="docViewBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
+          <!-- <v-dialog v-model="docViewBox" style="z-index: 1001">
             <v-card style="width: 35%; margin: 0 auto; border-radius: 3%">
               <view-file
                 :selectedDocId="selectedDocId"
@@ -164,100 +158,40 @@
               />
             </v-card>
           </v-dialog>
-          <v-dialog v-model="openUploadDialogeBox" style="z-index: 1001">
-            <div style="position: relative; left: 67%">
+        -->
+        <v-dialog
+      v-model="openUploadDialogeBox"
+      style="display: flex; padding-left: 73%; z-index: 1001"
+    >
+      <div style="position: relative; left: 27%">
         <button class="closebtn" @click="openUploadDialogeBox = false">
           <i class="bx bx-x" style="position: relative; top: 20%"></i>
         </button>
       </div>
-            <v-card style="width: 35%; margin: 0 auto; border-radius: 3%">
-              <upload-file
-                :selectedfolder="selectedfolder"
-                v-on:closeUploadDialogeBox="closeUploadDialogeBox"
-                @showLoader="handleShowLoader"
-              />
-            </v-card>
-          </v-dialog>
-          <v-dialog
-            v-model="openDialogeBox"
-            style="display: flex; padding-left: 73%; z-index: 1001"
-          >
-          <div style="position: relative; left: 67%">
-        <button class="closebtn" @click="openDialogeBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
-            <v-card style="width: 28%; border-radius: 3%">
-              <div>
-                <div class="container" style="width: 100%; height: 100%">
-                  <div>
-                    <button class="closebtn" @click="openDialogeBox = false">
-                      <i
-                        class="bx bx-x"
-                        style="position: relative; top: 20%"
-                      ></i>
-                    </button>
-                  </div>
-                  <div class="pt-10 text-center card-header">
-                    <h5>Group Registration</h5>
-                  </div>
-                  <div class="card-body">
-                    <form role="form">
-                      <div class="mb-3">
-                        <input
-                          id="name"
-                          type="text"
-                          placeholder="Name"
-                          aria-label="Name"
-                          v-model="enteredGroupName"
-                        />
-                      </div>
-                      <div class="text-center">
-                        <button @click="submitGroupName">Submit</button>
-                      </div>
-                    </form>
-                  </div>
+      <v-card style="width: 28%; border-radius: 3%">
+        <div>
+          <div class="container" style="width: 100%; height: 100%">
+            <div class="card-body">
+              <form role="form">
+                <div class="mb-3">
+                  <label>Select Image to upscale</label>
+                  <input
+                    type="file"
+                    id="fileUpload"
+                    name="myfile"
+                    @change="convertToBase64"
+                    accept="application/pdf"
+                  />
                 </div>
-              </div>
-            </v-card>
-          </v-dialog>
-
-          <v-dialog
-            v-model="openMailBox"
-            style="display: flex; padding-left: 73%; z-index: 1001"
-          >
-          <div style="position: relative; left: 28%">
-        <button class="closebtn" @click="openMailBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
-            <v-card style="width: 28%; border-radius: 3%">
-              <div>
-                <div class="container" style="width: 100%; height: 100%">                 
-                  <div class="pt-10 text-center card-header">
-                    <h5>Receiver Mail</h5>
-                  </div>
-                  <div class="card-body">
-                    <form role="form">
-                      <div class="mb-3">
-                        <!-- <label for="mail">To</label> -->
-                        <input
-                          id="mail"
-                          type="email"
-                          placeholder="Enter Mail"
-                          aria-label="Mail"
-                          v-model="enteredMail"
-                        />
-                      </div>
-                      <div class="text-center">
-                        <button @click="postMail">Submit</button>
-                      </div>
-                    </form>
-                  </div>
+                <div class="text-center">
+                  <button @click="submitImg">Submit</button>
                 </div>
-              </div>
-            </v-card>
-          </v-dialog>
+              </form>
+            </div>
+          </div>
+        </div>
+      </v-card>
+    </v-dialog>
         </div>
       </div>
     </div>
@@ -276,129 +210,29 @@
 
 <script>
 import setTooltip from "@/assets/js/tooltip.js";
-import setNavPills from "@/assets/js/nav-pills.js";
-import axios from "axios";
-import ViewFile from "./ViewFile.vue";
-import UploadFile from "./UploadFile.vue";
-import Swal from "sweetalert2";
-
+import setNavPills from "@/assets/js/nav-pills.js"; 
+import ScannerUploadfile from './ScannerUploadfile.vue';
 export default {
-  name: "viewFolder",
-  components: {
-    ViewFile,
-    UploadFile,
+name:'Scanner',
+mounted() {
+  setNavPills();
+  setTooltip(this.$store.state.bootstrap);    
+  this.$store.state.isAbsolute = true;
   },
-  data() {
-    return {
-      folderId: this.id,
-      page: 1, // Current page
-      itemsPerPage: 10, // Number of items per page
-      files: [],
-      docViewBox: false,
-      showLoader: false,
-      metaid: "",
-      enteredMail: "",
-      selectedDocId: "",
-      selectedfileId: "",
-      openUploadDialogeBox: false,
-      openMailBox: false,
-      selectedfolder: {
-        folderId: this.id,
-        view: this.view,
-        write: this.write,
-        folderName: this.folderName,
-        metaId: this.metaId,
-      },
-      headers: [
-        {
-          key: "sno",
-          title: "S.NO",
-        },
-        {
-          key: "docName",
-          title: "FILE NAME",
-        },
-        {
-          key: "createdBy",
-          title: "CREATED BY",
-        },
-        {
-          key: "createdAt",
-          title: "CREATED AT",
-        },
-        {
-          key: "send",
-          title: "Send",
-        },
-        {
-          key: "action",
-          title: "Action",
-        },
-      ],
-    };
+  components:{
+    ScannerUploadfile
   },
-  props: ["id", "view", "write", "folderName", "metaId"],
-  mounted() {
-    this.$store.state.isAbsolute = true;
-    setNavPills();
-    setTooltip(this.$store.state.bootstrap);
-    this.getAllFiles();
-    console.log("id",this.id);
+  data(){
+    return{
+      openUploadDialogeBox:false,
+    }
   },
-
-  computed: {
-    displayedData() {
-      const start = (this.page - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-
-      return this.files.slice(start, end);
-    },
-    pages() {
-      return Math.ceil(this.files.length / this.itemsPerPage);
-    },
-  },
-  beforeUnmount() {
-    this.$store.state.isAbsolute = false;
-  },
-  methods: {
-    navigateBack() {
-      // Emitting router push to go back
-      this.$router.push("/folders");
-    },
-
-    updateDisplayedData() {
-      // Your logic to update displayed data based on the new page number
-      const start = (this.page - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      this.displayedData = this.files.slice(start, end);
-    },
-
-    async getAllFiles() {
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      const apiUrl = `http://localhost:61050/dms/folder/getById/${this.id}`;
-      const token = this.$store.getters.getUserToken;
-      try {
-        const response = await axios.get(apiUrl, {
-          headers: {
-            token: token,
-          },
-        });
-        this.$store.commit("setFolderDetails",response.data);
-        console.log("getAllfiles",response.data);
-        this.metaid = response.data.metaId;
-        this.folderId = response.data.folderId;
-        this.files = response.data.files;
-      } catch (error) {
-        console.error("Error occured by", error);
-      }
-    },
-
+  methods:{  
     async handleShowLoader(value) {
       // Update the isLoading data property based on the emitted value
       this.openUploadDialogeBox = false;
       this.showLoader = value;
       setTimeout(() => {
-        this.getAllFiles();
         this.showLoader = false;
         const Toast = Swal.mixin({
           toast: true,
@@ -419,124 +253,12 @@ export default {
         });
       }, 3000);
     },
+  }
 
-    closeDocViewBox(value) {
-      this.docViewBox = value;
-    },
-
-    closeUploadDialogeBox(value) {
-      this.openUploadDialogeBox = value;
-      this.getAllFiles();
-    },
-
-    openDocViewBox(value) {
-      this.docViewBox = true;
-      this.selectedDocId = value;
-      this.getAllFiles();
-    },
-
-    // async getSendMailBox(id) {
-    //   const { value: email } = await Swal.fire({
-    //     title: "Receiver email address",
-    //     input: "email",
-    //     confirmButtonText: "Submit",
-    //     cancelButtonText: "Cancel",
-    //     confirmButtonColor: "#5FC0FF",
-    //     cancelButtoncolor: "#C72E2E",
-    //     inputPlaceholder: "To",
-    //     didOpen: () => {
-    //   Swal.showLoading(); // Show loading indicator when the modal is opened
-    // },
-    //   });
-    //   if (email) {
-    //     this.postMail(email, id);
-    //     Swal.fire(`Entered email: ${email}`);
-    //   }
-    // },
-
-    async getSendMailBox(id) {
-      this.openMailBox = true;
-      this.selectedfileId = id;
-    },
-
-    async postMail(event) {
-      const id = this.selectedfileId;
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      event.preventDefault();
-      const selectedFile = this.files.find((ele) => ele.id == id);
-      const apiUrl = `http://localhost:61050/dms/file/share`;
-      const token = this.$store.getters.getUserToken;
-      const postDetails = {
-        from: "sathishkumar@proflaut.com",
-        to: this.enteredMail,
-        docName: selectedFile.docName,
-        docId: selectedFile.id,
-      };
-      try {
-        this.showLoader = true;
-        const response = await axios.post(apiUrl, postDetails, {
-          headers: {
-            token: token,
-          },
-        });
-
-        this.openMailBox = false;
-        setTimeout(() => {
-          this.showLoader = false;
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            background: "#4fb945",
-            color: "white",
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-          });
-          Toast.fire({
-            icon: "success",
-            title: "Mail Sent  successfully",
-          });
-        }, 2000);
-      } catch (error) {
-        console.error("Error occured by", error);
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Failed to send email",
-        });
-      }
-    },
-  },
-};
+}
 </script>
 
 <style scoped>
-.min-height-300 {
-  min-height: 75px !important;
-}
-
-.card .card-header {
-  padding: 0.5rem !important;
-}
-
-#app
-  > div
-  > div.dashboard
-  > div.content
-  > div
-  > div
-  > div.v-card-text.card-text {
-  flex: 1 1 auto;
-  font-size: 0.875rem;
-  font-weight: 400;
-  letter-spacing: 0.0178571429em;
-  padding: 0.5px;
-  text-transform: none;
-}
 
 .newButton {
   display: flex;
@@ -572,6 +294,45 @@ export default {
   top: 0;
   z-index: 1;
   background: #fff;
+}
+
+.mb-3 > input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4rem;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #d2d6da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.5rem;
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.text-center > button {
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  width: 50% !important;
+  margin-bottom: 8px !important;
+  letter-spacing: -0.025rem;
+  text-transform: uppercase;
+  background-size: 150%;
+  background-position-x: 25%;
+  background-image: linear-gradient(310deg, #82d616, #5cc06e) !important;
+  margin-top: 16px !important;
+  border-radius: 1rem;
+  padding: 8px 0px;
+  box-shadow:
+    0 4px 7px -1px rgba(0, 0, 0, 0.11),
+    0 2px 4px -1px rgba(0, 0, 0, 0.07);
 }
 
 .loader-overlay {
@@ -710,54 +471,11 @@ export default {
   height: 22px;
   color: #d11313;
   font-size: 30px;
-  opacity:1;
+  opacity: 0.3;
 }
 
 .closebtn:hover {
-  opacity: .5;
+  opacity: 1;
 }
 
-.text-center > button {
-  color: #fff;
-  border: 0;
-  cursor: pointer;
-  width: 50% !important;
-  margin-bottom: 8px !important;
-  letter-spacing: -0.025rem;
-  text-transform: uppercase;
-  background-size: 150%;
-  background-position-x: 25%;
-  background: #5cc06e;
-  margin-top: 16px !important;
-  border-radius: 1rem;
-  padding: 8px 0px;
-  box-shadow:
-    0 4px 7px -1px rgba(0, 0, 0, 0.11),
-    0 2px 4px -1px rgba(0, 0, 0, 0.07);
-}
-
-.container {
-  position: relative;
-  top: -15px;
-}
-
-.mb-3 > input {
-  display: block;
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.4rem;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #d2d6da;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border-radius: 0.5rem;
-  transition:
-    box-shadow 0.15s ease,
-    border-color 0.15s ease;
-}
 </style>

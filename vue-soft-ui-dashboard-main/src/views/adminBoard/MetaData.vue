@@ -37,7 +37,7 @@
         <div class="col-12">
           <div class="card" style="height: 514px !important">
             <div style="display: flex;justify-content: space-between;">
-              <div class="card-header">
+              <div class="card-header text-uppercase  ">
                 <h4>Meta Data</h4>
               </div>
               <div class="newButton">
@@ -80,11 +80,8 @@
                           'pl-5': header.key !== 'action',
     'font-weight-bolder text-uppercase': header.key === 'userName',}"
 :style="{
-  'text-align':header.key === 'action'||header.key === 'view' ? 'center' : 'left',
-  
+  'text-align':header.key === 'action'||header.key === 'view' ? 'center' : 'left',  
 }"
-
-
 >
 <template v-if="header.key === 'view'">
   <div
@@ -100,7 +97,13 @@
                         </template>
                         <template v-else-if="header.key === 'sno'">
                             {{ rowIndex + 1 }}
-                          </template>                        
+                          </template>  
+                          <template v-else-if="header.key === 'fileExtenion'">
+                            <div  class="font-weight-bolder  text-black" >
+                          {{ data[header.key] }}
+                        </div>
+                          </template> 
+                                                
                         <template v-else>
                           <div
                           :class="{
@@ -128,7 +131,12 @@
           </div>
         </div>
         <v-dialog v-model="openDialogeBox" style="z-index: 1001">
-          <v-card style="width: 60%; margin: 0 auto">
+          <div style="position: relative; left: 80%">
+        <button class="closebtn" @click="openDialogeBox = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
+          <v-card style="width: 60%; margin: 0 auto;border-radius: 3%">
             <meta-data-table
               @showLoader="handleShowLoader"
               v-on:dialogeBox="listnerDialogBox"
@@ -137,7 +145,12 @@
         </v-dialog>
 
         <v-dialog v-model="openTableDialogeBox" style="z-index: 1001">
-          <v-card style="width: 60%; margin: 0 auto">
+          <div style="position: relative; left: 80%">
+        <button class="closebtn" @click="openTableDialogeBox = false">
+          <i class="bx bx-x" style="position: relative; top: 20%"></i>
+        </button>
+      </div>
+          <v-card style="width: 60%; margin: 0 auto;border-radius: 3%">
             <meta-user-table
               v-on:dialogeBox="userTableDialogBox"
               :selectedTableId="selectedTableId"
@@ -357,6 +370,19 @@ export default {
   z-index: 1;
   background: #fff;
 }
+
+.closebtn {
+  width: 22px;
+  height: 22px;
+  color: #d11313;
+  font-size: 30px;
+  opacity: 1;
+}
+
+.closebtn:hover {
+  opacity: .5;
+}
+
 
 .loader-overlay {
   position: fixed;

@@ -1,17 +1,8 @@
 <template>
   <div style="display: flex; flex-direction: column">
-    <div>
-      <button class="closebtn" @click="dialogeBoxtoggle">
-        <i
-          class="bx bx-x"
-          style="position: relative; top: -30%; left: -20%"
-        ></i>
-      </button>
-    </div>   
     <div class="pt-1 text-center card-header">       
         <h5>Metadata Information</h5>
-      </div>
-   
+      </div>   
     <div class="card-body px-0 pt-0 pb-2">
         <div style="display: flex;width: 100%;justify-content: space-between;">    
       <div class="tableExtension">

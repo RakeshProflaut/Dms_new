@@ -1,17 +1,9 @@
 <template>
-  <div style="display: flex; flex-direction: column">
-    <div>
-      <button class="closebtn" @click="$emit('closeEditBox', false)">
-        <i
-          class="bx bx-x"
-          style="position: relative; top: -30%; left: -20%"
-        ></i>
-      </button>
-    </div>
+  <div style="display: flex; flex-direction: column">   
     <div class="pt-1 text-center card-header">
       <h5>Edit Access</h5>
     </div>
-    <div class="card-body px-0 pt-0 pb-2">
+    <div class="card-body px-0 pt-0">
       <div>
         <form role="form" class="form">
           <div class="mb-3">
@@ -476,20 +468,7 @@ console.log("post detaisl",postDetails);
 </script>
 
 <style scoped>
-.closebtn {
-  position: relative;
-  /* left: 6%; */
-  float: right;
-  width: 22px;
-  height: 22px;
-  color: #d11313;
-  font-size: 30px;
-  opacity: 0.3;
-}
 
-.closebtn:hover {
-  opacity: 1;
-}
 
 .mb-3 {
   margin-bottom: 2px !important;
@@ -519,6 +498,7 @@ console.log("post detaisl",postDetails);
 
 .card-body {
   display: flex;
+  padding: 0px 0px !important;
 }
 .card-body > div {
   flex-basis: 50%;
@@ -545,13 +525,10 @@ console.log("post detaisl",postDetails);
   border: 0;
   cursor: pointer;
   width: 30% !important;
-  margin-bottom: 8px !important;
-  letter-spacing: -0.025rem;
   text-transform: uppercase;
   background-size: 150%;
   background-position-x: 25%;
   background-image: linear-gradient(310deg, #141727 0%, #3a416f 100%);
-  margin-top: 16px !important;
   border-radius: 1rem;
   padding: 8px 0px;
   box-shadow:

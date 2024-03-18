@@ -29,13 +29,14 @@
               </div>
             </div>
             <splitpanes class="default-theme" vertical>
-              <pane class="fileBlock">
-                <div style="flex-basis: 95%">
-                  <iframe
+              <pane class="uploadedImgBlock">
+                <div  class="imageContainer">
+                  <img
                     class="iframe1"
                     id="iframeId1"
-                    style="display: none; margin-left: 8%"
-                  ></iframe>
+                    style="display: none;"
+                  />
+                </div>
                   <div class="sparkle">
                     <span
                       @click="openUpscaledImage"
@@ -44,15 +45,14 @@
                       id="sparkles"
                     ></span>
                   </div>
-                </div>
               </pane>
-              <pane>
-                <div style="flex-basis: 95%; width: 100%">
-                  <iframe
+              <pane class="downloadedImgBlock" >
+                <div class="imageContainer">
+                  <img
                     class="iframe1"
                     id="iframeId2"
-                    style="display:none; margin-left: 8%"
-                  ></iframe>
+                    style="display:none;"
+                  />
                 </div>
                 <div class="download">
                   <span
@@ -88,9 +88,10 @@
                     type="file"
                     id="fileUpload"
                     name="myfile"
-                    @change="convertToBase64"
+                    @change="handleFileChange($event)"
                     accept="image/png, image/jpeg, image/jpg"
                   />
+                  <span v-if="fileSizeError" class="error-message">{{ fileSizeError }}</span>
                 </div>
                 <div class="text-center">
                   <button @click="submitImg">Submit</button>
@@ -129,6 +130,7 @@ export default {
   data() {
     return {
       openDialogeBox: false,
+      fileSizeError: '',
       uploadedImage: "",
       uploadedImgExtenion: "",
       showLoader: false,
@@ -186,9 +188,23 @@ export default {
         const fileExtension = fileName.split(".").pop();
         this.uploadedImgExtenion = fileExtension;
         this.uploadedImage = this.base64Data.split(",")[1];
-        console.log("uploadedImg", this.uploadedImage);
+        console.log("uploadedImg", this.uploadedImage);        
       };
     },
+
+    handleFileChange(event) {
+  const file = event.target.files[0]; // Assuming only one file is selected
+  const maxSize = 6 * 1024 * 1024; // 6MB in bytes
+
+  if (file && file.size > maxSize) {
+    this.fileSizeError = 'File size exceeds the limit of 6MB.';
+    event.target.value = ''; // Clear the file input
+  } else {
+    this.fileSizeError = ''; // Reset error message if file size is within limit
+    // Convert the file to base64
+    this.convertToBase64(event);
+  }
+},
 
     async postImgAndGet(event) {
       event.preventDefault();
@@ -270,15 +286,18 @@ export default {
       }
     },
     clearImg() {
-      const iframe1 = document.getElementById("iframeId1");
-      iframe1.src = "";
-      const iframe2 = document.getElementById("iframeId2");
-      iframe2.src = "";
-      const download = document.getElementById("download");
-      download.style.display = "none";
-      const sparkles = document.getElementById("sparkles");
-      sparkles.style.display = "none";
-    },
+    const uploadedImg = document.getElementById('iframeId1');
+    const downloadedImg = document.getElementById("iframeId2");
+    downloadedImg.src = "";
+    downloadedImg.style.display = "none";
+    uploadedImg.style.display = "none";
+    uploadedImg.src = "";
+    const download = document.getElementById("download");
+    download.style.display = "none";
+    const sparkles = document.getElementById("sparkles");
+    sparkles.style.display = "none";
+    
+}
   },
 };
 </script>
@@ -292,43 +311,50 @@ export default {
   padding: 0.5rem !important;
 }
 
-.splitpanes__pane {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Adjust alignment as needed */
-  align-items: stretch; /* Ensures the child elements stretch to fill the container */
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
+.imageContainer{
+  flex-basis: 90%;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.fileBlock {
-  flex: 1; /* Allow the fileBlock to grow and shrink as needed */
+
+
+.uploadedImgBlock {
+  padding: 2% 0;
+ display: flex;
+ gap: 2%;
+ flex-direction:column;
 }
 
-.fileEditbtn {
+.sparkle {
+  flex-basis: 10%;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  padding-right: 3%;
-  width: 100%;
+  padding-right: 2%;
   margin-bottom: 2%;
+  width: 100%;
 }
 
-.fileEditbtn > .v-btn {
-  color: #fff;
-  font-weight: bold;
-  background: #87e42e;
-  transition: 0.5s ease;
-  box-shadow:
-    0 0.25rem 0.375rem -0.0625rem rgba(20, 20, 20, 0.12),
-    0 0.125rem 0.25rem -0.0625rem rgba(20, 20, 20, 0.07) !important;
+
+.iframe1 {
+  position: absolute;
+    top: 0;
+    left: 0;
+    width: 90%;
+    height: 100%;
+    object-fit: contain; 
 }
 
-.fileEditbtn > .v-btn:hover {
-  cursor: pointer;
-  color: #344767;
-  background-image: linear-gradient(270deg, #17ad37 0%, #98ec2d 100%);
+.downloadedImgBlock{
+padding: 2% 0;
+display: flex;
+ flex-direction:column;
 }
+
+
+
 
 .newButton {
   display: flex;
@@ -349,13 +375,6 @@ export default {
   cursor: pointer;
 }
 
-.sparkle {
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 2%;
-  margin-bottom: 2%;
-  width: 100%;
-}
 
 .sparkle > span {
   background-image: linear-gradient(310deg, #82d616, #5cc06e) !important;
@@ -378,10 +397,12 @@ export default {
 }
 
 .download {
+  flex-basis: 10%;
   display: flex;
   justify-content: flex-end;
   padding-right: 2%;
-  width: 100%;
+  margin-bottom: 2%;
+  width: 100%; 
 }
 .download > span {
   justify-content: center;
@@ -412,6 +433,11 @@ export default {
 
 .closebtn:hover {
   opacity: 1;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
 }
 
 .mb-3 > input {
@@ -453,11 +479,6 @@ export default {
     0 2px 4px -1px rgba(0, 0, 0, 0.07);
 }
 
-.iframe1 {
-  width: 100%;
-  height: 95%;
-  object-fit: cover;
-}
 
 .loader-overlay {
   position: fixed;

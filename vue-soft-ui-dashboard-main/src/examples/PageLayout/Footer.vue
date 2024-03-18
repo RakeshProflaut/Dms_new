@@ -1,6 +1,6 @@
 <template>
-  <footer class="footer text-right">    
-          <p class="mr-5 text-secondary pt-2" style="padding-bottom: !important;">
+  <footer class="footer text-right" style="background-color:#fff !important;">    
+          <p class="mr-5 text-secondary pt-2">
             ©powered by PROFLAUT Technologies
           </p>
   </footer>

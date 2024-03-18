@@ -1,13 +1,5 @@
 <template>
-  <div style="display: flex; flex-direction: column">
-    <div>
-      <button class="closebtn" @click="dialogeBoxtoggle">
-        <i
-          class="bx bx-x"
-          style="position: relative; top: -30%; left: -20%"
-        ></i>
-      </button>
-    </div>
+  <div style="display: flex; flex-direction: column">    
     <div class="pt-1 text-center card-header">
       <h5>Metadata Creation</h5>
     </div>
@@ -68,6 +60,7 @@
                     <option value="" disabled selected>Select Data Type</option>
                     <option value="string">STRING</option>
                     <option value="integer">INTEGER</option>
+                    <option value="date">DATE</option>
                   </select>
                 </template>
                 <template v-else-if="header.key === 'mandatory'">
@@ -84,6 +77,13 @@
                   <input type="text" v-model="item[header.key]" />
                 </template>
               </td>
+              <td>
+      <button @click="deleteRow(rowIndex)">
+        <!-- Add your delete icon here -->
+        <!-- For example, using Font Awesome delete icon -->
+        <i style="color: red;" class="fas fa-trash-alt"></i>
+      </button>
+    </td>
             </tr>
           </tbody>
         </table>
@@ -184,6 +184,9 @@ export default {
       this.$emit("dialogeBox", false);
     },
 
+    deleteRow(rowIndex){
+      this.fields.splice(rowIndex)
+    },
     async postTable(event) {
       console.log("field", this.fields);
       console.log("name", this.tableName);

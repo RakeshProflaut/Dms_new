@@ -29,25 +29,14 @@
               </div>
             </div>
             <splitpanes class="default-theme" vertical>
-              <pane class="fileBlock">
-                <div>
-                  <iframe
-                    id="iframeId1"
-                    style="
-                      display: none;
-                      min-width: 500px;
-                      height: 590px;
-                      border: none;
-                    "
-                    frameborder="0"
-                    scrolling="no"
-                  ></iframe>
+              <pane class="uploadedImgBlock">
+                <div class="imageContainer">
+                  <img id="iframeId1" class="iframe1" style="display: none" />
                 </div>
               </pane>
               <pane>
                 <div
                   style="
-                    flex-basis: 95%;
                     width: 100%;
                     display: flex;
                     justify-content: center;
@@ -102,9 +91,10 @@
                     type="file"
                     id="fileUpload"
                     name="myfile"
-                    @change="convertToBase64"
+                    @change="handleFileChange($event)"
                     accept="image/png, image/jpeg, image/jpg"
                   />
+                  <span v-if="fileSizeError" class="error-message">{{ fileSizeError }}</span>
                 </div>
                 <div class="text-center">
                   <button @click="submitImg">Submit</button>
@@ -143,6 +133,7 @@ export default {
   data() {
     return {
       openDialogeBox: false,
+      fileSizeError: '',
       uploadedImage: "",
       uploadedImgExtenion: "",
       showLoader: false,
@@ -192,6 +183,20 @@ export default {
       }
       this.openDialogeBox = false;
     },
+
+    handleFileChange(event) {
+  const file = event.target.files[0]; // Assuming only one file is selected
+  const maxSize = 6 * 1024 * 1024; // 6MB in bytes
+
+  if (file && file.size > maxSize) {
+    this.fileSizeError = 'File size exceeds the limit of 6MB.';
+    event.target.value = ''; // Clear the file input
+  } else {
+    this.fileSizeError = ''; // Reset error message if file size is within limit
+    // Convert the file to base64
+    this.convertToBase64(event);
+  }
+},
 
     async convertToBase64(event) {
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
@@ -243,58 +248,11 @@ export default {
       }
     },
 
-    openUpscaledImage() {
-      this.showLoader = true;
-      setTimeout(() => {
-        this.showLoader = false;
-        const iframe = document.getElementById("iframeId2");
-        const download = document.getElementById("download");
-        iframe.src =
-          "data:image/" +
-          this.uploadedImgExtenion +
-          ";base64," +
-          this.sharpedImage;
-        console.log(
-          "detailsfile",
-          "data:image/" +
-            this.uploadedImgExtenion +
-            ";base64," +
-            this.sharpedImage
-        );
-        iframe.style.display = "block";
-        download.style.display = "flex";
-      }, 3000);
-    },
-    downloadImage() {
-      console.log("dowlpadfile extenion", this.uploadedImgExtenion);
-      console.log("dowlpadfile name", this.uploadedFileName);
-      try {
-        let fileType;
-        let fileName;
 
-        // Determine the file type and filename based on the file extension
-        if (["jpg", "jpeg"].includes(this.uploadedImgExtenion)) {
-          fileType = "image/jpeg";
-          fileName = `${this.uploadedFileName}.jpg`;
-        } else if (this.uploadedImgExtenion === "png") {
-          fileType = "image/png";
-          fileName = `${this.uploadedFileName}.png`;
-        } else {
-          throw new Error("Unsupported file type");
-        }
-
-        const linkSource = `data:${fileType};base64,${this.sharpedImage}`;
-        const downloadLink = document.createElement("a");
-        downloadLink.href = linkSource;
-        downloadLink.download = fileName;
-        downloadLink.click();
-      } catch (error) {
-        console.error("Error downloading file:", error);
-      }
-    },
     clearImg() {
       const iframe1 = document.getElementById("iframeId1");
       iframe1.src = "";
+      iframe1.style.display='none';
       this.blocks = [];
       this.openTextContainer = false;
     },
@@ -303,9 +261,7 @@ export default {
 </script>
 
 <style scoped>
-.min-height-300 {
-  min-height: 75px !important;
-}
+
 
 .card .card-header {
   padding: 0.5rem !important;
@@ -315,75 +271,39 @@ export default {
   padding: 0.5rem;
 }
 
-.splitpanes__pane {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Adjust alignment as needed */
-  align-items: stretch; /* Ensures the child elements stretch to fill the container */
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
+
+.error-message {
+  color: red;
+  font-size: 12px;
 }
 
-.fileEditbtn {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-right: 3%;
-  width: 100%;
-  margin-bottom: 2%;
-}
 
-iframe {
--ms-transform:scale(0.60);
-
--moz-transform:scale(0.60);
-
--o-transform: scale(0.60);
-
--webkit-transform: scale(0.60);
-
-transform:scale(0.60);
-
-border:1px solid black;
-
-}
-
-iframe {
-
+.imageContainer {
   position: relative;
-    top: -131px;
-    left: -102px;
-    height: 1200px;
-    width: 1100px;
-
-}
-
-#iframeId1 {
-
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-    width: 722px;
 }
 
-.fileBlock {
-  width: 50%;
+.iframe1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit:contain;
+}
+
+
+
+.uploadedImgBlock {
+  padding: 2% 2%;
+  display: flex;
+  width: 100%;
   height: 100%;
 }
 
-.fileEditbtn > .v-btn {
-  color: #fff;
-  font-weight: bold;
-  background: #87e42e;
-  transition: 0.5s ease;
-  box-shadow:
-    0 0.25rem 0.375rem -0.0625rem rgba(20, 20, 20, 0.12),
-    0 0.125rem 0.25rem -0.0625rem rgba(20, 20, 20, 0.07) !important;
-}
 
-.fileEditbtn > .v-btn:hover {
-  cursor: pointer;
-  color: #344767;
-  background-image: linear-gradient(270deg, #17ad37 0%, #98ec2d 100%);
-}
 
 .newButton {
   display: flex;
@@ -401,59 +321,6 @@ iframe {
   font-size: 0.7rem !important;
 }
 .newButton > .v-btn:hover {
-  cursor: pointer;
-}
-
-.sparkle {
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 2%;
-  margin-bottom: 2%;
-  width: 100%;
-}
-
-.sparkle > span {
-  background-image: linear-gradient(310deg, #82d616, #5cc06e) !important;
-  transition: 0.5s ease;
-  font-weight: bold;
-  width: 15%;
-  /* padding: 0% 7%; */
-  border-radius: 1.2rem;
-  color: #fff;
-  margin-bottom: 2%;
-  height: 2rem !important;
-  font-size: 1.4rem !important;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-}
-
-.sparkle > span:hover {
-  cursor: pointer;
-}
-
-.download {
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 2%;
-  width: 100%;
-}
-.download > span {
-  justify-content: center;
-  align-items: center;
-  padding-top: 1%;
-  background-image: linear-gradient(310deg, #82d616, #5cc06e) !important;
-  transition: 0.5s ease;
-  font-weight: bold;
-  width: 15%;
-  border-radius: 1.2rem;
-  color: #fff;
-  margin-bottom: 2%;
-  height: 2rem !important;
-  font-size: 1.4rem !important;
-}
-
-.download > span:hover {
   cursor: pointer;
 }
 
