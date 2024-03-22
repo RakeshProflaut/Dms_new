@@ -34,6 +34,17 @@ import store  from "../store/index.js";
 import LoanAgreement from "@/views/jobPack/LoanAgreement.vue"
 import BackTo from "@/views/jobPack/BackTo.vue"
 
+
+const formData = store.getters.getFormData;
+const dynamicChildRoutes = formData.map(form => ({
+  path: form.label.toLowerCase().replace(/\s+/g, '-'),
+  name: form.label.replace(/\s+/g, ''),
+  component: LoanAgreement,
+  meta: {
+    formData: form
+  }
+}));
+
 const routes = [
   {
     path: "/",
@@ -211,10 +222,11 @@ const routes = [
       path: '/jobPack-creation',
       name: 'JobPackCreation',
       component: JobPackCreation,
-      children:[]
-    }
- 
+      children: dynamicChildRoutes
+    } 
 ];
+
+
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

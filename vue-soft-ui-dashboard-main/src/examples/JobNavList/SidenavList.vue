@@ -7,9 +7,9 @@
       <li class="nav-item" v-for="(item, index) in sidenavItems" :key="index">
         <router-link
           class="nav-link"
-          :to="`/${item.label.toLowerCase().replace(/\s+/g, '-')}`"
-          :active="activeTab === item.label"
-          @click="setActiveTab(item.label)"
+          :to="{ name: 'JobPackCreation', params: { formId: item.formName.toLowerCase().replace(/\s+/g, '-') } }"
+          :active="activeTab === item.formName"
+          @click="setActiveTab(item.formName)"
           :style="getActiveStyle(item)"
         >
           <div
@@ -22,7 +22,7 @@
             class="nav-link-text"
             :class="$store.state.isRTL ? ' me-1' : 'ms-1'"
           >
-            {{ item.label }}
+            {{ item.formName }}
           </span>
         </router-link>
       </li>
@@ -31,8 +31,15 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "SidenavList",
+  computed: {
+    ...mapGetters(["getForms"]),
+    formData() {
+      return this.getForms;
+    }
+  },
   data() {
     return {
       title: "Soft UI Dashboard PRO",
@@ -44,18 +51,19 @@ export default {
   },
 
   created() {
-    this.sidenavItems = this.$store.state.formData.map(item => ({
-      label: item.label,
+    // Populate sidenavItems with form names
+    this.sidenavItems = this.formData.map(item => ({
+      formName: item.formName,
       icon: "mdi mdi-file-certificate", // You can set a default icon here
     }));
-    this.activeTab = this.sidenavItems[0] ? this.sidenavItems[0].label : null;
+    this.activeTab = this.sidenavItems[0] ? this.sidenavItems[0].formName : null;
   },
   methods: {
     setActiveTab(tabName) {
       this.activeTab = tabName;
     },
     getActiveStyle(item) {
-      if (this.activeTab === item.label) {
+      if (this.activeTab === item.formName) {
         return {
           backgroundColor: "#fff",
           fontWeight: "600",

@@ -42,32 +42,37 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
 
   data(){
     return{
-      fields:[
-      { label: "Field 1", placeholder: "Enter Field 1", value: "" },
-      { label: "Field 2", placeholder: "Enter Field 2", value: "" },
-      { label: "Field 3", placeholder: "Enter Field 3", value: "" },
-      { label: "Field 1", placeholder: "Enter Field 1", value: "" },
-      { label: "Field 2", placeholder: "Enter Field 2", value: "" },
-      { label: "Field 3", placeholder: "Enter Field 3", value: "" },
-      { label: "Field 1", placeholder: "Enter Field 1", value: "" },
-      { label: "Field 2", placeholder: "Enter Field 2", value: "" },
-      { label: "Field 3", placeholder: "Enter Field 3", value: "" },
-      { label: "Field 1", placeholder: "Enter Field 1", value: "" },
-      { label: "Field 2", placeholder: "Enter Field 2", value: "" },
-      { label: "Field 3", placeholder: "Enter Field 3", value: "" },
-      { label: "Field 3", placeholder: "Enter Field 3", value: "" },
-      { label: "Field 3", placeholder: "Enter Field 3", value: "" },
-      { label: "Field 3", placeholder: "Enter Field 3", value: "" },
-      { label: "Field 3", placeholder: "Enter Field 3", value: "" },
-
-      // Add more fields as needed
-    ]
+      fields:[]
     }
+  },
+  mounted(){
+    this.getFields();
+  },
+  methods:{
+  async getFields(){
+    const api="http://localhost:61050/dms/jobPack/getAllTemplate";
+    const token=this.$store.getUserToken;
+
+    await axios.get(api,{
+      headers:token
+    }).then((resposne)=>{
+      this.fields=resposne.data.fieldName.map(field => ({
+      label: field.label,
+      placeholder: `Enter ${field.label}`,
+      value: ""
+    }));
+    const formName=resposne.data.map(ele=>ele.formName);
+    this.$store.commit('setFormData',formName);
+
+    })
   }
+  }
+
 };
 </script>
 

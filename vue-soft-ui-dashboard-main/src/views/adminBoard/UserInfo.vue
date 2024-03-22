@@ -518,7 +518,7 @@ export default {
 
     async openAccess(value) {
       this.selectedUserId = value;
-      const apiUrl = `http://localhost:61050/dms/group/getGroupByUserId/${value}`;
+      const apiUrl = `http://localhost:61050/dms/group/getAllGroup`;
       const token = this.$store.getters.getUserToken;
       await axios
         .get(apiUrl, {
