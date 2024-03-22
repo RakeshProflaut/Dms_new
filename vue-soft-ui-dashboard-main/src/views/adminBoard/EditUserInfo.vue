@@ -1,7 +1,10 @@
 <template>
-  <div class="folderContainer">   
+  <div class="folderContainer">
     <div class="pt-1 text-center card-header">
       <h5>Edit User Creation</h5>
+    </div>
+    <div class="newButton">
+      <v-btn @click="deleteUser"> Delete </v-btn>
     </div>
 
     <div class="card-body">
@@ -191,6 +194,44 @@ export default {
         });
       }
     },
+
+    deleteUser(){
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You want to delete this user",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+         this.toDelteUser()
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+          this.$emit("closeEditBox", false);
+        }
+      });
+    },
+    async toDelteUser() {
+      const apiUrl = `http://localhost:61050/dms/access/updateUserStatus/${this.userDetails.userId}`;
+      const token = this.$store.getters.getUserToken;
+      console.log(token);
+      await axios
+        .put(apiUrl,{},{
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) => {
+          console.log("respondedelte", response.data);
+        })
+        .catch((error) => console.log("error occured by", error));
+    },
+
   },
 };
 </script>
@@ -395,5 +436,22 @@ export default {
     transform: rotate(945deg);
     opacity: 0;
   }
+}
+
+.newButton {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 2%;
+}
+.newButton > .v-btn {
+  background: #58bdff;
+  transition: 0.5s ease;
+  font-weight: bold;
+  color: #fff;
+  height: 2rem !important;
+  font-size: 0.7rem !important;
+}
+.newButton > .v-btn:hover {
+  cursor: pointer;
 }
 </style>

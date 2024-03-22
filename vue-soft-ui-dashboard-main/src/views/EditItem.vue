@@ -6,7 +6,7 @@
             <v-btn :ripple="false" @click="productDialogClose">Close</v-btn>
         </div>
         <div>
-            <ejs-richtexteditor
+            <!-- <ejs-richtexteditor
             @created="handleEditorCreated"
             :height="400" :toolbarSettings="toolbarSettings" :floating-toolbar-offset="15" :quickToolbarSettings="quickToolbarSettings
             "
@@ -14,7 +14,7 @@
             >
                 <h1>Word Document Viewer</h1>
   <iframe id="wordViewer" style="width: 100%; height: 600px;"></iframe>
-            </ejs-richtexteditor>
+            </ejs-richtexteditor> -->
         </div>
     </div>
           
@@ -23,33 +23,33 @@
 
 <script>
 // import mammoth from 'mammoth';
-import { RichTextEditorComponent,Toolbar, Link, Image, Count, HtmlEditor,Table,QuickToolbar  } from '@syncfusion/ej2-vue-richtexteditor';
+// import { RichTextEditorComponent,Toolbar, Link, Image, Count, HtmlEditor,Table,QuickToolbar  } from '@syncfusion/ej2-vue-richtexteditor';
 
 export default {
 name:'editItem',
 data(){
     return{
-        toolbarSettings:{
-            items:['Bold','Italic','Undo','Redo','CreateTable','Image','CreateLink','Underline','StrikeThrough','FontName','FontSize',
-                    'FontColor','BackgroundColor','LowerCase','UpperCase','|','Formats','Alignments','OrderedList','UnorderedList',
-                    'Outdent','Indent','|','CreateLink','|','ClearFormat','Print','SourceCode','FullScreen','|',
-                    {
-                    tooltipText: 'Rotate Left',
-                    template: '<button class="e-tbar-btn e-btn" id="roatateLeft"><span class="e-btn-icon e-icons e-rotate-left"></span>'
-                },
-                {
-                    tooltipText: 'Rotate Right',
-                    template: '<button class="e-tbar-btn e-btn" id="roatateRight"><span class="e-btn-icon e-icons e-rotate-right"></span>'
-                }
+        // toolbarSettings:{
+        //     items:['Bold','Italic','Undo','Redo','CreateTable','Image','CreateLink','Underline','StrikeThrough','FontName','FontSize',
+        //             'FontColor','BackgroundColor','LowerCase','UpperCase','|','Formats','Alignments','OrderedList','UnorderedList',
+        //             'Outdent','Indent','|','CreateLink','|','ClearFormat','Print','SourceCode','FullScreen','|',
+        //             {
+        //             tooltipText: 'Rotate Left',
+        //             template: '<button class="e-tbar-btn e-btn" id="roatateLeft"><span class="e-btn-icon e-icons e-rotate-left"></span>'
+        //         },
+        //         {
+        //             tooltipText: 'Rotate Right',
+        //             template: '<button class="e-tbar-btn e-btn" id="roatateRight"><span class="e-btn-icon e-icons e-rotate-right"></span>'
+        //         }
       
-                ],
-        quickToolbarSettings:{
-            image:[
-                    'Replace','Align','Caption','Remove','InsertLink','OpenImageLink','-','EditImageLink',
-                    'RemoveImageLink','Display','AltText','Dimension'
-            ]
-        },
-        },
+        //         ],
+        // quickToolbarSettings:{
+        //     image:[
+        //             'Replace','Align','Caption','Remove','InsertLink','OpenImageLink','-','EditImageLink',
+        //             'RemoveImageLink','Display','AltText','Dimension'
+        //     ]
+        // },
+        // },
        
         base64Data:""
     }
@@ -57,13 +57,13 @@ data(){
 mounted(){
 //    this.displayWordDocument(this.base64Data) 
 },
-provide:{
-    richtexteditor:[Toolbar,Link,Image,Count,HtmlEditor,Table,QuickToolbar]
+// provide:{
+//     richtexteditor:[Toolbar,Link,Image,Count,HtmlEditor,Table,QuickToolbar]
 
-},
-components:{
-    'ejs-richtexteditor':RichTextEditorComponent,    
-},
+// },
+// components:{
+//     'ejs-richtexteditor':RichTextEditorComponent,    
+// },
 methods:{
   
 //     async displayWordDocument(base64Data) {
@@ -100,14 +100,14 @@ methods:{
 </script>
 
 <style>
-@import "C:\Users\BILLPC02\Desktop\DMS_new\vue-soft-ui-dashboard-main\node_modules\@syncfusion\ej2-base\styles\bootstrap5.css";
+/* @import "C:\Users\BILLPC02\Desktop\DMS_new\vue-soft-ui-dashboard-main\node_modules\@syncfusion\ej2-base\styles\bootstrap5.css";
 @import "C:\Users\BILLPC02\Desktop\DMS_new\vue-soft-ui-dashboard-main\node_modules\@syncfusion\ej2-inputs\styles\bootstrap5.css";
 @import "C:\Users\BILLPC02\Desktop\DMS_new\vue-soft-ui-dashboard-main\node_modules\@syncfusion\ej2-lists\styles\bootstrap5.css";
 @import "C:\Users\BILLPC02\Desktop\DMS_new\vue-soft-ui-dashboard-main\node_modules\@syncfusion\ej2-popups\styles\bootstrap5.css";
 @import "C:\Users\BILLPC02\Desktop\DMS_new\vue-soft-ui-dashboard-main\node_modules\@syncfusion\ej2-buttons\styles\bootstrap5.css";
 @import "C:\Users\BILLPC02\Desktop\DMS_new\vue-soft-ui-dashboard-main\node_modules\@syncfusion\ej2-navigations\styles\bootstrap5.css";
 @import "C:\Users\BILLPC02\Desktop\DMS_new\vue-soft-ui-dashboard-main\node_modules\@syncfusion\ej2-splitbuttons\styles\bootstrap5.css";
-@import "C:\Users\BILLPC02\Desktop\DMS_new\vue-soft-ui-dashboard-main\node_modules\@syncfusion\ej2-vue-richtexteditor\styles\bootstrap5.css";
+@import "C:\Users\BILLPC02\Desktop\DMS_new\vue-soft-ui-dashboard-main\node_modules\@syncfusion\ej2-vue-richtexteditor\styles\bootstrap5.css"; */
 
 
 .close{

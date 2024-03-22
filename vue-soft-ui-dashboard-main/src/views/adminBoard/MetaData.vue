@@ -36,107 +36,121 @@
       <div class="row" style="margin-top: 0.5rem !important">
         <div class="col-12">
           <div class="card" style="height: 514px !important">
-            <div style="display: flex;justify-content: space-between;">
-              <div class="card-header text-uppercase  ">
+            <div style="display: flex; justify-content: space-between">
+              <div class="card-header text-uppercase">
                 <h4>Meta Data</h4>
               </div>
               <div class="newButton">
                 <v-btn @click="openDialogeBox = true"> New </v-btn>
-              </div>              
-            </div>           
+              </div>
+            </div>
             <div class="card-body px-0 pt-0 pb-1">
               <div class="table-responsive p-0">
                 <div class="tableContaier">
-
                   <table class="table align-items-center mb-0">
                     <thead class="table-header">
                       <tr>
                         <th
-                      style="font-size: 0.7rem !important"
-                        v-for="header in headers"
-                        :key="header.key"
-                        class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
-                        :class="{
-                          'text-secondary opacity-7': header.key === 'action'||header.key === 'view',
-                        }"
-                        :style="{
-                          'text-align':header.key === 'action'|| header.key === 'view'? 'center' : 'left',    
-                        }"
-                      >
-                      {{ header.title }}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                    style="font-size: 0.9rem !important"
-                      v-for="(data, rowIndex) in displayedData"
-                      :key="rowIndex"
-                    >
-                      <td
-                        v-for="(header, index) in headers"
-                        :key="index"
-                        :class="{
-                          'pl-5': header.key !== 'action',
-    'font-weight-bolder text-uppercase': header.key === 'userName',}"
-:style="{
-  'text-align':header.key === 'action'||header.key === 'view' ? 'center' : 'left',  
-}"
->
-<template v-if="header.key === 'view'">
-  <div
-  style="
-                              font-size: 0.7rem !important;
-                              height: 2rem !important;
-                              "
-                            @click="sendTableIdAndToggle(data['id'])"
-                            class="text-secondary font-weight-bold text-xs"
-                            >
-                    <span style="font-size: 1.7rem;color: #234375;cursor: pointer;" class="mdi mdi-archive-eye-outline"></span></div
-                          >
-                        </template>
-                        <template v-else-if="header.key === 'sno'">
-                            {{ rowIndex + 1 }}
-                          </template>  
-                          <template v-else-if="header.key === 'fileExtenion'">
-                            <div  class="font-weight-bolder  text-black" >
-                          {{ data[header.key] }}
-                        </div>
-                          </template> 
-                                                
-                        <template v-else>
-                          <div
+                          style="font-size: 0.7rem !important"
+                          v-for="header in headers"
+                          :key="header.key"
+                          class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
                           :class="{
-                            'font-weight-bolder': header.key === 'name',
+                            'text-secondary opacity-7':
+                              header.key === 'action' || header.key === 'view',
                           }"
-                          >
-                          {{ data[header.key] }}
-                        </div>
-                      </template>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div>
-              <v-pagination
-              v-model="page"
-              :length="pages"
-              @input="updateDisplayedData"
-              class="pagination"
-              ></v-pagination>
-            </div>
+                          :style="{
+                            'text-align':
+                              header.key === 'action' ||
+                              header.key === 'view' ||
+                              header.key === 'delete'
+                                ? 'center'
+                                : 'left',
+                          }"
+                        >
+                          {{ header.title }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        style="font-size: 0.9rem !important"
+                        v-for="(data, rowIndex) in displayedData"
+                        :key="rowIndex"
+                      >
+                        <td
+                          v-for="(header, index) in headers"
+                          :key="index"
+                          :class="{
+                            'pl-5': header.key !== 'action',
+                            'font-weight-bolder text-uppercase':
+                              header.key === 'userName',
+                          }"
+                          :style="{
+                            'text-align':
+                              header.key === 'action' ||
+                              header.key === 'view'
+                                ? 'center'
+                                : 'left',
+                          }"
+                        >
+                          <template v-if="header.key === 'view'">
+                            <div
+                              style=""
+                              @click="sendTableIdAndToggle(data['id'])"
+                              class="text-secondary font-weight-bold text-xs"
+                            >
+                              <span
+                                style="
+                                  font-size: 1.7rem;
+                                  color: #234375;
+                                  cursor: pointer;
+                                "
+                                class="mdi mdi-archive-eye-outline"
+                              ></span>
+                            </div>
+                          </template>
+                          <template v-else-if="header.key === 'sno'">
+                            {{ rowIndex + 1 }}
+                          </template>
+                          <template v-else-if="header.key === 'fileExtenion'">
+                            <div class="font-weight-bolder text-black">
+                              {{ data[header.key] }}
+                            </div>
+                          </template>                   
+                          <template v-else>
+                            <div
+                              :class="{
+                                'font-weight-bolder': header.key === 'name',
+                              }"
+                            >
+                              {{ data[header.key] }}
+                            </div>
+                          </template>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <v-pagination
+                    v-model="page"
+                    :length="pages"
+                    @input="updateDisplayedData"
+                    class="pagination"
+                  ></v-pagination>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <v-dialog v-model="openDialogeBox" style="z-index: 1001">
           <div style="position: relative; left: 80%">
-        <button class="closebtn" @click="openDialogeBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
-          <v-card style="width: 60%; margin: 0 auto;border-radius: 3%">
+            <button class="closebtn" @click="openDialogeBox = false">
+              <i class="bx bx-x" style="position: relative; top: 20%"></i>
+            </button>
+          </div>
+          <v-card style="width: 60%; margin: 0 auto; border-radius: 3%">
             <meta-data-table
               @showLoader="handleShowLoader"
               v-on:dialogeBox="listnerDialogBox"
@@ -146,11 +160,11 @@
 
         <v-dialog v-model="openTableDialogeBox" style="z-index: 1001">
           <div style="position: relative; left: 80%">
-        <button class="closebtn" @click="openTableDialogeBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
-          <v-card style="width: 60%; margin: 0 auto;border-radius: 3%">
+            <button class="closebtn" @click="openTableDialogeBox = false">
+              <i class="bx bx-x" style="position: relative; top: 20%"></i>
+            </button>
+          </div>
+          <v-card style="width: 60%; margin: 0 auto; border-radius: 3%">
             <meta-user-table
               v-on:dialogeBox="userTableDialogBox"
               :selectedTableId="selectedTableId"
@@ -204,7 +218,7 @@ export default {
       itemsPerPage: 10, // Number of items per page
       showLoader: false,
       headers: [
-      {
+        {
           key: "sno",
           title: "S.No",
         },
@@ -226,7 +240,6 @@ export default {
         },
 
         { key: "view", title: "VIEW" },
-
       ],
       tableDatas: [],
     };
@@ -319,8 +332,7 @@ export default {
           this.tableDatas = response.data;
         })
         .catch((error) => console.error("Error occured by", error));
-    },
-
+    },    
   },
 };
 </script>
@@ -355,10 +367,9 @@ export default {
 
 .table-responsive {
   display: flex;
-  flex-direction: column;    
-
+  flex-direction: column;
 }
-.tableContaier{
+.tableContaier {
   position: relative;
   height: 380px;
   overflow-x: auto;
@@ -380,9 +391,8 @@ export default {
 }
 
 .closebtn:hover {
-  opacity: .5;
+  opacity: 0.5;
 }
-
 
 .loader-overlay {
   position: fixed;
@@ -500,11 +510,11 @@ export default {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #65C2FC; /* color of the handle */
+  background: #65c2fc; /* color of the handle */
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #65C2FC; /* color of the handle on hover */
+  background: #65c2fc; /* color of the handle on hover */
 }
 </style>

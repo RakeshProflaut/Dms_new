@@ -77,7 +77,7 @@
                       class="text-success text-gradient font-weight-bold"
                       >Admin Sign In</router-link
                     >
-                    <a style="margin-left: 2%;" href="#" 
+                    <a style="margin-left: 2%;" href="/forgot-password" 
                     >Forgot Password?</a
                     >
                   </p>
@@ -217,8 +217,7 @@ export default {
               });
               Toast.fire({
                 icon: "warning",
-                title: "Incorrect User Details!",
-              });
+                title:error.response.data.errorMessage,});
               console.error("API There was an error!", error);
           
       }

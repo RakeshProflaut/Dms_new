@@ -1,7 +1,24 @@
 <template>
   <div>
     <div class="py-2 container-fluid">
-      <div class="row">
+      <div class="row justify-content-center " style="padding: .1rem 0px;">
+        <div class="col-lg-7 mb-lg-0 mb-4">
+          <div
+            class="card"
+            style="
+              display: flex !important;
+              flex-direction: row !important ;
+              padding: 0.5rem;
+            "
+          >
+            <div class="health">Health :</div>
+            <div class="marquee">
+              <div class="marquee-content">No Issues Till Now !!!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2">
         <div
           class="col-xl-3 col-sm-6 mb-xl-0 mb-4"
           v-for="(detail, index) in details.slice(0, 4)"
@@ -113,12 +130,13 @@
       <div class="mt-4 row" style="">
       <div class="mb-4 col-lg-5">
         <div class="card z-index-2">
-          <div class="row justify-content-center ml-1">
+          <div class="row justify-content-center ml-1 mr-1">
         <div
+        style="margin:5px;"
           v-for="(detail, index) in details.slice(4)"
           :key="index"
         >
-          <div class="mb-1 card" style="width:">
+          <div class="mb-0 card" style="width:">
             <div class="p-3 card-body">
               <div class="d-flex flex-row-reverse justify-content-between">
                 <div>
@@ -249,23 +267,6 @@
               </div>        
       </div>
       </div>
-      <div class="row justify-content-center" style="padding-top: .1rem;">
-        <div class="col-lg-7 mb-lg-0 mb-4">
-          <div
-            class="card"
-            style="
-              display: flex !important;
-              flex-direction: row !important ;
-              padding: 0.5rem;
-            "
-          >
-            <div class="health">Health :</div>
-            <div class="marquee">
-              <div class="marquee-content">No Issues Till Now !!!</div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="my-4">
       <div class="card" style="height:14.5rem;">
           <projects-card />
@@ -284,8 +285,8 @@ import ProjectsCard from "./components/ProjectsCard.vue";
 import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
-import BR from "../assets/img/icons/flags/BR.png";
 import { markRaw } from "vue";
+import BR from "../assets/img/icons/flags/BR.png";
 import setTooltip from "@/assets/js/tooltip.js";
 import setNavPills from "@/assets/js/nav-pills.js";
 
@@ -572,7 +573,6 @@ export default {
     },
 
     handleBackButton(event) {
-      alert("Hi")
     if (this.$store.state.reachedLandingPage) {
       event.preventDefault();
       // Display logout popup

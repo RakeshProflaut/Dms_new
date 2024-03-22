@@ -44,7 +44,7 @@
                         fieldNam.fieldName
                       }}</label>
                       <input
-                        :type='text'
+                      :type="getFieldType(fieldNam.fieldType)"
                         :id="fieldNam.fieldName"
                         v-model="fieldNam.value"
                         style="width: 100%"
@@ -169,6 +169,7 @@ mounted() {
 
 closeDocView(value) {
       this.docViewBox = value;
+      this.showDocument();
     },
 
 
@@ -247,7 +248,13 @@ async sendDocId(event){
         .catch((error) => console.error("Error occured by", error));
      
 
-}
+},
+getFieldType(fieldType) {
+      return fieldType === "integer"? "number"
+        : fieldType === "date"
+          ? "datetime-local"
+          : "text";
+    },
 
   },
 };

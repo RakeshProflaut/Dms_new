@@ -1,6 +1,6 @@
 <template>
   <div>
-      <!-- <div
+    <!-- <div
         class="mt-4 page-header min-height-300 border-radius-xl"
         :style="{
           backgroundImage:
@@ -8,7 +8,7 @@
           backgroundPositionY: '50%',
         }"
       ></div> -->
-      <!-- <div class="mx-4 overflow-hidden card card-body blur shadow-blur mt-n6">
+    <!-- <div class="mx-4 overflow-hidden card card-body blur shadow-blur mt-n6">
         <div class="row gx-4">
           <div class="col-auto">
             <div class="avatar avatar-xl position-relative">
@@ -34,131 +34,177 @@
       <div class="row" style="margin-top: 0.5rem !important">
         <div class="col-12">
           <div class="card" style="height: 514px !important">
-            <div style="display: flex;justify-content: space-between;">
+            <div style="display: flex; justify-content: space-between">
               <div class="card-header text-uppercase">
                 <h4>User Information</h4>
               </div>
               <div class="newButton">
                 <v-btn @click="openDialogeBox = true"> New </v-btn>
-              </div>              
+              </div>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
                 <div class="tableContaier">
-
                   <table class="table align-items-center mb-0">
                     <thead class="table-header">
                       <tr>
-                      <th
-                      style="font-size: 0.7rem !important"
-                      v-for="header in headers"
-                        :key="header.key"
-                        class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
-                        :style="{
-    'text-align': header.key === 'webAccess' || header.key === 'adminAccess' ||header.key === 'action'
-    ||header.key === 'group'? 'center' : 'left',
-  }"
-                      >
-                        {{ header.title }}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      style="font-size: 0.9rem !important"
-                      v-for="(data, rowIndex) in displayedData"
-                      :key="rowIndex"
-                      >
-                      <td                     
-                        v-for="(header, index) in headers"
-                        :key="index"
-                        :class="{
-                          'pl-5': header.key !== 'group' && header.key !== 'action'&&  header.key !=='webAccess' && header.key !=='ldap' && header.key !=='adminAccess',
-    'font-weight-bolder text-uppercase': header.key === 'userName',}"
-:style="{
-    'text-align': header.key === 'webAccess' || header.key === 'adminAccess' || header.key =='ldap' || header.key === 'group' || header.key === 'action' ? 'center' : 'left',
-    'padding': getCellPadding(data[header.key])
-  }"
-                      >
-                        <template
-                        v-if="
-                            header.key === 'adminAccess' ||
-                            header.key === 'webAccess' || header.key ==='ldap'  
-                            "
+                        <th
+                          style="font-size: 0.7rem !important"
+                          v-for="header in headers"
+                          :key="header.key"
+                          class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
+                          :style="{
+                            'text-align':
+                              header.key === 'webAccess' ||
+                              header.key === 'delete' ||
+                              header.key === 'adminAccess' ||
+                              header.key === 'action' ||
+                              header.key === 'group'
+                                ? 'center'
+                                : 'left',
+                          }"
                         >
-                        <template v-if="data[header.key] === 'Y'">
-                          <soft-badge
-                          color="success"
-                              variant="gradient"
-                              style=" 
+                          {{ header.title }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        style="font-size: 0.9rem !important"
+                        v-for="(data, rowIndex) in displayedData"
+                        :key="rowIndex"
+                      >
+                        <td
+                          v-for="(header, index) in headers"
+                          :key="index"
+                          :class="{
+                            'pl-5':
+                              header.key !== 'group' &&
+                              header.key !== 'action' &&
+                              header.key !== 'delete' &&
+                              header.key !== 'webAccess' &&
+                              header.key !== 'ldap' &&
+                              header.key !== 'adminAccess',
+                            'font-weight-bolder text-uppercase':
+                              header.key === 'userName',
+                          }"
+                          :style="{
+                            'text-align':
+                              header.key == 'delete' ||
+                              header.key === 'webAccess' ||
+                              header.key === 'adminAccess' ||
+                              header.key == 'ldap' ||
+                              header.key === 'group' ||
+                              header.key === 'action'
+                                ? 'center'
+                                : 'left',
+                            padding: getCellPadding(data[header.key]),
+                          }"
+                        >
+                          <template
+                            v-if="
+                              header.key === 'adminAccess' ||
+                              header.key === 'webAccess' ||
+                              header.key === 'ldap'
+                            "
+                          >
+                            <template v-if="data[header.key] === 'Y'">
+                              <soft-badge
+                                color="success"
+                                variant="gradient"
+                                style=" 
                               color:#596195;                     
                       background: rgb(228,243,227);
 background: linear-gradient(270deg, rgba(228,243,227,1) 0%, rgba(88,189,255,1) 95%);
 
                       !important"
-                              size="sm"
-                              >Enable</soft-badge
-                            >
-                          </template>
-                          <template v-else>
-                            <soft-badge
-                            color="secondary"
-                              variant="gradient"
-                              size="sm"
-                              >Disable</soft-badge
+                                size="sm"
+                                >Enable</soft-badge
                               >
+                            </template>
+                            <template v-else>
+                              <soft-badge
+                                color="secondary"
+                                variant="gradient"
+                                size="sm"
+                                >Disable</soft-badge
+                              >
+                            </template>
                           </template>
-                        </template>
-                        <template v-else-if="header.key === 'action'">
-                          <div
-                            style="
-                              font-size: 0.5rem !important;
-                              height: 2rem !important;
+                          <template v-else-if="header.key === 'action'">
+                            <div
+                              style="
+                                font-size: 0.5rem !important;
+                                height: 2rem !important;
                               "
-                            class="text-secondary font-weight-bold text-xs"
-                            ><span @click="getOpenEditBox(data)" class="mdi mdi-pencil" style="color: #234375;font-size: 1.2rem;cursor: pointer;"></span></div
+                              class="text-secondary font-weight-bold text-xs"
                             >
+                              <span
+                                @click="getOpenEditBox(data)"
+                                class="mdi mdi-pencil"
+                                style="
+                                  color: #234375;
+                                  font-size: 1.2rem;
+                                  cursor: pointer;
+                                "
+                              ></span>
+                            </div>
                           </template>
                           <template v-else-if="header.key === 'sno'">
                             {{ rowIndex + 1 }}
                           </template>
-                        <template v-else-if="header.key === 'group'">
-                          <div
-                            @click="openAccess(data['userId'])"
-                            style="
-                              font-size: 0.5rem !important;
-                              height: 2rem !important;
-                            "
-                            class="text-secondary font-weight-bold text-xs"
-                            ><span  style="color: #234375;font-size: 1.5rem;cursor: pointer;"
-                             class="mdi mdi-account-multiple-plus-outline"></span></div
-                          >
-                        </template>
-                        <template v-else>
-                          {{ data[header.key] }}
-                        </template>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div>
-                <v-pagination
-                v-model="page"
-                :length="pages"
-                @input="updateDisplayedData"
-                ></v-pagination>
-              </div>
+                          <template v-else-if="header.key === 'group'">
+                            <div
+                              @click="openAccess(data['userId'])"
+                              style="
+                                font-size: 0.5rem !important;
+                                height: 2rem !important;
+                              "
+                              class="text-secondary font-weight-bold text-xs"
+                            >
+                              <span
+                                style="
+                                  color: #234375;
+                                  font-size: 1.5rem;
+                                  cursor: pointer;
+                                "
+                                class="mdi mdi-account-multiple-plus-outline"
+                              ></span>
+                            </div>
+                          </template>
+                          <template v-else-if="header.key === 'delete'">
+                              <button @click="deleteUser(data)">
+                                <i
+                                  style="color: red;font-size: 1.1rem;"
+                                  class="fas fa-trash-alt"
+                                ></i>
+                              </button>
+                          </template>
+                          <template v-else>
+                            {{ data[header.key] }}
+                          </template>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <v-pagination
+                    v-model="page"
+                    :length="pages"
+                    @input="updateDisplayedData"
+                  ></v-pagination>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <v-dialog v-model="openDialogeBox" style="z-index: 1001">
-          <div style="position: relative; left:64%">
-        <button class="closebtn" @click="openDialogeBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
+          <div style="position: relative; left: 64%">
+            <button class="closebtn" @click="openDialogeBox = false">
+              <i class="bx bx-x" style="position: relative; top: 20%"></i>
+            </button>
+          </div>
           <v-card style="width: 28%; border-radius: 3%; margin: 0 auto">
             <user-signup
               @showLoader="handleShowLoader"
@@ -168,15 +214,15 @@ background: linear-gradient(270deg, rgba(228,243,227,1) 0%, rgba(88,189,255,1) 9
         </v-dialog>
         <v-dialog v-model="openEditbox" style="z-index: 1001">
           <div style="position: relative; left: 64%">
-        <button class="closebtn" @click="openEditbox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
+            <button class="closebtn" @click="openEditbox = false">
+              <i class="bx bx-x" style="position: relative; top: 20%"></i>
+            </button>
+          </div>
           <v-card style="width: 28%; border-radius: 3%; margin: 0 auto">
             <edit-user-info-vue
               @showLoader="handleEditShowLoader"
               v-on:closeEditBox="closeEditBox"
-              :userDetails="selectedUserDetails" 
+              :userDetails="selectedUserDetails"
             />
           </v-card>
         </v-dialog>
@@ -184,11 +230,11 @@ background: linear-gradient(270deg, rgba(228,243,227,1) 0%, rgba(88,189,255,1) 9
           v-model="openAccessBox"
           style="display: flex; padding-left: 73%; z-index: 1001"
         >
-        <div style="position: relative; left: 27%">
-        <button class="closebtn" @click="openAccessBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
+          <div style="position: relative; left: 27%">
+            <button class="closebtn" @click="openAccessBox = false">
+              <i class="bx bx-x" style="position: relative; top: 20%"></i>
+            </button>
+          </div>
           <v-card style="width: 28%; border-radius: 3%">
             <div>
               <div class="container" style="width: 100%; height: 100%">
@@ -295,7 +341,7 @@ import setTooltip from "@/assets/js/tooltip.js";
 import UserSignup from "../adminBoard/UserSignUp.vue";
 import axios from "axios";
 import Swal from "sweetalert2";
-import EditUserInfoVue from './EditUserInfo.vue';
+import EditUserInfoVue from "./EditUserInfo.vue";
 
 export default {
   name: "table",
@@ -340,13 +386,13 @@ export default {
     return {
       showLoader: false,
       headers: [
-      {
+        {
           key: "sno",
           title: "S.No",
         },
         { key: "userName", title: "USER NAME" },
         { key: "email", title: "E-MAIL" },
-        { key: "createdDate", title: "CREATED DATE" },
+        { key: "createdDate", title: "CREATED At" },
         { key: "webAccess", title: "WEB ACCESS" },
         { key: "adminAccess", title: "ADMIN ACCESS" },
         { key: "ldap", title: "LDAP" },
@@ -359,7 +405,7 @@ export default {
       openAccessBox: false,
       assignedGroups: [],
       userInfos: [],
-      selectedUserDetails:null,
+      selectedUserDetails: null,
       accessGroups: [],
       selectedGroupId: [],
       selectedUserId: null,
@@ -368,16 +414,19 @@ export default {
     };
   },
   methods: {
-
     getCellPadding(content) {
-  const maxWidth = 17.8; 
-
-  const contentLength = content ? content.length : 0;
-
-  const padding = contentLength > maxWidth ? `${Math.max(1, 1 - (contentLength - maxWidth))}px` : '5px';
-
-  return `0 ${padding}`; 
-},
+      const maxWidth = 12.8;
+      const contentLength = content ? content.length : 0;
+      const horizontalPadding =
+        contentLength > maxWidth
+          ? `${Math.max(0.5, 1 - (contentLength - maxWidth))}px`
+          : "0px";
+      const verticalPadding =
+        contentLength > maxWidth
+          ? `${Math.max(1, 1 - (contentLength - maxWidth))}px`
+          : "10px";
+      return `${verticalPadding} ${horizontalPadding}`;
+    },
     async handleShowLoader(value) {
       // Update the isLoading data property based on the emitted value
       this.openDialogeBox = false;
@@ -464,6 +513,7 @@ export default {
 
     closeEditBox(value) {
       this.openEditbox = value;
+      this.getUserInfo();
     },
 
     async openAccess(value) {
@@ -485,15 +535,14 @@ export default {
           });
           this.openAccessBox = true;
         })
-        .catch((error) => 
-        Swal.fire({
+        .catch((error) =>
+          Swal.fire({
             icon: "error",
             title: "Error",
             text: error.response.data[0].errorMessage,
-          }));
-        
+          })
+        );
     },
-
     getFilterAccessGroup() {
       this.accessGroups = this.accessGroups.filter(
         (item) =>
@@ -608,10 +657,12 @@ export default {
         .catch((error) => console.log("error occured by", error));
     },
 
-    getOpenEditBox(value){
-      this.openEditbox=true;
-      this.selectedUserDetails=value;
-    }
+    getOpenEditBox(value) {
+      this.openEditbox = true;
+      this.selectedUserDetails = value;
+    },
+
+    
   },
 };
 </script>
@@ -646,7 +697,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.tableContaier{
+.tableContaier {
   position: relative;
   height: 383px;
   overflow-x: auto;
@@ -776,9 +827,8 @@ export default {
 }
 
 .closebtn:hover {
-  opacity: .3;
+  opacity: 0.3;
 }
-
 
 .text-center > button {
   color: #fff;
@@ -811,7 +861,7 @@ export default {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #65C2FC; /* color of the handle */
+  background: #65c2fc; /* color of the handle */
   height: 30px;
 }
 

@@ -159,7 +159,7 @@
                                 size="sm"
                                 >Enable</soft-badge
                               >
-                            </template>
+                            </template>                       
                             <template v-else>
                               <soft-badge
                                 color="secondary"
@@ -167,8 +167,8 @@
                                 size="sm"
                                 >Disable</soft-badge
                               >
-                            </template>
-                          </template>
+                            </template>                            
+                          </template>                      
                           <template v-else>
                             <div
                               :class="{
@@ -444,7 +444,7 @@ export default {
           });
         }, 3000);
       }
-    },
+    },   
   },
 };
 </script>

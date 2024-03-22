@@ -27,14 +27,12 @@ import DigitalSignature from "@/views/adminBoard/DigitalSignature.vue"
 import MountPoints from "@/views/adminBoard/MountPoints.vue"
 import AdminProfile from "@/views/adminBoard/AdminProfile.vue"
 import Scanner from "@/views/Scanner.vue"
-
-
-
-
-
-
-
-
+import JobPack from "@/views/JobPack.vue"
+import JobPackCreation from "@/views/jobPack/JobPackCreation.vue"
+import ForgotPassword from '@/views/components/ForgotPassword.vue';
+import store  from "../store/index.js";
+import LoanAgreement from "@/views/jobPack/LoanAgreement.vue"
+import BackTo from "@/views/jobPack/BackTo.vue"
 
 const routes = [
   {
@@ -130,7 +128,12 @@ const routes = [
         path: "/scanner",
         name: "Scanner",
         component:Scanner, 
-      },    
+      },
+      {
+        path: "/jobPack",
+        name: "JobPack",
+        component:JobPack, 
+      },      
      
     ]
   }, 
@@ -197,6 +200,18 @@ const routes = [
       },
     ]
 
+    },
+    {
+      path: '/forgot-password',
+      name: 'ForgotPassword',
+      component: ForgotPassword
+    },
+
+    {
+      path: '/jobPack-creation',
+      name: 'JobPackCreation',
+      component: JobPackCreation,
+      children:[]
     }
  
 ];

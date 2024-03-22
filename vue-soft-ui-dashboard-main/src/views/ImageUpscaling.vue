@@ -1,17 +1,5 @@
 <template>
   <div>
-    <!-- <div class="container-fluid">
-      <div
-        class="mt-4 page-header min-height-300 border-radius-xl"
-        :style="{
-          backgroundImage:
-            'url(' + require('@/assets/img/curved-images/curved14.jpg') + ')',
-          backgroundPositionY: '50%',
-        }"
-      >
-        <span class="mask bg-gradient-success opacity-6"></span>
-      </div>
-    </div> -->
     <div class="mt-3 row"></div>
     <div class="container-fluid">
       <div class="row">
@@ -30,29 +18,37 @@
             </div>
             <splitpanes class="default-theme" vertical>
               <pane class="uploadedImgBlock">
-                <div  class="imageContainer">
-                  <img
-                    class="iframe1"
-                    id="iframeId1"
-                    style="display: none;"
-                  />
-                </div>
-                  <div class="sparkle">
-                    <span
-                      @click="openUpscaledImage"
-                      style="display: none"
-                      class="mdi mdi-creation-outline"
-                      id="sparkles"
-                    ></span>
-                  </div>
-              </pane>
-              <pane class="downloadedImgBlock" >
                 <div class="imageContainer">
-                  <img
-                    class="iframe1"
-                    id="iframeId2"
-                    style="display:none;"
-                  />
+                  <a data-fancybox="gallery" :href="imageData">
+                    <img
+                      class="iframe1"
+                      id="image"
+                      style="display: none"
+                      :src="imageData"
+                    />
+                  </a>                 
+                </div>
+                <div class="sparkle">
+                  <span
+                    @click="openUpscaledImage"
+                    style="display: none"
+                    class="mdi mdi-creation-outline"
+                    id="sparkles"
+                  ></span>
+                </div>
+              </pane>
+              <pane class="downloadedImgBlock">
+                <div class="imageContainer">
+
+                  <a data-fancybox="gallery" :href="upscaledImage">
+                    <img
+                      class="iframe1"
+                      id="upscaleImage"
+                      style="display: none"
+                      :src="upscaledImage"
+                    />
+                  </a>      
+                  <!-- <img class="iframe1" id="upscaleImage" style="display: none" /> -->
                 </div>
                 <div class="download">
                   <span
@@ -89,9 +85,11 @@
                     id="fileUpload"
                     name="myfile"
                     @change="handleFileChange($event)"
-                    accept="image/png, image/jpeg, image/jpg"
+                    accept="image/png,image/jpeg,image/jpg"
                   />
-                  <span v-if="fileSizeError" class="error-message">{{ fileSizeError }}</span>
+                  <span v-if="fileSizeError" class="error-message">{{
+                    fileSizeError
+                  }}</span>
                 </div>
                 <div class="text-center">
                   <button @click="submitImg">Submit</button>
@@ -130,7 +128,9 @@ export default {
   data() {
     return {
       openDialogeBox: false,
-      fileSizeError: '',
+      fileSizeError: "",
+      imageData: "",
+      upscaledImage:"",
       uploadedImage: "",
       uploadedImgExtenion: "",
       showLoader: false,
@@ -144,11 +144,15 @@ export default {
     setTooltip(this.$store.state.bootstrap);
   },
   methods: {
-    submitImg(event) {     
-      if(this.uploadedImgExtenion ==='png'||this.uploadedImgExtenion ==='jpg'||this.uploadedImgExtenion==='jpeg'){
+    submitImg(event) {
+      if (
+        this.uploadedImgExtenion === "png" ||
+        this.uploadedImgExtenion === "jpg" ||
+        this.uploadedImgExtenion === "jpeg"
+      ) {
         this.postImgAndGet(event);
-      }else{
-        event.preventDefault()
+      } else {
+        event.preventDefault();
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -175,7 +179,6 @@ export default {
       this.openDialogeBox = false;
     },
 
-
     async convertToBase64(event) {
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
       const file = event.target.files[0];
@@ -188,23 +191,23 @@ export default {
         const fileExtension = fileName.split(".").pop();
         this.uploadedImgExtenion = fileExtension;
         this.uploadedImage = this.base64Data.split(",")[1];
-        console.log("uploadedImg", this.uploadedImage);        
+        console.log("uploadedImg", this.uploadedImage);
       };
     },
 
     handleFileChange(event) {
-  const file = event.target.files[0]; // Assuming only one file is selected
-  const maxSize = 6 * 1024 * 1024; // 6MB in bytes
+      const file = event.target.files[0]; // Assuming only one file is selected
+      const maxSize = 6 * 1024 * 1024; // 6MB in bytes
 
-  if (file && file.size > maxSize) {
-    this.fileSizeError = 'File size exceeds the limit of 6MB.';
-    event.target.value = ''; // Clear the file input
-  } else {
-    this.fileSizeError = ''; // Reset error message if file size is within limit
-    // Convert the file to base64
-    this.convertToBase64(event);
-  }
-},
+      if (file && file.size > maxSize) {
+        this.fileSizeError = "File size exceeds the limit of 6MB.";
+        event.target.value = ""; // Clear the file input
+      } else {
+        this.fileSizeError = ""; // Reset error message if file size is within limit
+        // Convert the file to base64
+        this.convertToBase64(event);
+      }
+    },
 
     async postImgAndGet(event) {
       event.preventDefault();
@@ -224,12 +227,12 @@ export default {
         .then((response) => {
           console.log("resposneImage", response.data);
           this.sharpedImage = response.data.sharpened_image;
-          console.log("sparpeddImage",this.sharpedImage);
-          const iframe = document.getElementById("iframeId1");
+          console.log("sparpeddImage", this.sharpedImage);
+          const iframe = document.getElementById("image");
           const sparkles = document.getElementById("sparkles");
           const clearBtn = document.getElementById("clearbtn");
 
-          iframe.src =
+          this.imageData =
             "data:image/" +
             this.uploadedImgExtenion +
             ";base64," +
@@ -240,21 +243,18 @@ export default {
         })
         .catch((error) => console.error("Error occured by", error));
     },
-
     openUpscaledImage() {
-      this.showLoader = true;      
+      this.showLoader = true;
       setTimeout(() => {
         this.showLoader = false;
-        const iframe = document.getElementById("iframeId2");
-        const download = document.getElementById("download"); 
-      iframe.src =
-          "data:image/" +
-          this.uploadedImgExtenion +
-          ";base64," +
-          this.sharpedImage;
-        console.log("detailsfile","data:image/" +this.uploadedImgExtenion +";base64," +
-          this.sharpedImage);       
-          iframe.style.display = "block";
+        const iframe = document.getElementById("upscaleImage");
+        const download = document.getElementById("download");
+        this.upscaledImage = this.upscaledImage =
+        "data:image/" +
+            this.uploadedImgExtenion +
+            ";base64," +
+            this.sharpedImage; 
+        iframe.style.display = "block";
         download.style.display = "flex";
       }, 3000);
     },
@@ -286,18 +286,17 @@ export default {
       }
     },
     clearImg() {
-    const uploadedImg = document.getElementById('iframeId1');
-    const downloadedImg = document.getElementById("iframeId2");
-    downloadedImg.src = "";
-    downloadedImg.style.display = "none";
-    uploadedImg.style.display = "none";
-    uploadedImg.src = "";
-    const download = document.getElementById("download");
-    download.style.display = "none";
-    const sparkles = document.getElementById("sparkles");
-    sparkles.style.display = "none";
-    
-}
+      const uploadedImg = document.getElementById("image");
+      const downloadedImg = document.getElementById("upscaleImage");
+      downloadedImg.src = "";
+      downloadedImg.style.display = "none";
+      uploadedImg.style.display = "none";
+      uploadedImg.src = "";
+      const download = document.getElementById("download");
+      download.style.display = "none";
+      const sparkles = document.getElementById("sparkles");
+      sparkles.style.display = "none";
+    },
   },
 };
 </script>
@@ -311,7 +310,7 @@ export default {
   padding: 0.5rem !important;
 }
 
-.imageContainer{
+.imageContainer {
   flex-basis: 90%;
   position: relative;
   width: 100%;
@@ -319,13 +318,11 @@ export default {
   overflow: hidden;
 }
 
-
-
 .uploadedImgBlock {
   padding: 2% 0;
- display: flex;
- gap: 2%;
- flex-direction:column;
+  display: flex;
+  gap: 2%;
+  flex-direction: column;
 }
 
 .sparkle {
@@ -337,24 +334,20 @@ export default {
   width: 100%;
 }
 
-
 .iframe1 {
   position: absolute;
-    top: 0;
-    left: 0;
-    width: 90%;
-    height: 100%;
-    object-fit: contain; 
+  top: 0;
+  left: 0;
+  width: 90%;
+  height: 100%;
+  object-fit: contain;
 }
 
-.downloadedImgBlock{
-padding: 2% 0;
-display: flex;
- flex-direction:column;
+.downloadedImgBlock {
+  padding: 2% 0;
+  display: flex;
+  flex-direction: column;
 }
-
-
-
 
 .newButton {
   display: flex;
@@ -374,7 +367,6 @@ display: flex;
 .newButton > .v-btn:hover {
   cursor: pointer;
 }
-
 
 .sparkle > span {
   background-image: linear-gradient(310deg, #82d616, #5cc06e) !important;
@@ -402,7 +394,7 @@ display: flex;
   justify-content: flex-end;
   padding-right: 2%;
   margin-bottom: 2%;
-  width: 100%; 
+  width: 100%;
 }
 .download > span {
   justify-content: center;
@@ -478,7 +470,6 @@ display: flex;
     0 4px 7px -1px rgba(0, 0, 0, 0.11),
     0 2px 4px -1px rgba(0, 0, 0, 0.07);
 }
-
 
 .loader-overlay {
   position: fixed;

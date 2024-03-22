@@ -29,25 +29,25 @@
 
 export default {
   name: "SidenavList",
-  props: {
-    cardBg: String,
+  props:{
+    cardBg:String,
   },
-  data() {
+  data(){
     return {
       isActive: "active",
       sidenavItems: [
         { text: "Dashboard", to: { name: "Dashboard" }, icon: "mdi mdi-view-dashboard" },
         { text: "Directory", to: { name: "Folders" }, icon: "mdi mdi-folder" },
         { text: "Search", to: { name: "Search" }, icon: "mdi mdi-magnify" },
-        { text: "Portal", to: { name: "Portal" }, icon: 'mdi mdi-door' },
+        { text: "Scanner", to: { name: "Scanner" }, icon: 'mdi mdi-scanner'},
         {
           text: "Image Upscaling",
           to: { name: "Image Upscaling" },
           icon: "mdi mdi-image-filter-center-focus",
         },
+        { text: "Job Pack Generation",to: { name: "JobPack" },icon:'mdi mdi-file-table-box-multiple'},
         { text: "OCR", to: { name: "Ocr" }, icon: 'mdi mdi-text-recognition' },
-        { text: "Scanner", to: { name: "Scanner" }, icon: 'mdi mdi-scanner'},
-
+        { text: "Portal", to: { name: "Portal" }, icon: 'mdi mdi-door' }, 
       ],
       activeTab: null,
     };

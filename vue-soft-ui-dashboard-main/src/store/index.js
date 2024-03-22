@@ -7,6 +7,24 @@ export default createStore({
     reachedLandingPage: false,
     token: null,
     folderDetails:{},
+    formData:[
+      { label: "Field 1", placeholder: "Enter Field 1", value: "" },
+      { label: "Field 2", placeholder: "Enter Field 2", value: "" },
+      { label: "Field 3", placeholder: "Enter Field 3", value: "" },
+      { label: "Field 4", placeholder: "Enter Field 1", value: "" },
+      { label: "Field 5", placeholder: "Enter Field 2", value: "" },
+      { label: "Field 6", placeholder: "Enter Field 3", value: "" },
+      { label: "Field 7", placeholder: "Enter Field 1", value: "" },
+      { label: "Field 8", placeholder: "Enter Field 2", value: "" },
+      { label: "Field 9", placeholder: "Enter Field 3", value: "" },
+      { label: "Field 10", placeholder: "Enter Field 1", value: "" },
+      { label: "Field 11", placeholder: "Enter Field 2", value: "" },
+      { label: "Field 12", placeholder: "Enter Field 3", value: "" },
+      { label: "Field 13", placeholder: "Enter Field 3", value: "" },
+      { label: "Field 14", placeholder: "Enter Field 3", value: "" },
+      { label: "Field 15", placeholder: "Enter Field 3", value: "" },
+      { label: "Field 16", placeholder: "Enter Field 3", value: "" },
+    ],
     userId: null,
     userName:"",
     templete:"",
@@ -68,6 +86,9 @@ export default createStore({
         state.isPinned = false;
       }
     },
+    setFormData(state, formData) {
+      state.formData = formData;
+    },
     sidebarType(state, payload) {
       state.isTransparent = payload;
     },
@@ -123,5 +144,8 @@ export default createStore({
     getFolderDetails(state) {
       return state.folderDetails;
     },
+    getFormData(state){
+      return state.formData;
+    }
   },
 });

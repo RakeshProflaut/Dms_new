@@ -1,49 +1,54 @@
 <template>
-  <div class="folderContainer">   
+  <div class="folderContainer">
     <div class="text-center card-header">
       <h5>User Creation</h5>
     </div>
     <div class="card-body">
-        <div class="mb-3">
+      <div class="mb-3">
+        <input
+          id="name"
+          type="text"
+          placeholder="Name"
+          aria-label="Name"
+          v-model="userdetails.userName"
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          id="email"
+          type="email"
+          placeholder="Email"
+          aria-label="Email"
+          v-model="userdetails.email"
+        />
+      </div>
+      <div class="mb-3 input-with-icon">
+        <div class="passwordContainer">
           <input
-            id="name"
-            type="text"
-            placeholder="Name"
-            aria-label="Name"
-            v-model="userdetails.userName"
+            :type="isVisible ? 'password' : 'text'"
+            v-model="userdetails.password"
+            placeholder="Password"
+            name="password"
+            @input="validatePassword"
           />
         </div>
-        <div class="mb-3">
-          <input
-            id="email"
-            type="email"
-            placeholder="Email"
-            aria-label="Email"
-            v-model="userdetails.email"
-          />
+        <span class="eyeIcon">
+          <i id="visiblityBtn" @click="toggleVisibility">
+            <span
+              style="font-size: 19px"
+              id="eyeicon"
+              class="material-symbols-outlined"
+              >{{ isVisible ? "visibility_off" : "visibility" }}</span
+            >
+          </i>
+        </span>
+        <div v-if="showPasswordWarning" class="warning-text">
+          Password must contain at least 8 characters, 1 uppercase letter, 1
+          special character, and 1 number.
         </div>
-        <div class=" mb-3 input-with-icon">
-                      <div class="passwordContainer">
-                        <input
-                        :type="isVisible ? 'password' : 'text'"
-                        v-model="userdetails.password"
-                        placeholder="Password"
-                        name="password"
-                        @input="validatePassword"
-                        />
-                      </div>
-                      <span class="eyeIcon"> 
-                        <i id="visiblityBtn" @click="toggleVisibility">
-                          <span style="font-size: 19px;" id="eyeicon" class="material-symbols-outlined">{{
-                            isVisible ? "visibility_off" : "visibility"
-                          }}</span>
-              </i>
-            </span>
-            <div v-if="showPasswordWarning" class="warning-text">Password must contain at least 8 characters, 1 uppercase letter, 1 special character, and 1 number.</div>
+      </div>
 
-          </div>
-
-        <!-- <div class="mb-3">
+      <!-- <div class="mb-3">
           <input
             v-model="userdetails.password"
             id="password"
@@ -52,91 +57,91 @@
             aria-label="Password"
           />
         </div> -->
-        <div class="mb-3">
-          <input
-            id="name"
-            type="text"
-            placeholder="Mobile Number"
-            aria-label="Mobile Number"
-            v-model="userdetails.mobileNo"
-          />
+      <div class="mb-3">
+        <input
+          id="name"
+          type="text"
+          placeholder="Mobile Number"
+          aria-label="Mobile Number"
+          v-model="userdetails.mobileNo"
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          id="name"
+          type="text"
+          placeholder="Location"
+          aria-label="Location"
+          v-model="userdetails.location"
+        />
+      </div>
+      <div class="switch">
+        <div
+          style="
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+          "
+        >
+          <span>Admin Access</span>
         </div>
-        <div class="mb-3">
-          <input
-            id="name"
-            type="text"
-            placeholder="Location"
-            aria-label="Location"
-            v-model="userdetails.location"
-          />
+        <div>
+          <v-switch
+            v-model="userdetails.adminAccess"
+            hide-details
+            true-value="Y"
+            false-value="N"
+            color="blue"
+            inset
+          ></v-switch>
         </div>
-        <div class="switch">
-          <div
-            style="
-              display: flex;
-              justify-content: flex-start;
-              align-items: center;
-            "
-          >
-            <span>Admin Access</span>
-          </div>
-          <div>
-            <v-switch
-              v-model="userdetails.adminAccess"
-              hide-details
-              true-value="Y"
-              false-value="N"
-              color="blue"
-              inset
-            ></v-switch>
-          </div>
+      </div>
+      <div class="switch">
+        <div
+          style="
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+          "
+        >
+          <span>Web Access</span>
         </div>
-        <div class="switch">
-          <div
-            style="
-              display: flex;
-              justify-content: flex-start;
-              align-items: center;
-            "
-          >
-            <span>Web Access</span>
-          </div>
-          <div>
-            <v-switch
-              v-model="userdetails.webAccess"
-              hide-details
-              true-value="Y"
-              false-value="N"
-              color="blue"
-              inset
-            ></v-switch>
-          </div>
+        <div>
+          <v-switch
+            v-model="userdetails.webAccess"
+            hide-details
+            true-value="Y"
+            false-value="N"
+            color="blue"
+            inset
+          ></v-switch>
         </div>
-        <div class="switch">
-          <div
-            style="
-              display: flex;
-              justify-content: flex-start;
-              align-items: center;
-            "
-          >
-            <span>LDAP Access</span>
-          </div>
-          <div>
-            <v-switch
-              v-model="userdetails.ldap"
-              hide-details
-              true-value="Y"
-              false-value="N"
-              color="blue"
-              inset
-            ></v-switch>
-          </div>
+      </div>
+      <div class="switch">
+        <div
+          style="
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+          "
+        >
+          <span>LDAP Access</span>
         </div>
+        <div>
+          <v-switch
+            v-model="userdetails.ldap"
+            hide-details
+            true-value="Y"
+            false-value="N"
+            color="blue"
+            inset
+          ></v-switch>
+        </div>
+      </div>
 
-        <div class="text-center">
-          <button @click="submitData">Submit</button>
-        </div>
+      <div class="text-center">
+        <button @click="submitData">Submit</button>
+      </div>
     </div>
   </div>
 </template>
@@ -166,7 +171,7 @@ export default {
         mobileNo: "",
       },
       isVisible: true,
-      showPasswordWarning: false 
+      showPasswordWarning: false,
     };
   },
 
@@ -176,7 +181,7 @@ export default {
     },
 
     validatePassword() {
-      console.log("userdetailsssPasswordd",this.userdetails.password);
+      console.log("userdetailsssPasswordd", this.userdetails.password);
       const password = this.userdetails.password;
       // Regular expression for password validation
       const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,}$/;
@@ -191,45 +196,45 @@ export default {
     async submitData(event) {
       event.preventDefault();
       this.validatePassword();
-      if (!this.showPasswordWarning){
-      const apiUrl = "http://localhost:61050/dms/access/signup";
-      const token = this.$store.getters.getUserToken;
-      console.log("token", token);
-      if (Object.values(this.userdetails).every((value) => value !== "")) {
-        try {
-          const response = await axios.post(apiUrl, this.userdetails, {
-            headers: {
-              token: token,
+      if (!this.showPasswordWarning) {
+        const apiUrl = "http://localhost:61050/dms/access/signup";
+        const token = this.$store.getters.getUserToken;
+        console.log("token", token);
+        if (Object.values(this.userdetails).every((value) => value !== "")) {
+          try {
+            const response = await axios.post(apiUrl, this.userdetails, {
+              headers: {
+                token: token,
+              },
+            });
+            this.$emit("showLoader", true);
+            this.getUserInfo();
+            this.$emit("closeDialogeBox", false);
+          } catch (error) {
+            console.error("Error occured byyy", error);
+          }
+        } else {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            customClass: "swal-wide",
+            height: "30px",
+            background: "hsl(0, 43%, 52%)",
+            color: "white",
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
             },
           });
-          this.$emit("showLoader", true);
-          this.getUserInfo();
-          this.$emit("closeDialogeBox", false);
-        } catch (error) {
-          console.error("Error occured byyy", error);
+          Toast.fire({
+            icon: "error",
+            title: "Please Fill all the Fields!",
+          });
         }
-      } else {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          customClass: "swal-wide",
-          height: "30px",
-          background: "hsl(0, 43%, 52%)",
-          color: "white",
-          timer: 2000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },          
-        });
-        Toast.fire({
-          icon: "error",
-          title: "Please Fill all the Fields!",
-        });
       }
-    }
     },
     updateWebAccess() {
       this.userdetails.webAccess =
@@ -283,7 +288,7 @@ export default {
     0 4px 7px -1px rgba(0, 0, 0, 0.11),
     0 2px 4px -1px rgba(0, 0, 0, 0.07);
 }
-.mb-3{
+.mb-3 {
   margin-bottom: 7px !important;
 }
 .mb-3 > input {
@@ -322,13 +327,12 @@ export default {
   /* top:-206px */
 }
 
-.passwordContainer{
+.passwordContainer {
   position: relative;
 }
 
-.input-with-icon{
+.input-with-icon {
   position: relative;
-
 }
 .eyeIcon {
   position: absolute;
@@ -353,7 +357,6 @@ export default {
   border: 1px solid #d2d6da;
   border-radius: 0.5rem;
 }
-
 
 .container {
   position: relative;
@@ -486,4 +489,3 @@ export default {
   }
 }
 </style>
-

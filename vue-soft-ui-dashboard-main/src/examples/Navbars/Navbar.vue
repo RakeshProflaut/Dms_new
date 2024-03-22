@@ -35,7 +35,6 @@
               href="#"
               @click="toggleSidebar"
               class="p-0 nav-link text-body"
-              id="iconNavbarSidenav"
               >
               <div class="sidenav-toggler-inner">
                 <i class="sidenav-toggler-line"></i>
@@ -237,8 +236,8 @@ export default {
     setNavPills();
     this.$store.state.isAbsolute = true;
     setTooltip(this.$store.state.bootstrap);
-    this.isAdmin(); 
     window.addEventListener("popstate", this.handlePopstate);
+    this.isAdmin(); 
 
   },
   data() {
@@ -262,6 +261,12 @@ export default {
   methods: {
     ...mapMutations(["navbarMinimize", "toggleConfigurator"]),
     ...mapActions(["toggleSidebarColor"]),
+
+    toggleSidebar() {
+      console.log("Toggling sidebar...");
+      this.toggleSidebarColor("bg-white");
+      this.navbarMinimize();
+    },
     isAdmin() {
       const templte =this.$store.getters.getTemplets;
       if(templte =='user'){
@@ -272,12 +277,8 @@ export default {
       console.log("adminBoard",this.adminBoard);
     },
 
-    toggleSidebar() {
-      this.toggleSidebarColor("bg-white");
-      this.navbarMinimize();
-    },
+ 
     async getLogout() {
-      // Display confirmation dialog
       const confirmed = await Swal.fire({
         title: "Are you sure you want to logout?",
         icon: "warning",

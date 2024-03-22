@@ -1,233 +1,204 @@
 <template>
   <div>
-    <!-- <div class="container-fluid">
-      <div
-        class="mt-4 page-header min-height-300 border-radius-xl"
-        :style="{
-          backgroundImage:
-            'url(' + require('@/assets/img/curved-images/curved14.jpg') + ')',
-          backgroundPositionY: '50%',
-        }"
-      >
-        <span class="mask bg-gradient-success opacity-6"></span>
-      </div> -->
-      <!-- <div class="mx-4 overflow-hidden card card-body blur shadow-blur mt-n6">
-        <div class="row gx-4">
-          <div class="col-auto">
-            <div class="avatar avatar-xl position-relative">
-              <img
-                src="@/assets/img/user.png"
-                alt="profile_image"
-                class="shadow-sm w-100 border-radius-lg"
-              />
-            </div>
-          </div>
-          <div class="col-auto my-auto">
-            <div class="h-100">
-              <h5 class="mb-1">{{ this.$store.getters.getUserName }}</h5>
-              <p class="mb-0 text-sm font-weight-bold">
-                User Id-{{ this.$store.getters.getUserId }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  -->
     <div class="mt-3 row"></div>
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
           <div class="card" style="height: 510px !important">
-            <div style="display: flex; justify-content: space-between">
-              <div class="card-header text-uppercase">
-                <h4>{{ this.folderName }}</h4>
-              </div>
-              <div  class="newButton">
-                <v-btn @click="openUploadDialogeBox = true"> Upload </v-btn>
+            <div style="display: flex; justify-content: flex-end">
+              <div class="newButton">
+                <v-btn @click="openUploadDialogeBox = true"> Scanner </v-btn>
               </div>
             </div>
-            <div class="card-body px-0 pt-0 pb-2">
-              <div class="table-responsive p-0">
-                <div class="tableContaier">
-                  <table class="table align-items-center mb-0">
-                    <thead class="table-header">
-                      <tr>
-                        <th
-                          style="font-size: 0.7rem !important"
-                          v-for="header in headers"
-                          :key="header.key"
-                          class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
-                          :style="{
-                            'text-align':
-                              header.key === 'action' || header.key === 'send'
-                                ? 'center'
-                                : 'left',
-                          }"
-                        >
-                          {{ header.title }}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr
-                        v-for="(data, rowIndex) in displayedData"
-                        :key="rowIndex"
-                        style="font-size: 0.9rem !important"
-                      >
-                        <td
-                          v-for="(header, index) in headers"
-                          :key="index"
-                          :class="{
-                            'pl-5':
-                              header.key !== 'action' && header.key !== 'send',
-                            'font-weight-bolder text-uppercase':
-                              header.key === 'folderName',
-                          }"
-                          :style="{
-                            'text-align':
-                              header.key === 'action' || header.key === 'send'
-                                ? 'center'
-                                : 'left',
-                          }"
-                        >
-                          <template v-if="header.key === 'action'">
-                            <div
-                              style="
-                                font-size: 0.7rem !important;
-                                height: 2rem !important;
-                              "
-                              @click="openDocViewBox(data['id'])"
-                              class="text-secondary font-weight-bold text-xs"
-                            >
-                              <span
-                                style="
-                                  font-size: 1.8rem;
-                                  cursor: pointer;
-                                  color: #234375;
-                                "
-                                class="mdi mdi-archive-eye-outline"
-                              ></span>
-                            </div>
-                          </template>
-                          <template v-if="header.key === 'send'">
-                            <div
-                              style="
-                                font-size: 0.7rem !important;
-                                height: 2rem !important;
-                              "
-                              @click="getSendMailBox(data['id'])"
-                              class="text-secondary font-weight-bold text-xs"
-                            >
-                              <span
-                                style="
-                                  font-size: 1.8rem;
-                                  cursor: pointer;
-                                  color: #234375;
-                                "
-                                class="mdi mdi-send"
-                              ></span>
-                            </div>
-                          </template>
-                          <template v-if="header.key === 'sno'">
-                            {{ rowIndex + 1 }}
-                          </template>
-                          <template v-else>
-                            {{ data[header.key] }}
-                          </template>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+            <div class="card-body px-0 pt-0 pb-0" style="overflow: hidden;">
+              <v-container class="overflow-container">
+                <v-row dense>
+                  <v-col
+                    v-for="(item, index) in items"
+                    :key="index"
+                    cols="12"
+                    sm="6"
+                    md="3"
+                    lg="3"  
+                  >
+                    <v-card class="my-card">
+                      <v-card-title class="headline my-card-title">{{
+                        item.barcodeName
+                      }}</v-card-title>
+                      <iframe
+                        :src="getPDFDataUrl(item.pdf)"
+                        width="100%"
+                        height="110"
+                      ></iframe>
+                      <v-card-actions class="my-card-actions">
+                        <v-btn @click="openPdfViewer(item)">View PDF</v-btn>
+                        <v-btn @click="downloadFile(item)">Download</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <v-dialog v-model="pdfViewerDialog" max-width="800px">
+                <div style="position: relative; left: 100%">
+                  <button class="closebtn" @click="pdfViewerDialog = false">
+                    <i class="bx bx-x" style="position: relative; top: 20%"></i>
+                  </button>
                 </div>
+                <v-card>
+                  <v-card-title>{{ this.selectedBarCode }}</v-card-title>
+                  <v-card-text>
+                    <iframe
+                      :src="selectedPdfUrl"
+                      width="100%"
+                      height="460"
+                    ></iframe>
+                  </v-card-text>
+                </v-card>
+              </v-dialog>
+            </div>
+            <v-dialog
+              v-model="openUploadDialogeBox"
+              style="display: flex; padding-left: 73%; z-index: 1001"
+            >
+              <div style="position: relative; left: 27%">
+                <button class="closebtn" @click="openUploadDialogeBox = false">
+                  <i class="bx bx-x" style="position: relative; top: 20%"></i>
+                </button>
+              </div>
+              <v-card style="width: 28%; border-radius: 3%">
                 <div>
-                  <v-pagination
-                    v-model="page"
-                    :length="pages"
-                    @input="updateDisplayedData"
-                  ></v-pagination>
+                  <div class="container" style="width: 100%; height: 100%">
+                    <div class="card-body">
+                      <form role="form">
+                        <div class="mb-3">
+                          <label>Document Name</label>
+                          <input
+                            type="text"
+                            name="myfile"
+                            placeholder="Enter Doc Name"
+                            v-model="uploadDetails.parentDocName"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label>Select File to Scan</label>
+                          <input
+                            type="file"
+                            id="fileUpload"
+                            name="myfile"
+                            @change="handleFileChange($event)"
+                            accept="application/pdf"
+                          />
+                        </div>
+                        <div class="text-center">
+                          <button @click="submitData">Submit</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <!-- <v-dialog v-model="docViewBox" style="z-index: 1001">
-            <v-card style="width: 35%; margin: 0 auto; border-radius: 3%">
-              <view-file
-                :selectedDocId="selectedDocId"
-                v-on:closeDocViewBox="closeDocViewBox"
-              />
-            </v-card>
-          </v-dialog>
-        -->
-        <v-dialog
-      v-model="openUploadDialogeBox"
-      style="display: flex; padding-left: 73%; z-index: 1001"
-    >
-      <div style="position: relative; left: 27%">
-        <button class="closebtn" @click="openUploadDialogeBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
-      <v-card style="width: 28%; border-radius: 3%">
-        <div>
-          <div class="container" style="width: 100%; height: 100%">
-            <div class="card-body">
-              <form role="form">
-                <div class="mb-3">
-                  <label>Select Image to upscale</label>
-                  <input
-                    type="file"
-                    id="fileUpload"
-                    name="myfile"
-                    @change="convertToBase64"
-                    accept="application/pdf"
-                  />
-                </div>
-                <div class="text-center">
-                  <button @click="submitImg">Submit</button>
-                </div>
-              </form>
-            </div>
+              </v-card>
+            </v-dialog>
           </div>
         </div>
-      </v-card>
-    </v-dialog>
-        </div>
       </div>
-    </div>
-    <div v-if="showLoader" class="loader-overlay">
-      <div v-if="showLoader" class="loader">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
+      <div v-if="showLoader" class="loader-overlay">
+        <loading-component  :progress="loadingProgress"/>
+        <div class="bg"></div>
       </div>
-      <div class="bg"></div>
     </div>
   </div>
 </template>
 
 <script>
 import setTooltip from "@/assets/js/tooltip.js";
-import setNavPills from "@/assets/js/nav-pills.js"; 
-import ScannerUploadfile from './ScannerUploadfile.vue';
+import setNavPills from "@/assets/js/nav-pills.js";
+import ScannerUploadfile from "./ScannerUploadfile.vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import LoadingComponent from "@/components/LoadingComponent.vue";
 export default {
-name:'Scanner',
-mounted() {
-  setNavPills();
-  setTooltip(this.$store.state.bootstrap);    
-  this.$store.state.isAbsolute = true;
+  name: "Scanner",
+  mounted() {
+    setNavPills();
+    setTooltip(this.$store.state.bootstrap);
+    this.$store.state.isAbsolute = true;
   },
-  components:{
-    ScannerUploadfile
+  components: {
+    ScannerUploadfile,
+    LoadingComponent
   },
-  data(){
-    return{
-      openUploadDialogeBox:false,
-    }
+  data() {
+    return {
+      pdfViewerDialog: false,
+      selectedPdfUrl: "",
+      selectedBarCode: "",
+      showLoader: false,
+      uploadDetails: {
+        parentDocName: "",
+        pdf: "",
+      },
+      openUploadDialogeBox: false,
+      items: [],
+      loadingProgress: 0,
+    };
   },
-  methods:{  
+  methods: {
+    getPDFDataUrl(base64String) {
+      return "data:application/pdf;base64," + base64String;
+    },
+
+    openPdfViewer(item) {
+      this.selectedPdfUrl = this.getPDFDataUrl(item.pdf);
+      this.selectedBarCode = item.barcodeName;
+      this.pdfViewerDialog = true;
+    },
+    async downloadFile(item) {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      let fileName;
+
+      fileType = "application/pdf";
+      fileName = `${item.barcodeName}.pdf`;
+      // Construct a data URL with the base64-encoded file data
+      const linkSource = `data:pdf;base64,${item.pdf}`;
+
+      // Create a new <a> element to act as a download link
+      const downloadLink = document.createElement("a");
+
+      // Set the href attribute of the download link to the data URL
+      downloadLink.href = linkSource;
+
+      // Set the download attribute to specify the filename for the downloaded file
+      downloadLink.download = fileName;
+
+      // Programmatically click the download link to initiate the download
+      downloadLink.click();
+    },
+
+    handleFileChange(event) {
+      const file = event.target.files[0]; // Assuming only one file is selected
+      const maxSize = 10 * 1024 * 1024; // 6MB in bytes
+
+      if (file && file.size > maxSize) {
+        this.fileSizeError = "File size exceeds the limit of 6MB.";
+        event.target.value = ""; // Clear the file input
+      } else {
+        this.fileSizeError = ""; // Reset error message if file size is within limit
+        // Convert the file to base64
+        this.convertToBase64(event);
+      }
+    },
+
+    async convertToBase64(event) {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.base64Data = reader.result;
+        this.uploadDetails.pdf = this.base64Data.split(",")[1];
+      };
+    },
+
     async handleShowLoader(value) {
       // Update the isLoading data property based on the emitted value
       this.openUploadDialogeBox = false;
@@ -253,12 +224,80 @@ mounted() {
         });
       }, 3000);
     },
-  }
-
-}
+    async submitData(event) {
+      event.preventDefault();
+      const apiUrl = "http://localhost:61056/splitter/split/splitPdf";
+      const token = this.$store.getters.getUserToken;
+      if (Object.values(this.uploadDetails).every((value) => value !== "")) {
+        this.openUploadDialogeBox = false;
+        this.showLoader = true;
+        await axios
+          .post(apiUrl, this.uploadDetails, {
+            headers: {
+              token: token,
+            },
+          })
+          .then((response) => {
+            this.items = response.data;
+          })
+          .catch((error) =>
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: error.response.data.errorMessage,
+            })
+          )
+          .finally(() => {
+            // Hide loader when API call completes
+            this.showLoader = false;
+          });
+      } else {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          customClass: "swal-wide",
+          height: "30px",
+          background: "hsl(0, 43%, 52%)",
+          color: "white",
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Please Fill  the Fields!",
+        });
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
+.my-card {
+  /* Adjusting margin to decrease the height of the card */
+  margin-bottom: 5px;
+}
+
+.my-card-title {
+  /* Adjusting padding to decrease the height of the card title */
+  padding-bottom: 2%;
+  background: #F7F8F9;
+  font-weight: 700;
+
+}
+
+.my-card-actions {
+  /* Adjusting margin to decrease the height of the card actions */
+  margin-top: -5px;
+  display: flex;
+  justify-content: space-between !important;
+  background: #F7F8F9;
+}
 
 .newButton {
   display: flex;
@@ -279,6 +318,19 @@ mounted() {
   cursor: pointer;
 }
 
+.my-card-actions > .v-btn {
+  background-image: linear-gradient(310deg, #82d616, #5cc06e) !important;
+  transition: 0.5s ease;
+  color: #fff;
+  margin-left: 2%;
+  font-weight: bold;
+  font-size: 0.7rem !important;
+  height: 2rem !important;
+}
+.my-card-actions > .v-btn:hover {
+  cursor: pointer;
+}
+
 .table-responsive {
   display: flex;
   flex-direction: column;
@@ -294,6 +346,11 @@ mounted() {
   top: 0;
   z-index: 1;
   background: #fff;
+}
+
+.overflow-container {
+  overflow: auto;
+  max-height: 485px; /* Adjust the maximum height as needed */
 }
 
 .mb-3 > input {
@@ -471,11 +528,37 @@ mounted() {
   height: 22px;
   color: #d11313;
   font-size: 30px;
-  opacity: 0.3;
-}
-
-.closebtn:hover {
   opacity: 1;
 }
 
+.closebtn:hover {
+  opacity: 0.5;
+}
+
+::-webkit-scrollbar {
+  width: 3px; /* width of the scrollbar */
+  border-radius: 13px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #5cc06e; /* color of the handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #5cc06e; /* color of the handle on hover */
+}
+
+.custom-input-class {
+  /* Add your custom CSS rules for the input field here */
+  border: 2px solid #ff0000; /* Example border color */
+  border-radius: 5px; /* Example border radius */
+  padding: 10px; /* Example padding */
+}
 </style>

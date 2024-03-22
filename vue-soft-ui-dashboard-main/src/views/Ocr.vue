@@ -31,7 +31,15 @@
             <splitpanes class="default-theme" vertical>
               <pane class="uploadedImgBlock">
                 <div class="imageContainer">
-                  <img id="iframeId1" class="iframe1" style="display: none" />
+                  <a data-fancybox="gallery" :href="imageData">
+                    <img
+                      class="iframe1"
+                      id="image"
+                      style="display: none"
+                      :src="imageData"
+                    />
+                  </a>
+                  <!-- <img id="iframeId1" class="iframe1" style="display: none" /> -->
                 </div>
               </pane>
               <pane>
@@ -94,7 +102,9 @@
                     @change="handleFileChange($event)"
                     accept="image/png, image/jpeg, image/jpg"
                   />
-                  <span v-if="fileSizeError" class="error-message">{{ fileSizeError }}</span>
+                  <span v-if="fileSizeError" class="error-message">{{
+                    fileSizeError
+                  }}</span>
                 </div>
                 <div class="text-center">
                   <button @click="submitImg">Submit</button>
@@ -133,7 +143,8 @@ export default {
   data() {
     return {
       openDialogeBox: false,
-      fileSizeError: '',
+      fileSizeError: "",
+      imageData: "",
       uploadedImage: "",
       uploadedImgExtenion: "",
       showLoader: false,
@@ -185,18 +196,18 @@ export default {
     },
 
     handleFileChange(event) {
-  const file = event.target.files[0]; // Assuming only one file is selected
-  const maxSize = 6 * 1024 * 1024; // 6MB in bytes
+      const file = event.target.files[0]; // Assuming only one file is selected
+      const maxSize = 6 * 1024 * 1024; // 6MB in bytes
 
-  if (file && file.size > maxSize) {
-    this.fileSizeError = 'File size exceeds the limit of 6MB.';
-    event.target.value = ''; // Clear the file input
-  } else {
-    this.fileSizeError = ''; // Reset error message if file size is within limit
-    // Convert the file to base64
-    this.convertToBase64(event);
-  }
-},
+      if (file && file.size > maxSize) {
+        this.fileSizeError = "File size exceeds the limit of 6MB.";
+        event.target.value = ""; // Clear the file input
+      } else {
+        this.fileSizeError = ""; // Reset error message if file size is within limit
+        // Convert the file to base64
+        this.convertToBase64(event);
+      }
+    },
 
     async convertToBase64(event) {
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
@@ -233,10 +244,10 @@ export default {
         console.log("resposneImage", response.data);
         this.blocks = response.data;
         this.openTextContainer = true;
-        const iframe = document.getElementById("iframeId1");
+        const iframe = document.getElementById("image");
         const clearBtn = document.getElementById("clearbtn");
 
-        iframe.src =
+        this.imageData =
           "data:image/" +
           this.uploadedImgExtenion +
           ";base64," +
@@ -248,11 +259,10 @@ export default {
       }
     },
 
-
     clearImg() {
-      const iframe1 = document.getElementById("iframeId1");
-      iframe1.src = "";
-      iframe1.style.display='none';
+      const iframe1 = document.getElementById("image");
+      this.imageData = "";
+      iframe1.style.display = "none";
       this.blocks = [];
       this.openTextContainer = false;
     },
@@ -261,8 +271,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .card .card-header {
   padding: 0.5rem !important;
 }
@@ -271,12 +279,10 @@ export default {
   padding: 0.5rem;
 }
 
-
 .error-message {
   color: red;
   font-size: 12px;
 }
-
 
 .imageContainer {
   position: relative;
@@ -291,10 +297,8 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit:contain;
+  object-fit: contain;
 }
-
-
 
 .uploadedImgBlock {
   padding: 2% 2%;
@@ -302,8 +306,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-
-
 
 .newButton {
   display: flex;

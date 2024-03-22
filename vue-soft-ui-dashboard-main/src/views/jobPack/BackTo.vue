@@ -1,14 +1,13 @@
 <template>
-    <div>
-      DocX
+  <div>
 
   </div>
 </template>
 
 <script>
 export default {
-name:'docxEditor',
 mounted(){
+    this.$router.push('/userBoard')
 }
 }
 </script>

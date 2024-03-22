@@ -35,7 +35,7 @@
                           class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
                           :style="{
                             'text-align':
-                              header.key === 'assign' || header.key === 'action'
+                              header.key === 'assign' || header.key === 'action' || header.key === 'delete'
                                 ? 'center'
                                 : 'left',
                           }"
@@ -56,13 +56,14 @@
                           :class="{
                             'pl-6':
                               header.key !== 'assign' &&
+                              header.key !== 'delete' &&
                               header.key !== 'action',
                             'font-weight-bolder text-uppercase':
                               header.key === 'groupName',
                           }"
                           :style="{
                             'text-align':
-                              header.key === 'assign' || header.key === 'action'
+                              header.key === 'assign' || header.key === 'action' || header.key === 'delete'
                                 ? 'center'
                                 : 'left',
                           }"
@@ -100,8 +101,7 @@
                        color: #234375;"
                        ></span>
                             </div>
-                          </template>
-
+                          </template>                    
                           <template v-else>
                             {{ data[header.key] }}
                           </template>
@@ -545,6 +545,9 @@ export default {
           })
         );
     },
+
+  
+   
   },
 };
 </script>

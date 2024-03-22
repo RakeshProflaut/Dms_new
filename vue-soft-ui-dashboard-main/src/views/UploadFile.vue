@@ -83,7 +83,6 @@ export default {
       fieldTypeWarnings: {
         integer: "Only accept Numbers",
         string: "Only accept Strings",
-        date: "Date in YYYY-MM-DD format",
       },
       warnings: {},
       docContent: "",
@@ -206,7 +205,6 @@ export default {
       const hasWarnings = Object.values(this.warnings).every(
         (warning) => warning ==""
       );
-      alert(hasWarnings);
       if (hasWarnings) {
         if (
           Object.values(this.uploadDetails).every((value) => value !== "") &&
@@ -258,7 +256,7 @@ export default {
       return fieldType === "integer"
         ? "number"
         : fieldType === "date"
-          ? "date"
+          ? "datetime-local"
           : "text";
     },
 
@@ -268,11 +266,6 @@ export default {
           return "^[0-9]+$";
         case "string":
           return "^(?=.*[a-zA-Z])[a-zA-Z0-9: -_]+$";
-        case "date":
-          // Add your date pattern here
-          return '(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))'
-        default:
-          return "";
       }
     },
 

@@ -21,7 +21,7 @@
                 <h4>Group Information</h4>
               </div>
               <div class="newButton">
-                <v-btn @click="openDialogeBox = true"> New </v-btn>
+                <v-btn @click="openDialogeBox = true">New</v-btn>
               </div>
             </div>
             <div class="card-body px-0 pt-1 pb-2">
@@ -37,7 +37,7 @@
                           class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
                           :style="{
                             'text-align':
-                              header.key === 'user' || header.key === 'action'
+                              header.key === 'user' || header.key === 'action' || header.key === 'delete'
                                 ? 'center'
                                 : 'left',
                           }"
@@ -57,13 +57,13 @@
                           :key="index"
                           :class="{
                             'pl-6':
-                              header.key !== 'user' && header.key !== 'action',
+                              header.key !== 'user' && header.key !== 'action'&& header.key !== 'delete',
                             'font-weight-bolder text-uppercase':
                               header.key === 'groupName',
                           }"
                           :style="{
                             'text-align':
-                              header.key === 'user' || header.key === 'action'
+                              header.key === 'user' || header.key === 'action' || header.key === 'delete'
                                 ? 'center'
                                 : 'left',
                           }"
@@ -108,8 +108,7 @@
                                 class="mdi mdi-account-multiple-plus-outline"
                               ></span>
                             </div>
-                          </template>
-
+                          </template>                       
                           <template v-else>
                             {{ data[header.key] }}
                           </template>
@@ -489,7 +488,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log('ressssposeAccess',response.data);
           this.accessUsers = response.data;
           this.assignedUsers = [];
           this.getAssignedUsers();
@@ -508,9 +506,6 @@ export default {
             (assignedItem) => assignedItem.userId === item.userId
           )
       );
-      console.log("filterlist", this.accessUsers);
-      console.log("assignedUsers List", this.assignedUsers);
-      console.log("accessUsers list", this.accessUsers);
     },
 
     async submitUserAccess() {
@@ -522,7 +517,6 @@ export default {
         mappedBy: userName,
       };
       const token = this.$store.getters.getUserToken;
-      console.log("userDetaissss", userDetails);
       await axios
         .post(apiUrl, userDetails, {
           headers: {
@@ -574,7 +568,6 @@ export default {
         })
         .then((response) => {
           this.assignedUsers = response.data;
-          console.log("assigendUseres", this.assignedUsers);
         })
         .catch((error) => console.log("error occured by", error));
     },
@@ -603,7 +596,6 @@ export default {
     async toMakeDeleteData(value) {
       const apiUrl = `http://localhost:61050/dms/group/deleteAssignUser?groupId=${this.selectedGroupId}&userId=${value} `;
       const token = this.$store.getters.getUserToken;
-      console.log(token);
       await axios
         .delete(apiUrl, {
           headers: {
@@ -611,7 +603,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log("respondedelte", response.data.status);
           this.assignedUsers = [];
           this.getAssignedUsers();
         })
@@ -625,6 +616,7 @@ export default {
     
     closeEditBox(value) {
       this.openEditbox = value;
+      this.getGroupData();
     },
 
 
@@ -655,6 +647,8 @@ export default {
         }, 3000);
       }
     },
+
+  
   },
 };
 </script>

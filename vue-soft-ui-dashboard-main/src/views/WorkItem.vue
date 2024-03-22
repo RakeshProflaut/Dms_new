@@ -594,7 +594,6 @@ export default {
         // Set the modified Word document URL for the viewer
         this.wordDocument = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(modifiedWordDataUrl)}`;
       } else {
-        alert("No PDF content to convert");
       }
     },
 

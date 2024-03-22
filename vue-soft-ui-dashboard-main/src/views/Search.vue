@@ -72,15 +72,18 @@
                       fieldNam.fieldName
                     }}</label>
                     <input
-                      :type="
-                        fieldNam.fieldType === 'integer' ? 'number' : 'text'
-                      "
+                    :type="getFieldType(fieldNam.fieldType)"
                       :id="fieldNam.fieldName"
                       v-model="fieldNam.value"
                       style="width: 100% !important"
                       :required="true"
                       :readonly="showFirstPane"
+                      :pattern="getFieldPattern(fieldNam)"
+                       @input="validateField(fieldNam)"
                     />
+                    <div class="warning-text">
+                    {{ warnings[fieldNam.fieldName] }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -217,6 +220,11 @@ export default {
       docViewBox:false,
       selectedDocId:null,
       showLoader: false,
+      fieldTypeWarnings: {
+        integer: "Only accept Numbers",
+        string: "Only accept Strings",
+      },
+      warnings: {},
       headers: [
         {
           key: "sno",
@@ -295,7 +303,10 @@ export default {
       const isAtLeastOneValuePresent = Object.values(mergedObject).some(value => {
   return value !== null && value !== undefined && value !== '';
 });
-
+const hasWarnings = Object.values(this.warnings).every(
+        (warning) => warning == ""
+      );
+      if (hasWarnings) {
       if(isAtLeastOneValuePresent){
           this.getTable(event);
       }else{  
@@ -318,6 +329,7 @@ export default {
           icon: "warning",
           title: "Please fill Minimum One Field!",
         });
+      }
       }
     },
 
@@ -347,9 +359,9 @@ export default {
           },
         });
         console.log(response.data.records);
-        this.listrecords=response.data.records;
         this.showLoader = true;
         setTimeout(() => {
+          this.listrecords=response.data.records;
             this.showLoader = false;
             this.openSearchTable =true;
            
@@ -385,6 +397,36 @@ export default {
 
     closeDocViewBox(value) {
       this.docViewBox = value;
+    },
+
+    getFieldType(fieldType) {
+      return fieldType === "integer"? "number"
+        : fieldType === "date"
+          ? "datetime-local"
+          : "text";
+    },
+
+    getFieldPattern(fieldNam) {
+      switch (fieldNam.fieldType) {
+        case "integer":
+          return "^[0-9]+$";
+        case "string":
+          return "^(?=.*[a-zA-Z])[a-zA-Z0-9: -_]+$";
+      }
+    },
+
+    validateField(fieldNam) {
+      const value = fieldNam.value;
+      const pattern = this.getFieldPattern(fieldNam);
+      const regex = new RegExp(pattern);
+      if (regex.test(value)) {
+        // Input matches the pattern
+        this.warnings[fieldNam.fieldName] = ""; // Clear warning
+      } else {
+        // Input does not match the pattern
+        const fieldTypeWarning = this.fieldTypeWarnings[fieldNam.fieldType];
+        this.warnings[fieldNam.fieldName] = fieldTypeWarning;
+      }
     },
   },
 };
@@ -599,6 +641,11 @@ label {
     transform: rotate(945deg);
     opacity: 0;
   }
+}
+
+.warning-text {
+  color: red;
+  font-size: 10px;
 }
 
 ::-webkit-scrollbar {
