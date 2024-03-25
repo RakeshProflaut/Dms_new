@@ -4,26 +4,27 @@
       <div class="row" style="margin-top: 0.5rem !important">
         <div class="col-12">
           <div class="card" style="height: 513px !important">
-            <div  class="newButton">
-                <v-btn @click="openFolderDialogeBox = true"
-                  >Submit</v-btn>
-              </div>
-              <div class="card-header text-uppercase">
-                <h4>Loan Agreement</h4>
-              </div>
-              <div  class="card-body px-0 pt-0 pb-0" style="overflow: hidden;">
-                <v-container class="overflow-container">
-      <v-row>
-        <v-col v-for="(field, index) in fields" :key="index" cols="4">
-          <label>{{ field.label }}</label>
-          <div class="mb-3">
-            <input v-model="field.value" :label="field.label" :placeholder="field.placeholder"/>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
+            <div class="newButton">
+              <v-btn @click="openFolderDialogeBox = true">Submit</v-btn>
             </div>
-
+            <div class="card-header text-uppercase">
+              <h4>{{ formTitle }}</h4>
+            </div>
+            <div class="card-body px-0 pt-0 pb-0" style="overflow: hidden">
+              <v-container class="overflow-container">
+                <v-row>
+                  <v-col v-for="(field, index) in fields" :key="index" cols="4">
+                    <label>{{ field.fieldName }}</label>
+                    <div class="mb-3">
+                      <input
+                        v-model="field.value"
+                        :placeholder="field.fieldName"
+                      />
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </div>
           </div>
         </div>
       </div>
@@ -42,42 +43,41 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 export default {
-
-  data(){
-    return{
-      fields:[]
-    }
+  data() {
+    return {
+      fields: [],
+      formTitle: '',
+    };
   },
-  mounted(){
+  mounted() {
     this.getFields();
   },
-  methods:{
-  async getFields(){
-    const api="http://localhost:61050/dms/jobPack/getAllTemplate";
-    const token=this.$store.getUserToken;
+  methods: {
+    async getFields() {
+      const api = "http://localhost:61050/dms/jobPack/getAllTemplate";
+      const token = this.$store.getUserToken;
 
-    await axios.get(api,{
-      headers:token
-    }).then((resposne)=>{
-      this.fields=resposne.data.fieldName.map(field => ({
-      label: field.label,
-      placeholder: `Enter ${field.label}`,
-      value: ""
-    }));
-    const formName=resposne.data.map(ele=>ele.formName);
-    this.$store.commit('setFormData',formName);
-
-    })
-  }
-  }
-
+      await axios
+        .get(api, {
+          headers: token,
+        })
+        .then((resposne) => {
+          this.fields = resposne.data.fieldName.map((field) => ({
+            label: field.label,
+            placeholder: `Enter ${field.label}`,
+            value: "",
+          }));
+          const formName = resposne.data.map((ele) => ele.formName);
+          this.$store.commit("setFormData", formName);
+        });
+    },
+  },
 };
 </script>
 
 <style scoped>
-
 .mb-3 > input {
   display: block;
   width: 85%;
@@ -100,7 +100,7 @@ export default {
 
 .overflow-container {
   overflow: auto;
-  max-height: calc(100vh - 200px);  /* Adjust the maximum height as needed */
+  max-height: calc(100vh - 200px); /* Adjust the maximum height as needed */
 }
 
 .newButton {
@@ -122,6 +122,4 @@ export default {
 .newButton > .v-btn:hover {
   cursor: pointer;
 }
-
-
 </style>

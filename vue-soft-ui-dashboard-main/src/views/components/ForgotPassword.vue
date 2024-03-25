@@ -1,15 +1,15 @@
 <template>
-  <v-container fluid fill-height style="height: 100vh">
-    <v-row align="center" justify="center">
+  <div  style="height: 100vh;display: flex;justify-content: center;align-items: center;">
+    <v-container>
+      <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="6">
-        <!-- Outer Card -->
-        <v-card class="transparent-card">
+        <v-card style="border-radius: 1.5rem">
           <v-img src="/logo-ct.png" class="mx-auto" max-height="100"></v-img>
           <v-card-title class="text-center">
             <span class="headline font-weight-bold fs-7">Reset Password</span>
           </v-card-title>
           <div v-if="currentStep === 0" class="center-inner-card">
-            <v-card class="elevation-5">
+            <v-card class="elevation-5 transparent-card">
               <v-card-text class="text-center">
                 Enter your user account's verified email address and we will
                 send you a Otp
@@ -34,7 +34,7 @@
             </v-card>
           </div>
           <div v-if="currentStep === 1" class="center-inner-card">
-            <v-card class="elevation-5">
+            <v-card class="elevation-5 transparent-card">
               <v-card-text class="text-center mt-3">
                 Enter the OTP received on your email
               </v-card-text>
@@ -63,22 +63,22 @@
             </v-card>
           </div>
           <div v-if="currentStep === 2" class="center-inner-card">
-            <v-card class="elevation-5">
+            <v-card class="elevation-5 transparent-card">
               <v-card-text class="text-center mt-3">
                 Set Your New Password
               </v-card-text>
               <v-card-text>
                 <div class="mb-3 input-with-icon">
-                  <div class="passwordContainer  d-flex justify-content-center">
+                  <div class="passwordContainer d-flex justify-content-center">
                     <input
-                      id="otp"
+                    id="otp"
                       :type="isVisible ? 'password' : 'text'"
                       v-model="newPassword"
                       placeholder="New Password"
                       aria-label="OTP"
                       @input="validatePassword"
-                    />
-                  </div>
+                      />
+                    </div>
                   <span class="eyeIcon">
                     <i id="visiblityBtn" @click="toggleVisibility">
                       <span
@@ -96,7 +96,7 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-center">
                   <input
-                    id="otp"
+                  id="otp"
                     type="password"
                     v-model="confirmPassword"
                     placeholder="Confirm Password"
@@ -128,6 +128,7 @@
       <div class="bg"></div>
     </div>
   </v-container>
+  </div>
 </template>
 
 <script>
@@ -362,7 +363,6 @@ export default {
     toggleVisibility() {
       this.isVisible = !this.isVisible;
     },
-
   },
   beforeDestroy() {
     clearInterval(this.timer);
@@ -387,7 +387,7 @@ export default {
 
 .mb-3 > input {
   display: block;
-  width: 60%;
+  width: 70%;
   padding: 0.6rem 0.75rem;
   font-size: 0.875rem;
   font-weight: 400;
@@ -409,10 +409,7 @@ export default {
 }
 .passwordContainer {
   position: relative;
-  
 }
-
-
 
 .passwordContainer > input {
   display: block;
@@ -434,21 +431,23 @@ export default {
     border-color 0.15s ease;
 }
 
-.newButton {
-  display: flex;
-  justify-content: flex-end;
-  margin: 1% 0px;
-  margin-right: 2%;
-}
+
 .newButton > .v-btn {
-  background-image: linear-gradient(310deg, #5cc06e, #82d616) !important;
   color: #fff;
-  transition: 0.5s ease;
-  margin-left: 2%;
-  letter-spacing: 0;
-  font-weight: bold;
-  font-size: 0.9rem !important;
-  height: 2.3rem !important;
+  border: 0;
+  cursor: pointer;
+  width: 30% !important;
+  letter-spacing: -0.025rem;
+  text-transform: uppercase;
+  background-size: 150%;
+  background-position-x: 25%;
+  background-image: linear-gradient(310deg, #141727 0%, #3a416f 100%);
+  margin-top: 16px !important;
+  border-radius: 1rem;
+  padding: 8px 0px;
+  box-shadow:
+    0 4px 7px -1px rgba(0, 0, 0, 0.11),
+    0 2px 4px -1px rgba(0, 0, 0, 0.07);
 }
 
 .newButton > .v-btn:hover {

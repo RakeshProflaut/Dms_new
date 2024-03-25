@@ -37,8 +37,8 @@ import BackTo from "@/views/jobPack/BackTo.vue"
 
 const formData = store.getters.getFormData;
 const dynamicChildRoutes = formData.map(form => ({
-  path: form.label.toLowerCase().replace(/\s+/g, '-'),
-  name: form.label.replace(/\s+/g, ''),
+  path: form.formName.toLowerCase().replace(/\s+/g, '-'),
+  name: form.formName.replace(/\s+/g, ''),
   component: LoanAgreement,
   meta: {
     formData: form

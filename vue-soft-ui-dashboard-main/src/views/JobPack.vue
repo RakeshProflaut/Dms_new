@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -20,10 +22,31 @@ export default {
   },
   mounted() {
     this.showLoader = true;
+    this.getFields();
     setTimeout(() => {
       this.showLoader = false;
       this.$router.push("/jobPack-creation");
     }, 3000);
+  },
+  methods: {
+    async getFields() {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const apiUrl = `http://localhost:61050/dms/jobPack/getAllTemplate`;
+      const token = this.$store.getters.getUserToken;
+      try {
+        const response = await axios.get(apiUrl, {
+          headers: {
+            token: token,
+          },
+        });
+        const formName = response.data;
+        console.log("2 formName",formName);
+        this.$store.commit("setFormData", formName);
+      } catch (error) {
+        console.error("Error occured by", error);
+      }
+    },
+
   },
 };
 </script>

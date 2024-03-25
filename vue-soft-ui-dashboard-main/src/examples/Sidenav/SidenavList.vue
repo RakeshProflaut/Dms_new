@@ -15,7 +15,7 @@
         <i style="color: #3A416F;font-size: 1.2rem;" :class="item.icon"></i>
     </div>
     <span
-      class="nav-link-text"
+      class="nav-link-text text-uppercase"
       :class="this.$store.state.isRTL ? ' me-1' : 'ms-1'"
       >{{ item.text }}</span
     >

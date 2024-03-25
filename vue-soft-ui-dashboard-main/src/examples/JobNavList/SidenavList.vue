@@ -19,7 +19,7 @@
             <i style="color: #3a416f; font-size: 1.2rem" :class="item.icon"></i>
           </div>
           <span
-            class="nav-link-text"
+            class="nav-link-text text-uppercase"
             :class="$store.state.isRTL ? ' me-1' : 'ms-1'"
           >
             {{ item.formName }}
@@ -35,9 +35,9 @@ import { mapGetters } from "vuex";
 export default {
   name: "SidenavList",
   computed: {
-    ...mapGetters(["getForms"]),
+    ...mapGetters(["getFormData"]),
     formData() {
-      return this.getForms;
+      return this.getFormData;
     }
   },
   data() {
@@ -53,8 +53,8 @@ export default {
   created() {
     // Populate sidenavItems with form names
     this.sidenavItems = this.formData.map(item => ({
-      formName: item.formName,
-      icon: "mdi mdi-file-certificate", // You can set a default icon here
+      formName:item.formName,
+      icon:"mdi mdi-file-certificate", // You can set a default icon here
     }));
     this.activeTab = this.sidenavItems[0] ? this.sidenavItems[0].formName : null;
   },
