@@ -16,7 +16,7 @@
       </a>
     </div>
     <hr class="mt-0 horizontal dark" />
-    <sidenav-list :cardBg="customClass" />
+    <sidenav-list :cardBg="customClass"/>
   </aside>
 </template>
 <script>

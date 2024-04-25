@@ -10,7 +10,7 @@
                 <v-btn @click="openUploadDialogeBox = true"> Scanner </v-btn>
               </div>
             </div>
-            <div class="card-body px-0 pt-0 pb-0" style="overflow: hidden;">
+            <div class="card-body px-0 pt-0 pb-0" style="overflow: hidden">
               <v-container class="overflow-container">
                 <v-row dense>
                   <v-col
@@ -19,7 +19,7 @@
                     cols="12"
                     sm="6"
                     md="3"
-                    lg="3"  
+                    lg="3"
                   >
                     <v-card class="my-card">
                       <v-card-title class="headline my-card-title">{{
@@ -102,7 +102,7 @@
         </div>
       </div>
       <div v-if="showLoader" class="loader-overlay">
-        <loading-component  :progress="loadingProgress"/>
+        <loading-component :progress="loadingProgress" />
         <div class="bg"></div>
       </div>
     </div>
@@ -110,127 +110,127 @@
 </template>
 
 <script>
-import setTooltip from "@/assets/js/tooltip.js";
-import setNavPills from "@/assets/js/nav-pills.js";
-import ScannerUploadfile from "./ScannerUploadfile.vue";
-import axios from "axios";
-import Swal from "sweetalert2";
-import LoadingComponent from "@/components/LoadingComponent.vue";
+import setTooltip from '@/assets/js/tooltip.js'
+import setNavPills from '@/assets/js/nav-pills.js'
+import ScannerUploadfile from './ScannerUploadfile.vue'
+import axios from 'axios'
+import Swal from 'sweetalert2'
+import LoadingComponent from '@/components/LoadingComponent.vue'
 export default {
-  name: "Scanner",
+  name: 'Scanner',
   mounted() {
-    setNavPills();
-    setTooltip(this.$store.state.bootstrap);
-    this.$store.state.isAbsolute = true;
+    setNavPills()
+    setTooltip(this.$store.state.bootstrap)
+    this.$store.state.isAbsolute = true
   },
   components: {
     ScannerUploadfile,
-    LoadingComponent
+    LoadingComponent,
   },
   data() {
     return {
       pdfViewerDialog: false,
-      selectedPdfUrl: "",
-      selectedBarCode: "",
+      selectedPdfUrl: '',
+      selectedBarCode: '',
       showLoader: false,
       uploadDetails: {
-        parentDocName: "",
-        pdf: "",
+        parentDocName: '',
+        pdf: '',
       },
       openUploadDialogeBox: false,
       items: [],
       loadingProgress: 0,
-    };
+    }
   },
   methods: {
     getPDFDataUrl(base64String) {
-      return "data:application/pdf;base64," + base64String;
+      return 'data:application/pdf;base64,' + base64String
     },
 
     openPdfViewer(item) {
-      this.selectedPdfUrl = this.getPDFDataUrl(item.pdf);
-      this.selectedBarCode = item.barcodeName;
-      this.pdfViewerDialog = true;
+      this.selectedPdfUrl = this.getPDFDataUrl(item.pdf)
+      this.selectedBarCode = item.barcodeName
+      this.pdfViewerDialog = true
     },
     async downloadFile(item) {
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      let fileName;
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+      let fileName
 
-      fileType = "application/pdf";
-      fileName = `${item.barcodeName}.pdf`;
+      fileType = 'application/pdf'
+      fileName = `${item.barcodeName}.pdf`
       // Construct a data URL with the base64-encoded file data
-      const linkSource = `data:pdf;base64,${item.pdf}`;
+      const linkSource = `data:pdf;base64,${item.pdf}`
 
       // Create a new <a> element to act as a download link
-      const downloadLink = document.createElement("a");
+      const downloadLink = document.createElement('a')
 
       // Set the href attribute of the download link to the data URL
-      downloadLink.href = linkSource;
+      downloadLink.href = linkSource
 
       // Set the download attribute to specify the filename for the downloaded file
-      downloadLink.download = fileName;
+      downloadLink.download = fileName
 
       // Programmatically click the download link to initiate the download
-      downloadLink.click();
+      downloadLink.click()
     },
 
     handleFileChange(event) {
-      const file = event.target.files[0]; // Assuming only one file is selected
-      const maxSize = 10 * 1024 * 1024; // 6MB in bytes
+      const file = event.target.files[0] // Assuming only one file is selected
+      const maxSize = 10 * 1024 * 1024 // 6MB in bytes
 
       if (file && file.size > maxSize) {
-        this.fileSizeError = "File size exceeds the limit of 6MB.";
-        event.target.value = ""; // Clear the file input
+        this.fileSizeError = 'File size exceeds the limit of 6MB.'
+        event.target.value = '' // Clear the file input
       } else {
-        this.fileSizeError = ""; // Reset error message if file size is within limit
+        this.fileSizeError = '' // Reset error message if file size is within limit
         // Convert the file to base64
-        this.convertToBase64(event);
+        this.convertToBase64(event)
       }
     },
 
     async convertToBase64(event) {
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+      const file = event.target.files[0]
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
       reader.onload = () => {
-        this.base64Data = reader.result;
-        this.uploadDetails.pdf = this.base64Data.split(",")[1];
-      };
+        this.base64Data = reader.result
+        this.uploadDetails.pdf = this.base64Data.split(',')[1]
+      }
     },
 
     async handleShowLoader(value) {
       // Update the isLoading data property based on the emitted value
-      this.openUploadDialogeBox = false;
-      this.showLoader = value;
+      this.openUploadDialogeBox = false
+      this.showLoader = value
       setTimeout(() => {
-        this.showLoader = false;
+        this.showLoader = false
         const Toast = Swal.mixin({
           toast: true,
-          position: "top-end",
+          position: 'top-end',
           showConfirmButton: false,
-          background: "#4fb945",
-          color: "white",
+          background: '#4fb945',
+          color: 'white',
           timer: 2000,
           timerProgressBar: true,
           didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
+            toast.onmouseenter = Swal.stopTimer
+            toast.onmouseleave = Swal.resumeTimer
           },
-        });
+        })
         Toast.fire({
-          icon: "success",
-          title: "Uploaded successfully",
-        });
-      }, 3000);
+          icon: 'success',
+          title: 'Uploaded successfully',
+        })
+      }, 3000)
     },
     async submitData(event) {
-      event.preventDefault();
-      const apiUrl = "http://localhost:61056/splitter/split/splitPdf";
-      const token = this.$store.getters.getUserToken;
-      if (Object.values(this.uploadDetails).every((value) => value !== "")) {
-        this.openUploadDialogeBox = false;
-        this.showLoader = true;
+      event.preventDefault()
+      const apiUrl = 'http://localhost:61056/splitter/split/splitPdf'
+      const token = this.$store.getters.getUserToken
+      if (Object.values(this.uploadDetails).every((value) => value !== '')) {
+        this.openUploadDialogeBox = false
+        this.showLoader = true
         await axios
           .post(apiUrl, this.uploadDetails, {
             headers: {
@@ -238,43 +238,43 @@ export default {
             },
           })
           .then((response) => {
-            this.items = response.data;
+            this.items = response.data
           })
           .catch((error) =>
             Swal.fire({
-              icon: "error",
-              title: "Error",
+              icon: 'error',
+              title: 'Error',
               text: error.response.data.errorMessage,
             })
           )
           .finally(() => {
             // Hide loader when API call completes
-            this.showLoader = false;
-          });
+            this.showLoader = false
+          })
       } else {
         const Toast = Swal.mixin({
           toast: true,
-          position: "top-end",
+          position: 'top-end',
           showConfirmButton: false,
-          customClass: "swal-wide",
-          height: "30px",
-          background: "hsl(0, 43%, 52%)",
-          color: "white",
+          customClass: 'swal-wide',
+          height: '30px',
+          background: 'hsl(0, 43%, 52%)',
+          color: 'white',
           timer: 2000,
           timerProgressBar: true,
           didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
+            toast.onmouseenter = Swal.stopTimer
+            toast.onmouseleave = Swal.resumeTimer
           },
-        });
+        })
         Toast.fire({
-          icon: "error",
-          title: "Please Fill  the Fields!",
-        });
+          icon: 'error',
+          title: 'Please Fill  the Fields!',
+        })
       }
     },
   },
-};
+}
 </script>
 
 <style scoped>
@@ -286,9 +286,8 @@ export default {
 .my-card-title {
   /* Adjusting padding to decrease the height of the card title */
   padding-bottom: 2%;
-  background: #F7F8F9;
+  background: #f7f8f9;
   font-weight: 700;
-
 }
 
 .my-card-actions {
@@ -296,7 +295,7 @@ export default {
   margin-top: -5px;
   display: flex;
   justify-content: space-between !important;
-  background: #F7F8F9;
+  background: #f7f8f9;
 }
 
 .newButton {
@@ -430,7 +429,7 @@ export default {
   animation-duration: 5.5s;
 }
 .loader .circle:after {
-  content: "";
+  content: '';
   position: absolute;
   width: 6px;
   height: 6px;

@@ -1,78 +1,358 @@
-side
+<template>
+  <div>
+    <!-- <div class="container-fluid">
+      <div
+        class="mt-4 page-header min-height-300 border-radius-xl"
+        :style="{
+          backgroundImage:
+            'url(' + require('@/assets/img/curved-images/curved14.jpg') + ')',
+          backgroundPositionY: '50%',
+        }"
+      ></div>
+    </div> -->
+    <div class="container-fluid">
+      <div class="row" style="margin-top: 0.5rem !important">
+        <div class="col-12">
+          <div class="card" style="height: 513px !important">
+            <div style="display: flex; justify-content: space-between">
+              <div class="card-header text-uppercase">
+                <h4>Mount Points</h4>
+              </div>
+              <div class="newButton">
+                <v-btn @click="openDialogeBox = true"> New </v-btn>
+              </div>
+            </div>
+            <div class="card-body px-0 pt-1 pb-2">
+              <div class="table-responsive p-0">
+                <div class="tableContaier">
+                  <table class="table align-items-center mb-0">
+                    <thead class="table-header">
+                      <tr>
+                        <th
+                          style="font-size: 0.7rem !important"
+                          v-for="header in headers"
+                          :key="header.key"
+                          class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
+                          :style="{
+                            'text-align':
+                              header.key === 'assign' ||
+                              header.key === 'action' ||
+                              header.key === 'delete'
+                                ? 'center'
+                                : 'left',
+                          }"
+                        >
+                          {{ header.title }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        style="font-size: 0.9rem !important"
+                        v-for="(data, rowIndex) in displayedData"
+                        :key="rowIndex"
+                      >
+                        <td
+                          v-for="(header, index) in headers"
+                          :key="index"
+                          :class="{
+                            'pl-6':
+                              header.key !== 'assign' &&
+                              header.key !== 'delete' &&
+                              header.key !== 'action',
+                            'font-weight-bolder text-uppercase':
+                              header.key === 'groupName',
+                          }"
+                          :style="{
+                            'text-align':
+                              header.key === 'assign' ||
+                              header.key === 'action' ||
+                              header.key === 'delete'
+                                ? 'center'
+                                : 'left',
+                          }"
+                        >
+                          <template v-if="header.key === 'assign'">
+                            <div
+                              @click="openAllocateBox(data['id'])"
+                              style="
+                                font-size: 0.7rem !important;
+                                height: 2rem !important;
+                              "
+                              class="font-weight-bold text-xs"
+                            >
+                              <span
+                                class="mdi mdi-folder-multiple-plus"
+                                style="
+                                  font-size: 1.5rem;
+                                  cursor: pointer;
+                                  color: #234375;
+                                "
+                              ></span>
+                            </div>
+                          </template>
+                          <template v-else-if="header.key === 'action'">
+                            <div
+                              style="
+                                font-size: 0.7rem !important;
+                                height: 2rem !important;
+                              "
+                              class="text-secondary font-weight-bold text-xs"
+                            >
+                              <span
+                                class="mdi mdi-pencil"
+                                style="
+                                  font-size: 1.2rem;
+                                  cursor: pointer;
+                                  color: #234375;
+                                "
+                              ></span>
+                            </div>
+                          </template>
+                          <template v-else>
+                            {{ data[header.key] }}
+                          </template>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <v-pagination
+                    v-model="page"
+                    :length="pages"
+                    @input="updateDisplayedData"
+                  ></v-pagination>
+                </div>
+              </div>
+            </div>
+            <v-dialog
+              v-model="openDialogeBox"
+              style="padding-left: 73%; z-index: 1001"
+            >
+              <div style="position: relative; left: 27%">
+                <button class="closebtn" @click="openDialogeBox = false">
+                  <i class="bx bx-x" style="position: relative; top: 20%"></i>
+                </button>
+              </div>
+              <v-card style="width: 28%; border-radius: 3%">
+                <div>
+                  <div class="container" style="width: 100%; height: 100%">
+                    <div class="pt-10 text-center card-header">
+                      <h5>Folder Path Creation</h5>
+                    </div>
+                    <div class="card-body">
+                      <form role="form">
+                        <div class="mb-3">
+                          <input
+                            id="path"
+                            type="text"
+                            placeholder="Enter Folder Path"
+                            aria-label="path"
+                            v-model="enteredPath"
+                          />
+                        </div>
+                        <div class="text-center">
+                          <button @click="submitPathDetails">Save</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </v-card>
+            </v-dialog>
+            <v-dialog
+              v-model="openAccessBox"
+              style="padding-left: 73%; z-index: 1001"
+            >
+              <div style="position: relative; left: 27%">
+                <button class="closebtn" @click="openAccessBox = false">
+                  <i class="bx bx-x" style="position: relative; top: 20%"></i>
+                </button>
+              </div>
+              <v-card style="width: 28%; border-radius: 3%">
+                <div>
+                  <div class="container" style="width: 100%; height: 100%">
+                    <div class="pt-4 text-center card-header">
+                      <h5>Allocate Folder</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="mb-3">
+                        <input
+                          style="height: 54px; background: #3c38383d"
+                          id="path"
+                          type="text"
+                          aria-label="path"
+                          v-model="readfolderPath"
+                          readonly
+                          disabled
+                        />
+                      </div>
+                      <div>
+                        <label> Name</label>
+                        <v-select
+                          variant="outlined"
+                          v-model="selectedFolders"
+                          :items="allocatedFolders"
+                          item-title="folderName"
+                          item-value="folderID"
+                          label="Select items"
+                          multiple
+                          chips
+                          small-chips
+                          clearable
+                        >
+                        </v-select>
+                      </div>
+                      <div class="text-center">
+                        <button @click="submitAllocateFolders">Submit</button>
+                      </div>
 
+                      <div
+                        class="table-responsive p-0"
+                        style="height: 220px !important"
+                      >
+                        <table class="table align-items-center mb-0">
+                          <thead class="table-header">
+                            <tr>
+                              <th
+                                class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
+                              >
+                                Folder Name
+                              </th>
+                              <th
+                                class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
+                              >
+                                Action
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              v-for="(data, rowIndex) in assignedFolders"
+                              :key="rowIndex"
+                            >
+                              <td>
+                                <div
+                                  style="text-align: center"
+                                  class="text-center d-flex flex-column justify-content-center"
+                                >
+                                  {{ data.folderName }}
+                                </div>
+                              </td>
+                              <td>
+                                <div
+                                  @click="openDeleteOption(data.folderID)"
+                                  style="text-align: center"
+                                >
+                                  <span
+                                    style="
+                                      font-size: 1.2rem;
+                                      color: red;
+                                      cursor: pointer;
+                                    "
+                                    class="mdi mdi-delete"
+                                  ></span>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </v-card>
+            </v-dialog>
+          </div>
+        </div>
+      </div>
+      <div v-if="showLoader" class="loader-overlay">
+        <div v-if="showLoader" class="loader">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+        <div class="bg"></div>
+      </div>
+    </div>
+  </div>
+</template>
 <script>
-import setTooltip from "@/assets/js/tooltip.js";
-import setNavPills from "@/assets/js/nav-pills.js";
-import axios from "axios";
-import Swal from "sweetalert2";
+import setTooltip from '@/assets/js/tooltip.js'
+import setNavPills from '@/assets/js/nav-pills.js'
+import axios from 'axios'
+import Swal from 'sweetalert2'
 
 export default {
-  name: "mountPoints",
+  name: 'mountPoints',
   data() {
     return {
       page: 1, // Current page
       itemsPerPage: 10, // Number of items per page
       headers: [
-        { key: "id", title: "ID" },
-        { key: "path", title: "PATH" },
-        { key: "createdBy", title: "CREATED BY" },
-        { key: "createdAt", title: "CREATED AT" },
-        { key: "action", title: "ACTION" },
-        { key: "assign", title: "ASSIGN" },
+        { key: 'id', title: 'ID' },
+        { key: 'path', title: 'PATH' },
+        { key: 'createdBy', title: 'CREATED BY' },
+        { key: 'createdAt', title: 'CREATED AT' },
+        { key: 'action', title: 'ACTION' },
+        { key: 'assign', title: 'ASSIGN' },
       ],
       openDialogeBox: false,
       openAccessBox: false,
       mountData: [],
       selectedFolders: [],
-      enteredPath: "",
+      enteredPath: '',
       assignedFolders: [],
       showLoader: false,
       selectedUserId: [],
-      readfolderPath: "",
+      readfolderPath: '',
       allocatedFolders: [],
       selectedMountId: null,
-    };
+    }
   },
   mounted() {
-    this.getMountData();
-    this.$store.state.isAbsolute = true;
-    setNavPills();
-    setTooltip(this.$store.state.bootstrap);
+    this.getMountData()
+    this.$store.state.isAbsolute = true
+    setNavPills()
+    setTooltip(this.$store.state.bootstrap)
   },
   beforeUnmount() {
-    this.$store.state.isAbsolute = false;
+    this.$store.state.isAbsolute = false
   },
   computed: {
     displayedData() {
-      console.log("displa data rendering");
-      const start = (this.page - 1) * this.itemsPerPage;
-      console.log("start", start);
-      const end = start + this.itemsPerPage;
-      console.log("end", start);
+      console.log('displa data rendering')
+      const start = (this.page - 1) * this.itemsPerPage
+      console.log('start', start)
+      const end = start + this.itemsPerPage
+      console.log('end', start)
 
-      return this.mountData.slice(start, end);
+      return this.mountData.slice(start, end)
     },
     pages() {
-      console.log(Math.ceil(this.mountData.length / this.itemsPerPage));
-      return Math.ceil(this.mountData.length / this.itemsPerPage);
+      console.log(Math.ceil(this.mountData.length / this.itemsPerPage))
+      return Math.ceil(this.mountData.length / this.itemsPerPage)
     },
   },
   methods: {
     updateDisplayedData() {
       // Your logic to update displayed data based on the new page number
-      const start = (this.page - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      this.displayedData = this.mountData.slice(start, end);
+      const start = (this.page - 1) * this.itemsPerPage
+      const end = start + this.itemsPerPage
+      this.displayedData = this.mountData.slice(start, end)
     },
 
     async submitPathDetails(event) {
-      event.preventDefault();
-      const apiUrl = `http://localhost:61050/dms/mount/saveMountPoint`;
+      event.preventDefault()
+      const apiUrl = `http://localhost:61050/dms/mount/saveMountPoint`
       const pathDetails = {
         path: this.enteredPath,
-      };
-      const token = this.$store.getters.getUserToken;
-      console.log("userDetaissss", pathDetails);
+      }
+      const token = this.$store.getters.getUserToken
+      console.log('userDetaissss', pathDetails)
       await axios
         .post(apiUrl, pathDetails, {
           headers: {
@@ -80,38 +360,38 @@ export default {
           },
         })
         .then(() => {
-          this.openAccessBox = false;
-          this.showLoader = true;
+          this.openAccessBox = false
+          this.showLoader = true
 
           setTimeout(() => {
-            this.showLoader = false;
-            this.openAccessBox = true;
+            this.showLoader = false
+            this.openAccessBox = true
             const Toast = Swal.mixin({
               toast: true,
-              position: "top-end",
+              position: 'top-end',
               showConfirmButton: false,
-              background: "#4fb945",
-              color: "white",
+              background: '#4fb945',
+              color: 'white',
               timer: 2000,
               timerProgressBar: true,
               didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
+                toast.onmouseenter = Swal.stopTimer
+                toast.onmouseleave = Swal.resumeTimer
               },
-            });
+            })
             Toast.fire({
-              icon: "success",
-              title: "User Assigned successfully",
-            });
-          }, 3000);
+              icon: 'success',
+              title: 'User Assigned successfully',
+            })
+          }, 3000)
         })
-        .catch((error) => console.log("error occured by", error));
+        .catch((error) => console.log('error occured by', error))
     },
 
     async getMountData() {
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      const apiUrl = `http://localhost:61050/dms/mount/getAllMountPoint`;
-      const token = this.$store.getters.getUserToken;
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+      const apiUrl = `http://localhost:61050/dms/mount/getAllMountPoint`
+      const token = this.$store.getters.getUserToken
       await axios
         .get(apiUrl, {
           headers: {
@@ -119,19 +399,19 @@ export default {
           },
         })
         .then((response) => {
-          this.mountData = response.data;
-          console.log("mountData", this.mountData);
+          this.mountData = response.data
+          console.log('mountData', this.mountData)
         })
-        .catch((error) => console.error("Error occured by", error));
+        .catch((error) => console.error('Error occured by', error))
     },
 
     async openAllocateBox(value) {
-      this.selectedMountId = value;
+      this.selectedMountId = value
       this.readfolderPath = this.mountData.find(
         (ele) => ele.id === this.selectedMountId
-      ).path;
-      this.openAccessBox = true;
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      ).path
+      this.openAccessBox = true
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
       await axios
         .get(
           `http://localhost:61050/dms/mount/getAllNotAllocateFolders/${this.selectedMountId}`,
@@ -142,24 +422,24 @@ export default {
           }
         )
         .then((response) => {
-          this.allocatedFolders = response.data;
-          this.assignedFolders = [];
-          this.getAssigendFolders();
+          this.allocatedFolders = response.data
+          this.assignedFolders = []
+          this.getAssigendFolders()
           this.getAssigendFolders().then(() => {
-            this.getFilterAllocatedFolders();
-          });
+            this.getFilterAllocatedFolders()
+          })
         })
-        .catch((error) => console.error("Error occured by", error));
+        .catch((error) => console.error('Error occured by', error))
     },
 
     async submitAllocateFolders() {
-      const apiUrl = `http://localhost:61050/dms/mount/saveMountMapping`;
+      const apiUrl = `http://localhost:61050/dms/mount/saveMountMapping`
       const userDetails = {
         mountPointId: this.selectedMountId,
         folderId: this.selectedFolders,
-      };
-      const token = this.$store.getters.getUserToken;
-      console.log("allocatedDetailsss", userDetails);
+      }
+      const token = this.$store.getters.getUserToken
+      console.log('allocatedDetailsss', userDetails)
       await axios
         .post(apiUrl, userDetails, {
           headers: {
@@ -167,41 +447,41 @@ export default {
           },
         })
         .then(() => {
-          this.openAccessBox = false;
-          this.showLoader = true;
+          this.openAccessBox = false
+          this.showLoader = true
 
           setTimeout(() => {
-            this.showLoader = false;
-            this.openAccessBox = true;
-            (this.selectedFolders = []),
+            this.showLoader = false
+            this.openAccessBox = true
+            ;(this.selectedFolders = []),
               this.getAssigendFolders().then(() => {
-                this.getFilterAllocatedFolders();
-              });
+                this.getFilterAllocatedFolders()
+              })
 
             const Toast = Swal.mixin({
               toast: true,
-              position: "top-end",
+              position: 'top-end',
               showConfirmButton: false,
-              background: "#4fb945",
-              color: "white",
+              background: '#4fb945',
+              color: 'white',
               timer: 2000,
               timerProgressBar: true,
               didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
+                toast.onmouseenter = Swal.stopTimer
+                toast.onmouseleave = Swal.resumeTimer
               },
-            });
+            })
             Toast.fire({
-              icon: "success",
-              title: "Folders Allocated successfully",
-            });
-          }, 3000);
+              icon: 'success',
+              title: 'Folders Allocated successfully',
+            })
+          }, 3000)
         })
-        .catch((error) => console.log("error occured by", error));
+        .catch((error) => console.log('error occured by', error))
     },
     async getAssigendFolders() {
-      const apiUrl = `http://localhost:61050/dms/mount/getAllAllocateFolders/${this.selectedMountId}`;
-      const token = this.$store.getters.getUserToken;
+      const apiUrl = `http://localhost:61050/dms/mount/getAllAllocateFolders/${this.selectedMountId}`
+      const token = this.$store.getters.getUserToken
       await axios
         .get(apiUrl, {
           headers: {
@@ -209,10 +489,10 @@ export default {
           },
         })
         .then((response) => {
-          this.assignedFolders = response.data;
-          console.log("assignedFolders", this.assignedFolders);
+          this.assignedFolders = response.data
+          console.log('assignedFolders', this.assignedFolders)
         })
-        .catch((error) => console.log("error occured by", error));
+        .catch((error) => console.log('error occured by', error))
     },
 
     getFilterAllocatedFolders() {
@@ -221,32 +501,32 @@ export default {
           !this.assignedFolders.some(
             (assignedItem) => assignedItem.folderID === item.folderID
           )
-      );
-      console.log("allocatedFolders", this.allocatedFolders);
-      console.log("assignedFolders List", this.assignedFolders);
-      console.log("allocatedFolders list", this.allocatedFolders);
+      )
+      console.log('allocatedFolders', this.allocatedFolders)
+      console.log('assignedFolders List', this.assignedFolders)
+      console.log('allocatedFolders list', this.allocatedFolders)
     },
 
     openDeleteOption(value) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        icon: "warning",
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.toMakeDeleteData(value);
+          this.toMakeDeleteData(value)
         }
-      });
+      })
     },
 
     async toMakeDeleteData(value) {
-      const apiUrl = `http://localhost:61050/dms/mount/unAllocateFolders?folderId=${value}&mountId=${this.selectedMountId} `;
-      const token = this.$store.getters.getUserToken;
-      console.log(token);
+      const apiUrl = `http://localhost:61050/dms/mount/unAllocateFolders?folderId=${value}&mountId=${this.selectedMountId} `
+      const token = this.$store.getters.getUserToken
+      console.log(token)
       await axios
         .delete(apiUrl, {
           headers: {
@@ -254,28 +534,25 @@ export default {
           },
         })
         .then((response) => {
-          console.log("respondedelte", response.data.status);
-          this.assignedFolders = [];
-          this.getAssigendFolders();
+          console.log('respondedelte', response.data.status)
+          this.assignedFolders = []
+          this.getAssigendFolders()
           Swal.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
+            title: 'Deleted!',
+            text: 'Your file has been deleted.',
+            icon: 'success',
+          })
         })
         .catch((error) =>
           Swal.fire({
-            icon: "error",
-            title: "Error",
+            icon: 'error',
+            title: 'Error',
             text: error.response.data.errorMessage,
           })
-        );
+        )
     },
-
-  
-   
   },
-};
+}
 </script>
 
 <style scoped>
@@ -337,7 +614,6 @@ export default {
 .closebtn:hover {
   opacity: 1;
 }
-
 
 .text-center > button {
   color: #fff;
@@ -411,7 +687,7 @@ export default {
   animation-duration: 5.5s;
 }
 .loader .circle:after {
-  content: "";
+  content: '';
   position: absolute;
   width: 6px;
   height: 6px;
