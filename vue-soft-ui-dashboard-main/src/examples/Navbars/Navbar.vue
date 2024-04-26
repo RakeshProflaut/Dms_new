@@ -1,14 +1,17 @@
 <template>
-    <div class="container-fluid ">
-      <div
+  <div class="container-fluid">
+    <div
       class="mt-5 page-header min-height-300 border-radius-xl"
       :style="{
-          backgroundImage:
+        backgroundImage:
           'url(' + require('@/assets/img/curved-images/curved14.jpg') + ')',
-          backgroundPositionY: '50%',
-        }"
-      >
-      <span v-if="!adminBoard" class="mask bg-gradient-success opacity-6"></span>
+        backgroundPositionY: '50%',
+      }"
+    >
+      <span
+        v-if="!adminBoard"
+        class="mask bg-gradient-success opacity-6"
+      ></span>
     </div>
   </div>
   <nav
@@ -17,25 +20,20 @@
     id="navbarBlur"
     data-scroll="true"
   >
-  <div class="px-3 py-1 container-fluid">
+    <div class="px-3 py-1 container-fluid">
       <breadcrumbs :currentPage="currentRouteName" :textWhite="textWhite" />
       <div
-      class="mt-2 collapse navbar-collapse mt-sm-0 me-md-0 me-sm-4"
-      :class="this.$store.state.isRTL ? 'px-0' : 'me-sm-4'"
-      id="navbar"
+        class="mt-2 collapse navbar-collapse mt-sm-0 me-md-0 me-sm-4"
+        :class="this.$store.state.isRTL ? 'px-0' : 'me-sm-4'"
+        id="navbar"
       >
-      <div
-      class="pe-md-3 d-flex align-items-center"
-      :class="this.$store.state.isRTL ? 'me-md-auto' : 'ms-md-auto'"
-      >
-    </div>
+        <div
+          class="pe-md-3 d-flex align-items-center"
+          :class="this.$store.state.isRTL ? 'me-md-auto' : 'ms-md-auto'"
+        ></div>
         <ul class="navbar-nav justify-content-end">
           <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-            <a
-              href="#"
-              @click="toggleSidebar"
-              class="p-0 nav-link text-body"
-              >
+            <a href="#" @click="toggleSidebar" class="p-0 nav-link text-body">
               <div class="sidenav-toggler-inner">
                 <i class="sidenav-toggler-line"></i>
                 <i class="sidenav-toggler-line"></i>
@@ -45,15 +43,15 @@
           </li>
           <li class="px-3 nav-item d-flex align-items-center">
             <a
-            class="p-0 nav-link"
+              class="p-0 nav-link"
               @click="toggleConfigurator"
               :class="textWhite ? textWhite : 'text-body'"
             >
-            <i class="cursor-pointer fa fa-cog fixed-plugin-button-nav"></i>
-          </a>
-        </li>
+              <i class="cursor-pointer fa fa-cog fixed-plugin-button-nav"></i>
+            </a>
+          </li>
           <li
-          class="nav-item dropdown d-flex align-items-center"
+            class="nav-item dropdown d-flex align-items-center"
             :class="this.$store.state.isRTL ? 'ps-2' : 'pe-2'"
           >
             <a
@@ -67,7 +65,7 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
               @click="showMenu = !showMenu"
-              >
+            >
               <i class="cursor-pointer fa fa-bell"></i>
             </a>
             <ul
@@ -103,9 +101,9 @@
                   <div class="py-1 d-flex">
                     <div class="my-auto">
                       <img
-                      src="../../assets/img/small-logos/logo-spotify.svg"
-                      class="avatar avatar-sm bg-gradient-dark me-3"
-                      alt="logo spotify"
+                        src="../../assets/img/small-logos/logo-spotify.svg"
+                        class="avatar avatar-sm bg-gradient-dark me-3"
+                        alt="logo spotify"
                       />
                     </div>
                     <div class="d-flex flex-column justify-content-center">
@@ -126,21 +124,21 @@
                   <div class="py-1 d-flex">
                     <div
                       class="my-auto avatar avatar-sm bg-gradient-secondary me-3"
-                      >
+                    >
                       <svg
-                      width="12px"
+                        width="12px"
                         height="12px"
                         viewBox="0 0 43 36"
                         version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink"
-                        >
+                      >
                         <title>credit-card</title>
                         <g
-                        stroke="none"
-                        stroke-width="1"
-                        fill="none"
-                        fill-rule="evenodd"
+                          stroke="none"
+                          stroke-width="1"
+                          fill="none"
+                          fill-rule="evenodd"
                         >
                           <g
                             transform="translate(-2169.000000, -745.000000)"
@@ -150,9 +148,9 @@
                             <g transform="translate(1716.000000, 291.000000)">
                               <g transform="translate(453.000000, 454.000000)">
                                 <path
-                                class="color-background"
-                                d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"
-                                opacity="0.593633743"
+                                  class="color-background"
+                                  d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"
+                                  opacity="0.593633743"
                                 ></path>
                                 <path
                                   class="color-background"
@@ -183,124 +181,128 @@
               style="cursor: pointer"
               class="px-0 nav-link font-weight-bold"
               :class="textWhite ? textWhite : 'text-body'"
-              >
+            >
               <template v-if="adminBoard">
-              <router-link :to="{ name:'Admin Profile'}" class="nav-link" :class="textWhite ? textWhite : 'text-body'">
-                <i style="font-size: 1.2rem;" class="mdi mdi-account"></i>
-              </router-link>   
-            </template>
-            <template v-else>
-              <router-link :to="{ name:'Profile' }" class="nav-link" :class="textWhite ? textWhite : 'text-body'">
-                <i style="font-size: 1.2rem;" class="mdi mdi-account"></i>
-              </router-link> 
-            </template>
-          </div>
-          
-        </li>
-        <li class="nav-item d-flex align-items-center" @click="getLogout">
-          <div
+                <router-link
+                  :to="{ name: 'Admin Profile' }"
+                  class="nav-link"
+                  :class="textWhite ? textWhite : 'text-body'"
+                >
+                  <i style="font-size: 1.2rem" class="mdi mdi-account"></i>
+                </router-link>
+              </template>
+              <template v-else>
+                <router-link
+                  :to="{ name: 'Profile' }"
+                  class="nav-link"
+                  :class="textWhite ? textWhite : 'text-body'"
+                >
+                  <i style="font-size: 1.2rem" class="mdi mdi-account"></i>
+                </router-link>
+              </template>
+            </div>
+          </li>
+          <li class="nav-item d-flex align-items-center" @click="getLogout">
+            <div
               style="cursor: pointer"
               class="px-0 nav-link font-weight-bold"
               :class="textWhite ? textWhite : 'text-body'"
-              >
+            >
               <!-- <router-link
                 :to="{ name: 'Sign In' }"
                 
                 > -->
-                <i
+              <i
                 style="font-size: 1.2rem"
                 class="mdi mdi-logout"
                 :class="'me-sm-1'"
-                ></i>
-              </div>
-              <!-- </router-link> -->
-            </li>
+              ></i>
+            </div>
+            <!-- </router-link> -->
+          </li>
         </ul>
       </div>
     </div>
   </nav>
 </template>
 <script>
-import Breadcrumbs from "../Breadcrumbs.vue";
-import { mapMutations, mapActions } from "vuex";
-import SidenavCollapse from "../AdminSidenav/SidenavCollapse.vue";
-import Swal from "sweetalert2";
-import axios from "axios";
-import setTooltip from "@/assets/js/tooltip.js";
-import setNavPills from "@/assets/js/nav-pills.js";
-
+import Breadcrumbs from '../Breadcrumbs.vue'
+import { mapMutations, mapActions } from 'vuex'
+import SidenavCollapse from '../AdminSidenav/SidenavCollapse.vue'
+import Swal from 'sweetalert2'
+import axios from 'axios'
+import setTooltip from '@/assets/js/tooltip.js'
+import setNavPills from '@/assets/js/nav-pills.js'
 
 export default {
-  name: "navbar",
-  mounted(){
-    setNavPills();
-    this.$store.state.isAbsolute = true;
-    setTooltip(this.$store.state.bootstrap);
-    window.addEventListener("popstate", this.handlePopstate);
-    this.isAdmin(); 
-
+  name: 'navbar',
+  mounted() {
+    setNavPills()
+    this.$store.state.isAbsolute = true
+    setTooltip(this.$store.state.bootstrap)
+    window.addEventListener('popstate', this.handlePopstate)
+    this.isAdmin()
   },
   data() {
     return {
       showMenu: false,
-      adminBoard:null,
-    };
+      adminBoard: null,
+    }
   },
   components: {
     SidenavCollapse,
   },
-  props: ["minNav", "textWhite"],
+  props: ['minNav', 'textWhite'],
   created() {
-    this.minNav;
+    this.minNav
   },
   beforeUnmount() {
-    this.$store.state.isAbsolute = false;
-    window.removeEventListener("popstate", this.handlePopstate);
+    this.$store.state.isAbsolute = false
+    window.removeEventListener('popstate', this.handlePopstate)
   },
 
   methods: {
-    ...mapMutations(["navbarMinimize", "toggleConfigurator"]),
-    ...mapActions(["toggleSidebarColor"]),
+    ...mapMutations(['navbarMinimize', 'toggleConfigurator']),
+    ...mapActions(['toggleSidebarColor']),
 
     toggleSidebar() {
-      console.log("Toggling sidebar...");
-      this.toggleSidebarColor("bg-white");
-      this.navbarMinimize();
+      console.log('Toggling sidebar...')
+      this.toggleSidebarColor('bg-white')
+      this.navbarMinimize()
     },
     isAdmin() {
-      const templte =this.$store.getters.getTemplets;
-      if(templte =='user'){
-        this.adminBoard =false;
-      }else{
-        this.adminBoard=true;
+      const templte = this.$store.getters.getTemplets
+      if (templte == 'user') {
+        this.adminBoard = false
+      } else {
+        this.adminBoard = true
       }
-      console.log("adminBoard",this.adminBoard);
+      console.log('adminBoard', this.adminBoard)
     },
 
- 
     async getLogout() {
       const confirmed = await Swal.fire({
-        title: "Are you sure you want to logout?",
-        icon: "warning",
+        title: 'Are you sure you want to logout?',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#5FC0FF",
-        cancelButtonColor: "#C72E2E",
-        confirmButtonText: "Yes, logout",
+        confirmButtonColor: '#5FC0FF',
+        cancelButtonColor: '#C72E2E',
+        confirmButtonText: 'Yes, logout',
         timer: 2000,
         timerProgressBar: true,
-      });
+      })
 
       if (confirmed.isConfirmed) {
-        this.putLogout();
+        this.putLogout()
       }
     },
 
     async putLogout() {
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      console.log("token", this.$store.getters.getUserToken);
-      console.log("userid", this.$store.getters.getUserId);
-      console.log("templete", this.$store.getters.getTemplets);
-      const templete = this.$store.getters.getTemplets;
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+      console.log('token', this.$store.getters.getUserToken)
+      console.log('userid', this.$store.getters.getUserId)
+      console.log('templete', this.$store.getters.getTemplets)
+      const templete = this.$store.getters.getTemplets
 
       await axios
         .delete(
@@ -313,14 +315,14 @@ export default {
         )
         .then(() => {
           setTimeout(() => {
-            if (templete === "user") {
-              this.$router.push({ name: "Sign In" });
+            if (templete === 'user') {
+              this.$router.push({ name: 'Sign In' })
             } else {
-              this.$router.push({ name: "AdminSign In" });
+              this.$router.push({ name: 'AdminSign In' })
             }
-          }, 500);
+          }, 500)
         })
-        .catch((error) => console.error("Error occured by", error));
+        .catch((error) => console.error('Error occured by', error))
     },
   },
   components: {
@@ -328,10 +330,10 @@ export default {
   },
   computed: {
     currentRouteName() {
-      return this.$route.name;
+      return this.$route.name
     },
   },
-};
+}
 </script>
 
 <style scoped>

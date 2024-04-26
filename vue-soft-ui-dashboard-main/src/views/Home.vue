@@ -5,24 +5,20 @@
       <div class="row">
         <div class="col-12">
           <div class="card" style="height: 510px !important">
-            <div style="display: flex; justify-content: space-between">
-              <div class="card-header text-uppercase">
-                <h4>Image UpScaling</h4>
-              </div>
-            </div>
-            <!-- Loop through icons and create rows of 4 columns each -->
             <div
               v-for="(rowIcons, rowIndex) in iconRows"
               :key="rowIndex"
-              style="padding: 0 1rem 0 0.8rem"
+              style="padding: 1rem 1rem 0 0.8rem"
               class="row"
             >
               <!-- Loop through each row's icons -->
               <div v-for="(icon, index) in rowIcons" :key="index" class="col-3">
                 <div class="iconContainer">
-                  <div class="icons">
-                    <i :class="icon.class"></i>
-                  </div>
+                  <router-link :to="icon.route">
+                    <div class="icons" @click="setActiveTab(icon.title)">
+                      <i :class="icon.class"></i>
+                    </div>
+                  </router-link>
                   <h5 class="mt-3">{{ icon.title }}</h5>
                   <p>{{ icon.subtitle }}</p>
                 </div>
@@ -45,42 +41,50 @@ export default {
       icons: [
         {
           class: 'mdi mdi-folder',
-          title: 'Browser',
-          subtitle: 'Browser your Files/Folder',
+          title: 'Browse',
+          route: '/browse',
+          subtitle: 'Browse your Files/Folder',
         },
         {
           class: 'mdi mdi-magnify',
           title: 'Search',
+          route: '/search',
           subtitle: 'Search uploaded Files/Folder',
         },
         {
           class: 'mdi mdi-cog',
           title: 'Admin',
+          route: '/admin',
           subtitle: 'Manage user & group Metadata Definition',
         },
         {
           class: 'mdi mdi-history',
           title: 'Recent',
+          route: '/recent',
           subtitle: 'Show recently opened Folders and Documents',
         },
         {
           class: 'mdi mdi-bookmark-outline',
           title: 'Bookmark',
+          route: '/bookmark',
           subtitle: 'Show Bookmarked Folders and Documents',
         },
         {
           class: 'mdi mdi-recycle',
           title: 'Recycle Bin',
+          route: '/recycleBin',
           subtitle: 'Show Recycled Documents',
         },
         {
           class: 'mdi mdi-share',
           title: 'Shared docs to you',
+          route: '/sharedToYou',
           subtitle: 'Show Shared Documents to You',
         },
         {
           class: 'mdi mdi-share',
           title: 'Shared docs by you',
+          route: '/sharedByYou',
           subtitle: 'Show Shared Documents by You',
         },
         // Add more icons as needed
@@ -102,6 +106,11 @@ export default {
     this.$store.state.isAbsolute = true
     setNavPills()
     setTooltip(this.$store.state.bootstrap)
+  },
+  methods: {
+    setActiveTab(tabName) {
+      this.$store.commit('setActiveTab', tabName)
+    },
   },
 }
 </script>
@@ -128,7 +137,17 @@ export default {
   background: #2c792c;
   height: 6rem;
   width: 6rem;
+  transition:
+    transform 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out; /* Add box-shadow transition */
   border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add box shadow */
+}
+
+.icons:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6); /* Change box shadow on hover */
 }
 
 .icons > i {

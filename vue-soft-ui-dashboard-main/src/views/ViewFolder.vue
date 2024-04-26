@@ -11,7 +11,7 @@
       >
         <span class="mask bg-gradient-success opacity-6"></span>
       </div> -->
-      <!-- <div class="mx-4 overflow-hidden card card-body blur shadow-blur mt-n6">
+    <!-- <div class="mx-4 overflow-hidden card card-body blur shadow-blur mt-n6">
         <div class="row gx-4">
           <div class="col-auto">
             <div class="avatar avatar-xl position-relative">
@@ -61,7 +61,9 @@
                           class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
                           :style="{
                             'text-align':
-                              header.key === 'action' || header.key === 'send'
+                              header.key === 'action' ||
+                              header.key === 'send' ||
+                              header.key === 'bookmarking'
                                 ? 'center'
                                 : 'left',
                           }"
@@ -81,13 +83,17 @@
                           :key="index"
                           :class="{
                             'pl-5':
-                              header.key !== 'action' && header.key !== 'send',
+                              header.key !== 'action' &&
+                              header.key !== 'send' &&
+                              header.key !== 'bookmarking',
                             'font-weight-bolder text-uppercase':
                               header.key === 'folderName',
                           }"
                           :style="{
                             'text-align':
-                              header.key === 'action' || header.key === 'send'
+                              header.key === 'action' ||
+                              header.key === 'send' ||
+                              header.key === 'bookmarking'
                                 ? 'center'
                                 : 'left',
                           }"
@@ -109,6 +115,26 @@
                                 "
                                 class="mdi mdi-archive-eye-outline"
                               ></span>
+                            </div>
+                          </template>
+                          <template v-if="header.key == 'bookmarking'">
+                            <div
+                              style="height: 2.5rem !important"
+                              @click="toggleBookmark(data)"
+                            >
+                              <i
+                                :class="[
+                                  'mdi',
+                                  data.bookmark === 'YES'
+                                    ? 'mdi-bookmark'
+                                    : 'mdi-bookmark-outline',
+                                ]"
+                                style="
+                                  font-size: 1.8rem;
+                                  cursor: pointer;
+                                  color: #234375;
+                                "
+                              ></i>
                             </div>
                           </template>
                           <template v-if="header.key === 'send'">
@@ -153,10 +179,10 @@
           </div>
           <v-dialog v-model="docViewBox" style="z-index: 1001">
             <div style="position: relative; left: 67%">
-        <button class="closebtn" @click="docViewBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
+              <button class="closebtn" @click="docViewBox = false">
+                <i class="bx bx-x" style="position: relative; top: 20%"></i>
+              </button>
+            </div>
             <v-card style="width: 35%; margin: 0 auto; border-radius: 3%">
               <view-file
                 :selectedDocId="selectedDocId"
@@ -166,10 +192,10 @@
           </v-dialog>
           <v-dialog v-model="openUploadDialogeBox" style="z-index: 1001">
             <div style="position: relative; left: 67%">
-        <button class="closebtn" @click="openUploadDialogeBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
+              <button class="closebtn" @click="openUploadDialogeBox = false">
+                <i class="bx bx-x" style="position: relative; top: 20%"></i>
+              </button>
+            </div>
             <v-card style="width: 35%; margin: 0 auto; border-radius: 3%">
               <upload-file
                 :selectedfolder="selectedfolder"
@@ -182,11 +208,11 @@
             v-model="openDialogeBox"
             style="display: flex; padding-left: 73%; z-index: 1001"
           >
-          <div style="position: relative; left: 67%">
-        <button class="closebtn" @click="openDialogeBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
+            <div style="position: relative; left: 67%">
+              <button class="closebtn" @click="openDialogeBox = false">
+                <i class="bx bx-x" style="position: relative; top: 20%"></i>
+              </button>
+            </div>
             <v-card style="width: 28%; border-radius: 3%">
               <div>
                 <div class="container" style="width: 100%; height: 100%">
@@ -226,14 +252,14 @@
             v-model="openMailBox"
             style="display: flex; padding-left: 73%; z-index: 1001"
           >
-          <div style="position: relative; left: 28%">
-        <button class="closebtn" @click="openMailBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
+            <div style="position: relative; left: 28%">
+              <button class="closebtn" @click="openMailBox = false">
+                <i class="bx bx-x" style="position: relative; top: 20%"></i>
+              </button>
+            </div>
             <v-card style="width: 28%; border-radius: 3%">
               <div>
-                <div class="container" style="width: 100%; height: 100%">                 
+                <div class="container" style="width: 100%; height: 100%">
                   <div class="pt-10 text-center card-header">
                     <h5>Receiver Mail</h5>
                   </div>
@@ -275,15 +301,15 @@
 </template>
 
 <script>
-import setTooltip from "@/assets/js/tooltip.js";
-import setNavPills from "@/assets/js/nav-pills.js";
-import axios from "axios";
-import ViewFile from "./ViewFile.vue";
-import UploadFile from "./UploadFile.vue";
-import Swal from "sweetalert2";
+import setTooltip from '@/assets/js/tooltip.js'
+import setNavPills from '@/assets/js/nav-pills.js'
+import axios from 'axios'
+import ViewFile from './ViewFile.vue'
+import UploadFile from './UploadFile.vue'
+import Swal from 'sweetalert2'
 
 export default {
-  name: "viewFolder",
+  name: 'viewFolder',
   components: {
     ViewFile,
     UploadFile,
@@ -296,10 +322,11 @@ export default {
       files: [],
       docViewBox: false,
       showLoader: false,
-      metaid: "",
-      enteredMail: "",
-      selectedDocId: "",
-      selectedfileId: "",
+      metaid: '',
+      showBookmarkColumn: true,
+      enteredMail: '',
+      selectedDocId: '',
+      selectedfileId: '',
       openUploadDialogeBox: false,
       openMailBox: false,
       selectedfolder: {
@@ -311,128 +338,152 @@ export default {
       },
       headers: [
         {
-          key: "sno",
-          title: "S.NO",
+          key: 'sno',
+          title: 'S.NO',
         },
         {
-          key: "docName",
-          title: "FILE NAME",
+          key: 'docName',
+          title: 'FILE NAME',
         },
         {
-          key: "createdBy",
-          title: "CREATED BY",
+          key: 'createdBy',
+          title: 'CREATED BY',
         },
         {
-          key: "createdAt",
-          title: "CREATED AT",
+          key: 'createdAt',
+          title: 'CREATED AT',
         },
         {
-          key: "send",
-          title: "Send",
+          key: 'send',
+          title: 'Send',
         },
         {
-          key: "action",
-          title: "Action",
+          key: 'action',
+          title: 'Action',
+        },
+        {
+          key: 'bookmarking',
+          title: 'Bookmark',
         },
       ],
-    };
+    }
   },
-  props: ["id", "view", "write", "folderName", "metaId"],
+  props: ['id', 'view', 'write', 'folderName', 'metaId'],
   mounted() {
-    this.$store.state.isAbsolute = true;
-    setNavPills();
-    setTooltip(this.$store.state.bootstrap);
-    this.getAllFiles();
-    console.log("id",this.id);
+    this.$store.state.isAbsolute = true
+    setNavPills()
+    setTooltip(this.$store.state.bootstrap)
+    this.getAllFiles()
+    console.log('id', this.id)
   },
 
   computed: {
     displayedData() {
-      const start = (this.page - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
+      const start = (this.page - 1) * this.itemsPerPage
+      const end = start + this.itemsPerPage
 
-      return this.files.slice(start, end);
+      return this.files.slice(start, end)
     },
     pages() {
-      return Math.ceil(this.files.length / this.itemsPerPage);
+      return Math.ceil(this.files.length / this.itemsPerPage)
     },
   },
   beforeUnmount() {
-    this.$store.state.isAbsolute = false;
+    this.$store.state.isAbsolute = false
   },
   methods: {
+    async toggleBookmark(data) {
+      data.bookmark = !data.bookmark
+
+      const bookMarkDetails = {
+        fileId: data.id,
+        fileName: data.docName,
+      }
+      const apiUrl = 'http://localhost:61050/dms/home/saveFileBookmark'
+      const token = this.$store.getters.getUserToken
+      await axios
+        .post(apiUrl, bookMarkDetails, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) => {
+          console.log(response.data, 'fjhgsfuygsuydfgjiah')
+        })
+        .catch((error) => console.log('error occured by', error))
+    },
     navigateBack() {
       // Emitting router push to go back
-      this.$router.push("/folders");
+      this.$router.push('/folders')
     },
 
     updateDisplayedData() {
       // Your logic to update displayed data based on the new page number
-      const start = (this.page - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      this.displayedData = this.files.slice(start, end);
+      const start = (this.page - 1) * this.itemsPerPage
+      const end = start + this.itemsPerPage
+      this.displayedData = this.files.slice(start, end)
     },
 
     async getAllFiles() {
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      const apiUrl = `http://localhost:61050/dms/folder/getById/${this.id}`;
-      const token = this.$store.getters.getUserToken;
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+      const apiUrl = `http://localhost:61050/dms/folder/getById/${this.id}`
+      const token = this.$store.getters.getUserToken
       try {
         const response = await axios.get(apiUrl, {
           headers: {
             token: token,
           },
-        });
-        this.$store.commit("setFolderDetails",response.data);
-        console.log("getAllfiles",response.data);
-        this.metaid = response.data.metaId;
-        this.folderId = response.data.folderId;
-        this.files = response.data.files;
+        })
+        this.$store.commit('setFolderDetails', response.data)
+        console.log('getAllfiles', response.data)
+        this.metaid = response.data.metaId
+        this.folderId = response.data.folderId
+        this.files = response.data.files
       } catch (error) {
-        console.error("Error occured by", error);
+        console.error('Error occured by', error)
       }
     },
 
     async handleShowLoader(value) {
       // Update the isLoading data property based on the emitted value
-      this.openUploadDialogeBox = false;
-      this.showLoader = value;
+      this.openUploadDialogeBox = false
+      this.showLoader = value
       setTimeout(() => {
-        this.getAllFiles();
-        this.showLoader = false;
+        this.getAllFiles()
+        this.showLoader = false
         const Toast = Swal.mixin({
           toast: true,
-          position: "top-end",
+          position: 'top-end',
           showConfirmButton: false,
-          background: "#4fb945",
-          color: "white",
+          background: '#4fb945',
+          color: 'white',
           timer: 2000,
           timerProgressBar: true,
           didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
+            toast.onmouseenter = Swal.stopTimer
+            toast.onmouseleave = Swal.resumeTimer
           },
-        });
+        })
         Toast.fire({
-          icon: "success",
-          title: "Uploaded successfully",
-        });
-      }, 3000);
+          icon: 'success',
+          title: 'Uploaded successfully',
+        })
+      }, 3000)
     },
 
     closeDocViewBox(value) {
-      this.docViewBox = value;
+      this.docViewBox = value
     },
 
     closeUploadDialogeBox(value) {
-      this.openUploadDialogeBox = value;
-      this.getAllFiles();
+      this.openUploadDialogeBox = value
+      this.getAllFiles()
     },
 
     openDocViewBox(value) {
-      this.docViewBox = true;
-      this.selectedDocId = value;
-      this.getAllFiles();
+      this.docViewBox = true
+      this.selectedDocId = value
+      this.getAllFiles()
     },
 
     // async getSendMailBox(id) {
@@ -455,63 +506,63 @@ export default {
     // },
 
     async getSendMailBox(id) {
-      this.openMailBox = true;
-      this.selectedfileId = id;
+      this.openMailBox = true
+      this.selectedfileId = id
     },
 
     async postMail(event) {
-      const id = this.selectedfileId;
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      event.preventDefault();
-      const selectedFile = this.files.find((ele) => ele.id == id);
-      const apiUrl = `http://localhost:61050/dms/file/share`;
-      const token = this.$store.getters.getUserToken;
+      const id = this.selectedfileId
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+      event.preventDefault()
+      const selectedFile = this.files.find((ele) => ele.id == id)
+      const apiUrl = `http://localhost:61050/dms/file/share`
+      const token = this.$store.getters.getUserToken
       const postDetails = {
-        from: "sathishkumar@proflaut.com",
+        from: 'sathishkumar@proflaut.com',
         to: this.enteredMail,
         docName: selectedFile.docName,
         docId: selectedFile.id,
-      };
+      }
       try {
-        this.showLoader = true;
+        this.showLoader = true
         const response = await axios.post(apiUrl, postDetails, {
           headers: {
             token: token,
           },
-        });
+        })
 
-        this.openMailBox = false;
+        this.openMailBox = false
         setTimeout(() => {
-          this.showLoader = false;
+          this.showLoader = false
           const Toast = Swal.mixin({
             toast: true,
-            position: "top-end",
+            position: 'top-end',
             showConfirmButton: false,
-            background: "#4fb945",
-            color: "white",
+            background: '#4fb945',
+            color: 'white',
             timer: 3000,
             timerProgressBar: true,
             didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
+              toast.onmouseenter = Swal.stopTimer
+              toast.onmouseleave = Swal.resumeTimer
             },
-          });
+          })
           Toast.fire({
-            icon: "success",
-            title: "Mail Sent  successfully",
-          });
-        }, 2000);
+            icon: 'success',
+            title: 'Mail Sent  successfully',
+          })
+        }, 2000)
       } catch (error) {
-        console.error("Error occured by", error);
+        console.error('Error occured by', error)
         Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Failed to send email",
-        });
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to send email',
+        })
       }
     },
   },
-};
+}
 </script>
 
 <style scoped>
@@ -612,7 +663,7 @@ export default {
   animation-duration: 5.5s;
 }
 .loader .circle:after {
-  content: "";
+  content: '';
   position: absolute;
   width: 6px;
   height: 6px;
@@ -710,11 +761,11 @@ export default {
   height: 22px;
   color: #d11313;
   font-size: 30px;
-  opacity:1;
+  opacity: 1;
 }
 
 .closebtn:hover {
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .text-center > button {

@@ -183,7 +183,7 @@ export default {
         event.preventDefault()
         try {
           const response = await axios.post(
-            'http://dms-application-env.eba-yfjbtqsp.eu-north-1.elasticbeanstalk.com/dms/access/login',
+            'http://localhost:61050/dms/access/login',
             this.user
           )
           this.showLoader = true

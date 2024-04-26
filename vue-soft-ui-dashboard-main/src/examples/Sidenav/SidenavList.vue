@@ -39,45 +39,69 @@ export default {
       isActive: 'active',
       sidenavItems: [
         {
-          text: 'Dashboard',
-          to: { name: 'Dashboard' },
-          icon: 'mdi mdi-view-dashboard',
-        },
-        {
           text: 'Home',
           to: { name: 'Home' },
           icon: 'mdi mdi-home',
         },
+        {
+          text: 'Dashboard',
+          to: { name: 'Dashboard' },
+          icon: 'mdi mdi-view-dashboard',
+        },
         { text: 'Directory', to: { name: 'Folders' }, icon: 'mdi mdi-folder' },
+        { text: 'Browse', to: { name: 'Browse' }, icon: 'mdi mdi-folder' },
         { text: 'Search', to: { name: 'Search' }, icon: 'mdi mdi-magnify' },
-        { text: 'Scanner', to: { name: 'Scanner' }, icon: 'mdi mdi-scanner' },
+        { text: 'Admin', to: { name: 'Admin' }, icon: 'mdi mdi-cog' },
+        { text: 'Recent', to: { name: 'Recent' }, icon: 'mdi mdi-history' },
         {
-          text: 'Image Upscaling',
-          to: { name: 'Image Upscaling' },
-          icon: 'mdi mdi-image-filter-center-focus',
+          text: 'Bookmark',
+          to: { name: 'Bookmark' },
+          icon: 'mdi mdi-bookmark-outline',
         },
         {
-          text: 'Job Pack Generation',
-          to: { name: 'JobPack' },
-          icon: 'mdi mdi-file-table-box-multiple',
+          text: 'Recycle Bin',
+          to: { name: 'RecycleBin' },
+          icon: 'mdi mdi-recycle',
         },
-        { text: 'OCR', to: { name: 'Ocr' }, icon: 'mdi mdi-text-recognition' },
-        { text: 'Portal', to: { name: 'Portal' }, icon: 'mdi mdi-door' },
+        {
+          text: 'Shared To you',
+          to: { name: 'SharedToYou' },
+          icon: 'mdi mdi-share',
+        },
+        {
+          text: 'Shared By you',
+          to: { name: 'SharedByYou' },
+          icon: 'mdi mdi-share',
+        },
+
+        // { text: 'Scanner', to: { name: 'Scanner' }, icon: 'mdi mdi-scanner' },
+        // {
+        //   text: 'Image Upscaling',
+        //   to: { name: 'Image Upscaling' },
+        //   icon: 'mdi mdi-image-filter-center-focus',
+        // },
+        // {
+        //   text: 'Job Pack Generation',
+        //   to: { name: 'JobPack' },
+        //   icon: 'mdi mdi-file-table-box-multiple',
+        // },
+        // { text: 'OCR', to: { name: 'Ocr' }, icon: 'mdi mdi-text-recognition' },
+        // { text: 'Portal', to: { name: 'Portal' }, icon: 'mdi mdi-door' },
       ],
       activeTab: null,
     }
   },
   created() {
     // Set the activeTab to the name of the "User Information" tab
-    this.activeTab = 'Dashboard'
+    this.activeTab = 'Home'
+    console.log('router tabs', this.activeTab)
   },
-
-  methods: {
-    getRoute() {
-      const routeArr = this.$route.path.split('/')
-      return routeArr[1]
+  computed: {
+    activeTab() {
+      return this.$store.state.activeTab
     },
-
+  },
+  methods: {
     setActiveTab(tabName) {
       this.activeTab = tabName
     },

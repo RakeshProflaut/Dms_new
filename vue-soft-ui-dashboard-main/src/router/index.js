@@ -35,6 +35,16 @@ import ForgotPassword from '@/views/components/ForgotPassword.vue'
 import store from '../store/index.js'
 import LoanAgreement from '@/views/jobPack/LoanAgreement.vue'
 
+// New Doc
+
+import Browser from '../views/newDoc/Browser.vue'
+import Admin from '../views/newDoc/Admin.vue'
+import Recent from '../views/newDoc/Recent.vue'
+import Bookmark from '../views/newDoc/Bookmark.vue'
+import RecycleBin from '../views/newDoc/RecycleBin.vue'
+import SharedToYou from '../views/newDoc/SharedToYou.vue'
+import SharedByYou from '../views/newDoc/SharedByYou.vue'
+
 const formData = store.getters.getFormData
 const dynamicChildRoutes = formData.map((form) => ({
   path: form.formName.toLowerCase().replace(/\s+/g, '-'),
@@ -57,19 +67,55 @@ const routes = [
     component: UserBoard,
     children: [
       {
-        path: '',
+        path: '/dashboard',
         name: 'Dashboard',
         component: Dashboard,
       },
       {
-        path: '/dms',
-        name: 'Dms',
-        component: Dms,
-      },
-      {
-        path: '/home',
+        path: '',
         name: 'Home',
         component: Home,
+      },
+
+      {
+        path: '/browse',
+        name: 'Browse',
+        component: Browser,
+      },
+      {
+        path: '/search',
+        name: 'Search',
+        component: Search,
+      },
+      {
+        path: '/admin',
+        name: 'Admin',
+        component: Admin,
+      },
+      {
+        path: '/recent',
+        name: 'Recent',
+        component: Recent,
+      },
+      {
+        path: '/bookmark',
+        name: 'Bookmark',
+        component: Bookmark,
+      },
+      {
+        path: '/recycleBin',
+        name: 'RecycleBin',
+        component: RecycleBin,
+      },
+      {
+        path: '/sharedToYou',
+        name: 'SharedToYou',
+        component: SharedToYou,
+      },
+      {
+        path: '/sharedByYou',
+        name: 'SharedByYou',
+        component: SharedByYou,
       },
       {
         path: '/viewFolder',
@@ -88,36 +134,36 @@ const routes = [
         name: 'Folders',
         component: Folders,
       },
-      {
-        path: '/search',
-        name: 'Search',
-        component: Search,
-      },
-      {
-        path: '/portal',
-        name: 'Portal',
-        component: Portal,
-      },
-      {
-        path: '/imageUpscaling',
-        name: 'Image Upscaling',
-        component: ImageUpscaling,
-      },
-      {
-        path: '/ocr',
-        name: 'Ocr',
-        component: Ocr,
-      },
-      {
-        path: '/tables',
-        name: 'Tables',
-        component: Tables,
-      },
-      {
-        path: '/billing',
-        name: 'Billing',
-        component: Billing,
-      },
+      // {
+      //   path: '/search',
+      //   name: 'Search',
+      //   component: Search,
+      // },
+      // {
+      //   path: '/portal',
+      //   name: 'Portal',
+      //   component: Portal,
+      // },
+      // {
+      //   path: '/imageUpscaling',
+      //   name: 'Image Upscaling',
+      //   component: ImageUpscaling,
+      // },
+      // {
+      //   path: '/ocr',
+      //   name: 'Ocr',
+      //   component: Ocr,
+      // },
+      // {
+      //   path: '/tables',
+      //   name: 'Tables',
+      //   component: Tables,
+      // },
+      // {
+      //   path: '/billing',
+      //   name: 'Billing',
+      //   component: Billing,
+      // },
 
       {
         path: '/profile',
@@ -140,16 +186,16 @@ const routes = [
         name: 'Sign Up',
         component: SignUp,
       },
-      {
-        path: '/scanner',
-        name: 'Scanner',
-        component: Scanner,
-      },
-      {
-        path: '/jobPack',
-        name: 'JobPack',
-        component: JobPack,
-      },
+      // {
+      //   path: '/scanner',
+      //   name: 'Scanner',
+      //   component: Scanner,
+      // },
+      // {
+      //   path: '/jobPack',
+      //   name: 'JobPack',
+      //   component: JobPack,
+      // },
     ],
   },
 

@@ -44,6 +44,7 @@
                               header.key === 'view' ||
                               header.key === 'write' ||
                               header.key === 'subFolder' ||
+                              header.key === 'bookmark' ||
                               header.key === 'files'
                                 ? 'center'
                                 : 'left',
@@ -67,6 +68,7 @@
                               header.key !== 'files' &&
                               header.key !== 'subFolder' &&
                               header.key !== 'view' &&
+                              header.key !== 'bookmarking' &&
                               header.key !== 'write',
                             'font-weight-bolder text-uppercase':
                               header.key === 'folderName',
@@ -75,12 +77,33 @@
                             'text-align':
                               header.key === 'view' ||
                               header.key === 'write' ||
+                              header.key === 'bookmarking' ||
                               header.key === 'files' ||
                               header.key === 'subFolder'
                                 ? 'center'
                                 : 'left',
                           }"
                         >
+                          <template v-if="header.key == 'bookmarking'">
+                            <div
+                              style="height: 2.5rem !important"
+                              @click="toggleBookmark(data)"
+                            >
+                              <i
+                                :class="[
+                                  'mdi',
+                                  data.bookmark === 'YES'
+                                    ? 'mdi-bookmark'
+                                    : 'mdi-bookmark-outline',
+                                ]"
+                                style="
+                                  font-size: 1.8rem;
+                                  cursor: pointer;
+                                  color: #234375;
+                                "
+                              ></i>
+                            </div>
+                          </template>
                           <template v-if="header.key === 'files'">
                             <div
                               style="
@@ -172,13 +195,13 @@
             </div>
             <v-dialog v-model="openFolderDialogeBox" style="z-index: 1001">
               <div style="position: relative; left: 65%">
-        <button class="closebtn" @click="openFolderDialogeBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
+                <button class="closebtn" @click="openFolderDialogeBox = false">
+                  <i class="bx bx-x" style="position: relative; top: 20%"></i>
+                </button>
+              </div>
               <v-card style="width: 28%; margin: 0 auto; border-radius: 3%">
                 <div>
-                  <div class="folderContainer">                
+                  <div class="folderContainer">
                     <div class="pt-10 text-center card-header">
                       <h5>Folder Name</h5>
                     </div>
@@ -211,18 +234,18 @@
                           >
                           </v-select>
                         </div>
-                         <div>
-                        <label>Mount Point</label>
-                        <v-select
-                          variant="underlined"
-                          v-model="selectedFolder"
-                          :items="mountData"
-                          item-title="path"
-                          item-value="id"
-                          label="Select items"
-                        >
-                        </v-select>
-                      </div>
+                        <div>
+                          <label>Mount Point</label>
+                          <v-select
+                            variant="underlined"
+                            v-model="selectedFolder"
+                            :items="mountData"
+                            item-title="path"
+                            item-value="id"
+                            label="Select items"
+                          >
+                          </v-select>
+                        </div>
                         <div class="text-center">
                           <button @click="submitfolderDetails">Submit</button>
                         </div>
@@ -250,126 +273,149 @@
 </template>
 
 <script>
-import setNavPills from "@/assets/js/nav-pills.js";
-import SoftBadge from "@/components/SoftBadge.vue";
-import Swal from "sweetalert2";
-import setTooltip from "@/assets/js/tooltip.js";
-import axios from "axios";
-import ViewFolder from "./ViewFolder.vue";
+import setNavPills from '@/assets/js/nav-pills.js'
+import SoftBadge from '@/components/SoftBadge.vue'
+import Swal from 'sweetalert2'
+import setTooltip from '@/assets/js/tooltip.js'
+import axios from 'axios'
+import ViewFolder from './ViewFolder.vue'
 export default {
-  name: "dms",
+  name: 'dms',
   components: {
     SoftBadge,
     ViewFolder,
   },
   data() {
     return {
-      search: "",
+      search: '',
+      showBookmarkColumn: true,
       page: 1, // Current page
       itemsPerPage: 10, // Number of items per page
       showLoader: false,
       openDialogeBox: false,
       openFolderDialogeBox: false,
-      enteredFolderName: "",
+      enteredFolderName: '',
       viewFolderButton: false,
       selectedMetaTable: null,
-      currentFolderName: "Directory",
-      selectedFolderId: "",
-      selectedFolder:null,
+      currentFolderName: 'Directory',
+      selectedFolderId: '',
+      selectedFolder: null,
       postfolderDetails: {},
       metaTables: [],
       headers: [
         {
-          key: "sno",
-          title: "S.No",
+          key: 'sno',
+          title: 'S.No',
         },
         {
-          key: "folderName",
-          title: "FOLDER NAME",
+          key: 'folderName',
+          title: 'FOLDER NAME',
         },
         {
-          key: "createdBy",
-          title: "CREATED BY",
+          key: 'createdBy',
+          title: 'CREATED BY',
         },
         {
-          key: "createdAt",
-          title: "CREATED AT",
+          key: 'createdAt',
+          title: 'CREATED AT',
         },
         {
-          key: "view",
-          title: "VIEW",
+          key: 'view',
+          title: 'VIEW',
         },
         {
-          key: "write",
-          title: "WRITE",
+          key: 'write',
+          title: 'WRITE',
         },
         {
-          key: "files",
-          title: "FILES",
+          key: 'files',
+          title: 'FILES',
         },
         {
-          key: "subFolder",
-          title: "SUB FOLDER",
+          key: 'subFolder',
+          title: 'SUB FOLDER',
+        },
+        {
+          key: 'bookmarking',
+          title: 'Bookmark',
         },
       ],
       folders: [],
       secondaryFolders: [],
       mountData: [],
-    };
+    }
   },
 
   mounted() {
-    this.$store.state.isAbsolute = true;
-    setNavPills();
-    setTooltip(this.$store.state.bootstrap);
-    this.getAllFolders();
-    this.getMetaData();
-    this.getMountData();
+    this.$store.state.isAbsolute = true
+    setNavPills()
+    setTooltip(this.$store.state.bootstrap)
+    this.getAllFolders()
+    this.getMetaData()
+    this.getMountData()
   },
   beforeUnmount() {
-    this.$store.state.isAbsolute = false;
+    this.$store.state.isAbsolute = false
   },
 
   computed: {
     displayedData() {
-      const start = (this.page - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
+      const start = (this.page - 1) * this.itemsPerPage
+      const end = start + this.itemsPerPage
 
-      return this.folders.slice(start, end);
+      return this.folders.slice(start, end)
     },
     pages() {
-      return Math.ceil(this.folders.length / this.itemsPerPage);
+      return Math.ceil(this.folders.length / this.itemsPerPage)
     },
   },
 
   methods: {
+    async toggleBookmark(data) {
+      data.bookmark = !data.bookmark
+
+      const bookMarkDetails = {
+        folderId: data.folderID,
+        folderName: data.folderName,
+      }
+      const apiUrl = 'http://localhost:61050/dms/home/saveFolderBookmark'
+      const token = this.$store.getters.getUserToken
+      await axios
+        .post(apiUrl, bookMarkDetails, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) => {})
+        .catch((error) => console.log('error occured by', error))
+    },
+
     async getAllFolders() {
-      this.currentFolderName = "Directory";
-      this.viewFolderButton = false;
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      const apiUrl = `http://localhost:61050/dms/folder/getAllParentFolders`;
-      const token = this.$store.getters.getUserToken;
+      this.currentFolderName = 'Directory'
+      this.viewFolderButton = false
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+      const apiUrl = `http://localhost:61050/dms/folder/getAllParentFolders`
+      const token = this.$store.getters.getUserToken
       try {
         const response = await axios.get(apiUrl, {
           headers: {
             token: token,
           },
-        });
+        })
 
         this.folders = response.data.folder.filter(
-          (ele) => ele.write !== "No" || ele.view !== "No"
-        );
+          (ele) => ele.write !== 'No' || ele.view !== 'No'
+        )
         this.secondaryFolders = response.data.folder.filter(
-          (ele) => ele.write !== "No" || ele.view !== "No"
-        );
-        console.log("resposnseParen Fodlers", this.folders);
+          (ele) => ele.write !== 'No' || ele.view !== 'No'
+        )
       } catch (error) {
-        console.error("Error occured by", error);
+        console.error('Error occured by', error)
       }
     },
 
     async getMetaData() {
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
       await axios
         .get(`http://localhost:61050/dms/meta/getAllAccessMetaTable`, {
           headers: {
@@ -377,17 +423,17 @@ export default {
           },
         })
         .then((response) => {
-          this.metaTables = response.data;
-          console.log("metaaaa", this.metaTables);
+          this.metaTables = response.data
+          console.log('metaaaa', this.metaTables)
         })
-        .catch((error) => console.error("Error occured by", error));
+        .catch((error) => console.error('Error occured by', error))
     },
 
     sendTableNameAndToggle(value) {
-      console.log("selectedtoViewfodler", value);
-      this.openDialogeBox = true;
+      console.log('selectedtoViewfodler', value)
+      this.openDialogeBox = true
       this.$router.push({
-        name: "ViewFolder",
+        name: 'ViewFolder',
         query: {
           id: value.folderID,
           view: value.view,
@@ -395,127 +441,130 @@ export default {
           folderName: value.folderName,
           metaId: value.metaId,
         },
-      });
+      })
     },
     async getSubFolders(value) {
-      this.viewFolderButton = true;
-      this.selectedFolderId = value;
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      const apiUrl = `http://localhost:61050/dms/folder/getByParentId?parentFolderID=${value}`;
-      const token = this.$store.getters.getUserToken;
+      this.viewFolderButton = true
+      this.selectedFolderId = value
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+      const apiUrl = `http://localhost:61050/dms/folder/getByParentId?parentFolderID=${value}`
+      const token = this.$store.getters.getUserToken
       try {
         const response = await axios.get(apiUrl, {
           headers: {
             token: token,
           },
-        });
-        console.log("subbFodler",response.data);
-        this.folders = response.data.subFolderPath;
+        })
+        console.log('subbFodler', response.data)
+        this.folders = response.data.subFolderPath
         // const currentfolderName=this.secondaryFolders.find(ele=>ele.folderID ===this.selectedFolderId);
         // console.log("currentFolderrr",currentfolderName.folderName);
         // this.currentFolderName=renderFolderName[0].folderName;
       } catch (error) {
         Swal.fire({
-          title: "No Sub Folders Present",
-          text: "You Want to Create New Folder",
-          icon: "info",
+          title: 'No Sub Folders Present',
+          text: 'You Want to Create New Folder',
+          icon: 'info',
           showCancelButton: true,
           reverseButtons: true,
           customClass: {
-            confirmButton: "swal2-confirm-custom",
-            cancelButton: "swal2-cancel-custom",
+            confirmButton: 'swal2-confirm-custom',
+            cancelButton: 'swal2-cancel-custom',
           },
         }).then((result) => {
           if (result.isConfirmed) {
-            this.openFolderDialogeBox = true;
+            this.openFolderDialogeBox = true
           } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire("Cancelled", "Folder Creation Cancelled", "error");
+            Swal.fire('Cancelled', 'Folder Creation Cancelled', 'error')
           }
-        });
+        })
       }
     },
     updateDisplayedData() {
       // Your logic to update displayed data based on the new page number
-      const start = (this.page - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      this.displayedData = this.folders.slice(start, end);
+      const start = (this.page - 1) * this.itemsPerPage
+      const end = start + this.itemsPerPage
+      this.displayedData = this.folders.slice(start, end)
     },
 
     async submitfolderDetails(event) {
-      event.preventDefault();
+      event.preventDefault()
       this.postfolderDetails = {
         parentFolderID: this.selectedFolderId,
         folderName: this.enteredFolderName,
         metaDataId: this.selectedMetaTable,
-        mountId:this.selectedFolder,
-      };
-      console.log("enteredFolderNmae", this.postfolderDetails);
-      const apiUrl = "http://localhost:61050/dms/folder/create";
-      const token = this.$store.getters.getUserToken;
-      if(Object.values(this.postfolderDetails).every((value) => value !== "" && value !==null)){
-      await axios
-        .post(apiUrl, this.postfolderDetails, {
-          headers: {
-            token: token,
-          },
-        })
-        .then(() => {
-          this.openFolderDialogeBox = false;
-          this.showLoader = true;
-          setTimeout(() => {
-            this.showLoader = false;
-            (this.enteredFolderName = ""),
-              this.getSubFolders(this.selectedFolderId);
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              background: "#4fb945",
-              color: "white",
-              timer: 2000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Folder Created successfully",
-            });
-          }, 3000);
-        })
-        .catch((error) => console.log("error occured by", error));
-      } else{
+        mountId: this.selectedFolder,
+      }
+      console.log('enteredFolderNmae', this.postfolderDetails)
+      const apiUrl = 'http://localhost:61050/dms/folder/create'
+      const token = this.$store.getters.getUserToken
+      if (
+        Object.values(this.postfolderDetails).every(
+          (value) => value !== '' && value !== null
+        )
+      ) {
+        await axios
+          .post(apiUrl, this.postfolderDetails, {
+            headers: {
+              token: token,
+            },
+          })
+          .then(() => {
+            this.openFolderDialogeBox = false
+            this.showLoader = true
+            setTimeout(() => {
+              this.showLoader = false
+              ;(this.enteredFolderName = ''),
+                this.getSubFolders(this.selectedFolderId)
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                background: '#4fb945',
+                color: 'white',
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer
+                  toast.onmouseleave = Swal.resumeTimer
+                },
+              })
+              Toast.fire({
+                icon: 'success',
+                title: 'Folder Created successfully',
+              })
+            }, 3000)
+          })
+          .catch((error) => console.log('error occured by', error))
+      } else {
         const Toast = Swal.mixin({
           toast: true,
-          position: "top-end",
+          position: 'top-end',
           showConfirmButton: false,
-          customClass: "swal-wide",
-          height: "30px",
-          background: "hsl(0, 43%, 52%)",
-          color: "white",
+          customClass: 'swal-wide',
+          height: '30px',
+          background: 'hsl(0, 43%, 52%)',
+          color: 'white',
           timer: 2000,
           timerProgressBar: true,
           didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
+            toast.onmouseenter = Swal.stopTimer
+            toast.onmouseleave = Swal.resumeTimer
           },
           onBeforeOpen: (toast) => {
-            toast.style.zIndex = 10000;
+            toast.style.zIndex = 10000
           },
-        });
+        })
         Toast.fire({
-          icon: "error",
-          title: "Please Fill all the Fields!",
-        });
+          icon: 'error',
+          title: 'Please Fill all the Fields!',
+        })
       }
-
     },
     async getMountData() {
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-      const apiUrl = `http://localhost:61050/dms/mount/getAllMountPoint`;
-      const token = this.$store.getters.getUserToken;
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+      const apiUrl = `http://localhost:61050/dms/mount/getAllMountPoint`
+      const token = this.$store.getters.getUserToken
       await axios
         .get(apiUrl, {
           headers: {
@@ -523,13 +572,13 @@ export default {
           },
         })
         .then((response) => {
-          this.mountData = response.data;
-          console.log("mountData", this.mountData);
+          this.mountData = response.data
+          console.log('mountData', this.mountData)
         })
-        .catch((error) => console.error("Error occured by", error));
+        .catch((error) => console.error('Error occured by', error))
     },
   },
-};
+}
 </script>
 
 <style scoped>
@@ -631,9 +680,8 @@ body > div.v-overlay-container > div > div.v-overlay__content > div {
 }
 
 .closebtn:hover {
-  opacity: .5;
+  opacity: 0.5;
 }
-
 
 .container {
   position: relative;
@@ -690,7 +738,6 @@ body > div.v-overlay-container > div > div.v-overlay__content > div {
   flex-direction: column;
 }
 
-
 .tableContaier {
   position: relative;
   height: 378px;
@@ -742,7 +789,7 @@ body > div.v-overlay-container > div > div.v-overlay__content > div {
   animation-duration: 5.5s;
 }
 .loader .circle:after {
-  content: "";
+  content: '';
   position: absolute;
   width: 6px;
   height: 6px;
