@@ -24,7 +24,7 @@ export default createStore({
     showNavbar: true,
     showFooter: true,
     showMain: true,
-    activeTab: 'Dashboard',
+    activeTab: 'Home',
     navbarFixed:
       'position-sticky blur shadow-blur left-auto top-1 z-index-sticky px-0 mx-4',
     absolute: 'position-absolute px-4 mx-0 w-100 z-index-2',
@@ -111,6 +111,9 @@ export default createStore({
     setFolderDetails({ commit }, obj) {
       commit('setObject', obj)
     },
+    setActiveTab({ commit }, tabName) {
+      commit('setActiveTab', tabName)
+    },
   },
   getters: {
     getUserToken(state) {
@@ -133,6 +136,9 @@ export default createStore({
     },
     getFormData(state) {
       return state.formData
+    },
+    activeTab(state) {
+      return state.activeTab
     },
   },
 })

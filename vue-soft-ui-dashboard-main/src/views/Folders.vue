@@ -145,6 +145,7 @@
                                     </template>
                                   </v-list-item>
                                   <v-list-item
+                                    v-show="data.isCheckOption === 'YES'"
                                     :title="getActionTitle(data)"
                                     @click="toggleCheckInOut(data)"
                                   >
@@ -453,7 +454,7 @@ export default {
     checkInOutIconClass() {
       return function (item) {
         console.log('Itemmvjhgbsh', item.checkIn)
-        return item.checkIn === 'YES' ? 'mdi-check' : 'mdi-check-outline'
+        return item.isCheckIn === 'YES' ? 'mdi-check' : 'mdi-check-outline'
       }
     },
   },
@@ -783,10 +784,11 @@ export default {
     async toggleCheckInOut(item) {
       // Assuming item.bookmark represents the check-in/out state
       item.checkIn = item.checkIn === 'YES' ? 'NO' : 'YES'
+      item.isCheckIn = item.isCheckIn === 'YES' ? 'NO' : 'YES'
 
       console.log('item.checkIn', item.checkIn)
       const api =
-        item.checkIn === 'YES'
+        item.isCheckIn === 'YES'
           ? `http://localhost:61050/dms/home/saveCheckIn?id=${item.folderID}&folderName=${item.folderName}`
           : `http://localhost:61050/dms/home/saveCheckOut?id=${item.folderID}&folderName=${item.folderName}`
       const token = this.$store.getters.getUserToken
@@ -808,7 +810,7 @@ export default {
     },
     getActionTitle(item) {
       console.log('ItemmTitle', item.checkIn)
-      return item.checkIn === 'YES' ? 'Check Out' : 'Check In'
+      return item.isCheckIn === 'YES' ? 'Check Out' : 'Check In'
     },
   },
 }
