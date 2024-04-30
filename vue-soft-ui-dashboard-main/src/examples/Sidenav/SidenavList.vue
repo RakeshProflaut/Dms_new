@@ -8,7 +8,6 @@
         <router-link
           class="nav-link"
           :to="item.to"
-          :active="activeTab === item.to.name"
           @click="setActiveTab(item.to.name)"
           :style="getActiveStyle(item)"
         >
@@ -28,6 +27,7 @@
     </ul>
   </div>
 </template>
+
 <script>
 export default {
   name: 'SidenavList',
@@ -73,39 +73,27 @@ export default {
           to: { name: 'SharedByYou' },
           icon: 'mdi mdi-share',
         },
-
-        // { text: 'Scanner', to: { name: 'Scanner' }, icon: 'mdi mdi-scanner' },
-        // {
-        //   text: 'Image Upscaling',
-        //   to: { name: 'Image Upscaling' },
-        //   icon: 'mdi mdi-image-filter-center-focus',
-        // },
-        // {
-        //   text: 'Job Pack Generation',
-        //   to: { name: 'JobPack' },
-        //   icon: 'mdi mdi-file-table-box-multiple',
-        // },
-        // { text: 'OCR', to: { name: 'Ocr' }, icon: 'mdi mdi-text-recognition' },
-        // { text: 'Portal', to: { name: 'Portal' }, icon: 'mdi mdi-door' },
       ],
       activeTab: null,
     }
   },
   created() {
-    // Set the activeTab to the name of the "User Information" tab
+    // Set the activeTab to the name of the "Home" tab by default
     this.activeTab = 'Home'
-    console.log('router tabs', this.activeTab)
   },
   computed: {
+    // Compute activeTab from Vuex store
     activeTab() {
       return this.$store.state.activeTab
     },
   },
   methods: {
     setActiveTab(tabName) {
+      // Update activeTab when a tab is clicked
       this.activeTab = tabName
     },
     getActiveStyle(item) {
+      // Apply style for active tab
       if (this.activeTab === item.to.name) {
         return {
           backgroundColor: '#fff',

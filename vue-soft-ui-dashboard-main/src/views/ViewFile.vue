@@ -1,82 +1,86 @@
 <template>
-  <div class="folderContainer"> 
+  <div class="folderContainer">
     <div class="pt-2 text-center card-header text-uppercase">
       <!-- <h5>{{ this.selectedfolder.folderName }} Folder</h5> -->
     </div>
-    <div   class="newButton">
-        <!-- <span  class="mdi mdi-file-download"></span> -->
-        <span :class="['mdi',this.extensionIcon]"></span>
-        <span @click="sendDocId" style="margin-left: 3%;" class="mdi mdi-download-circle"></span>
-        <span class="mdi mdi-information-box"
-         style="margin-left: 3%"
-          @click="docViewBox =true">
-        </span>
-        <!-- <span class="mdi mdi-file-jpg-box"></span> -->
-        <!-- <span class="mdi mdi-file-pdf-box"></span> -->
-        <!-- <span class="mdi mdi-file-excel"></span> -->
-            </div>
+    <div class="newButton">
+      <!-- <span  class="mdi mdi-file-download"></span> -->
+      <span :class="['mdi', this.extensionIcon]"></span>
+      <span
+        @click="sendDocId"
+        style="margin-left: 3%"
+        class="mdi mdi-download-circle"
+      ></span>
+      <span
+        class="mdi mdi-information-box"
+        style="margin-left: 3%"
+        @click="docViewBox = true"
+      >
+      </span>
+      <!-- <span class="mdi mdi-file-jpg-box"></span> -->
+      <!-- <span class="mdi mdi-file-pdf-box"></span> -->
+      <!-- <span class="mdi mdi-file-excel"></span> -->
+    </div>
     <div class="card-body">
       <div>
-          <label>File Name *</label>
+        <label>File Name *</label>
+        <input
+          type="text"
+          style="width: 70%"
+          v-model="imageDetails.docName"
+          placeholder="Document Name"
+          required
+          :readonly="showFirstPane"
+        />
+      </div>
+      <div>
+        <label>Name *</label>
+        <input
+          type="text"
+          style="width: 70%"
+          v-model="metaDetails.tableName"
+          placeholder="Document Name"
+          required
+          :readonly="showFirstPane"
+        />
+      </div>
+      <div class="textFields">
+        <div v-for="(fieldNam, index) in fieldNames" :key="index">
+          <label :for="fieldNam.fieldName">{{ fieldNam.fieldName }}</label>
           <input
-            type="text"
-            style="width: 70%"
-            v-model="imageDetails.docName"
-            placeholder="Document Name"
-            required
-            :readonly="showFirstPane"
+            :type="getFieldType(fieldNam.fieldType)"
+            :id="fieldNam.fieldName"
+            v-model="fieldNam.value"
+            style="width: 100%"
+            :required="true"
+            readonly
+            class="extensionField"
           />
         </div>
-        <div>
-          <label>Name *</label>
-          <input
-            type="text"
-            style="width: 70%"
-            v-model="metaDetails.tableName"
-            placeholder="Document Name"
-            required
-            :readonly="showFirstPane"
-          />
-        </div>       
-            <div class="textFields">
-                <div v-for="(fieldNam, index) in fieldNames" :key="index">
-                      <label :for="fieldNam.fieldName">{{
-                        fieldNam.fieldName
-                      }}</label>
-                      <input
-                      :type="getFieldType(fieldNam.fieldType)"
-                        :id="fieldNam.fieldName"
-                        v-model="fieldNam.value"
-                        style="width: 100%"
-                        :required="true"
-                        readonly
-                        class="extensionField"
-                      />
-                  </div>
-        </div> 
-        <v-dialog v-model="docViewBox"  style=" z-index: 1001">
-        <v-card style="width: 100%;margin: 0 auto; border-radius:1.5rem">
+      </div>
+      <v-dialog v-model="docViewBox" style="z-index: 1001">
+        <v-card style="width: 100%; margin: 0 auto; border-radius: 1.5rem">
           <view-document-vue
-          :selectedDocId="selectedDocId"
-          v-on:closeDocView="closeDocView"
+            :selectedDocId="selectedDocId"
+            v-on:closeDocView="closeDocView"
           />
         </v-card>
-      </v-dialog>      
+      </v-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import ViewDocumentVue from './ViewDocument.vue';
+import axios from 'axios'
+import ViewDocumentVue from './ViewDocument.vue'
 export default {
-name:'viewFile',
-components:{
-  ViewDocumentVue,
-},
+  name: 'viewFile',
+  components: {
+    ViewDocumentVue,
+  },
 
-mounted() {
-    this.showDocument();   
+  mounted() {
+    this.showDocument()
   },
 
   props: {
@@ -88,43 +92,63 @@ mounted() {
   data() {
     return {
       base64Data: null,
-      docContent: "",
-      imageDetails: "",
-      metaDetails: "",
-      extensionIcon:'',
+      docContent: '',
+      imageDetails: '',
+      metaDetails: '',
+      extensionIcon: '',
       fieldNames: [],
-      docViewBox:false,
+      docViewBox: false,
       headers: [
         {
-          key: "fieldName",
-          title: "FIELD NAME",
+          key: 'fieldName',
+          title: 'FIELD NAME',
         },
         {
-          key: "fieldType",
-          title: "FIELD TYPE",
+          key: 'fieldType',
+          title: 'FIELD TYPE',
         },
         {
-          key: "mandatory",
-          title: "MANDATORY",
+          key: 'mandatory',
+          title: 'MANDATORY',
         },
         {
-          key: "maxLength",
-          title: "MAXIMUM LENGTH",
+          key: 'maxLength',
+          title: 'MAXIMUM LENGTH',
         },
         {
-          key: "value",
-          title: "VALUE",
+          key: 'value',
+          title: 'VALUE',
         },
       ],
-    };
+    }
   },
-  
+
   methods: {
+    async postRecentFiles() {
+      const apiUrl = 'http://localhost:61050/dms/home/saveRecentFiles'
+      const token = this.$store.getters.getUserToken
+
+      const recentDetails = {
+        fileId: this.selectedDocId,
+        fileName: this.imageDetails.docName,
+      }
+      console.log('recentdetails', this.imageDetails.docName)
+      await axios
+        .post(apiUrl, recentDetails, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) => {
+          console.log('API response:', response.data) // Log the response
+        })
+        .catch((error) => console.log('Error occurred:', error))
+    },
     closeDialogeBox(value) {
-      this.editdialogeToggle = value;
+      this.editdialogeToggle = value
     },
     async showDocument() {
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
       await axios
         .get(
           `http://localhost:61050/dms/file/downloadBy?id=${this.selectedDocId}`,
@@ -135,102 +159,101 @@ mounted() {
           }
         )
         .then((response) => {
-          this.imageDetails = response.data.image;
-          this.metaDetails = response.data.metaDetails;
-          this.fieldNames = this.metaDetails.fieldNames;
-          console.log("fieldsss", response.data);        
+          this.imageDetails = response.data.image
+          this.metaDetails = response.data.metaDetails
+          this.fieldNames = this.metaDetails.fieldNames
+          console.log('fieldsss', response.data)
+          this.postRecentFiles()
         })
-        .catch((error) => console.error("Error occured by", error));
-        console.log("extension",this.imageDetails.extention);
-        this.getExtensionIcon();
-     
+        .catch((error) => console.error('Error occured by', error))
+      this.getExtensionIcon()
     },
 
     productDialogClose() {
-      this.$emit("closeDocViewBox", false);
+      this.$emit('closeDocViewBox', false)
     },
 
     getExtensionIcon() {
-        console.log("getIcon",this.imageDetails.extention);
-    if (this.imageDetails.extention === "jpg" || this.imageDetails.extention === "jpeg") {
-        this.extensionIcon = 'mdi-file-jpg-box';
-    } else if (this.imageDetails.extention === "xls" || this.imageDetails.extention === "xlsx") {
-        this.extensionIcon = 'mdi-file-excel';
-    } else if (this.imageDetails.extention === "pdf") {
-        this.extensionIcon = 'mdi-file-pdf-box';
-    }
-    else if (this.imageDetails.extention == "docx") {
-        this.extensionIcon = 'mdi-file-word-box';
-    }
-    else {
-        this.extensionIcon = 'mdi-file-png-box';
-    }
-},
-
-closeDocView(value) {
-      this.docViewBox = value;
-      this.showDocument();
+      console.log('getIcon', this.imageDetails.extention)
+      if (
+        this.imageDetails.extention === 'jpg' ||
+        this.imageDetails.extention === 'jpeg'
+      ) {
+        this.extensionIcon = 'mdi-file-jpg-box'
+      } else if (
+        this.imageDetails.extention === 'xls' ||
+        this.imageDetails.extention === 'xlsx'
+      ) {
+        this.extensionIcon = 'mdi-file-excel'
+      } else if (this.imageDetails.extention === 'pdf') {
+        this.extensionIcon = 'mdi-file-pdf-box'
+      } else if (this.imageDetails.extention == 'docx') {
+        this.extensionIcon = 'mdi-file-word-box'
+      } else {
+        this.extensionIcon = 'mdi-file-png-box'
+      }
     },
 
+    closeDocView(value) {
+      this.docViewBox = value
+      this.showDocument()
+    },
 
+    async downloadFile(event) {
+      console.log('dowlpadfile extenion', this.imageDetails.extention)
+      console.log('dowlpadfile name', this.imageDetails)
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
 
-async downloadFile(event) {
-    console.log("dowlpadfile extenion",this.imageDetails.extention);
-    console.log("dowlpadfile name",this.imageDetails);
-    axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";   
-
-    try { 
-
-        let fileType;
-        let fileName;
+      try {
+        let fileType
+        let fileName
 
         // Determine the file type and filename based on the file extension
-        if (this.imageDetails.extention ==='pdf') {
-            fileType = 'application/pdf';
-            fileName = `${this.imageDetails.docName}.pdf`;
-        } else if (this.imageDetails.extention === 'jpg' || this.imageDetails.extention === 'jpeg') {
-            fileType = 'image/jpeg';
-            fileName = `${this.imageDetails.docName}.jpg`;
+        if (this.imageDetails.extention === 'pdf') {
+          fileType = 'application/pdf'
+          fileName = `${this.imageDetails.docName}.pdf`
+        } else if (
+          this.imageDetails.extention === 'jpg' ||
+          this.imageDetails.extention === 'jpeg'
+        ) {
+          fileType = 'image/jpeg'
+          fileName = `${this.imageDetails.docName}.jpg`
         } else if (this.imageDetails.extention === 'xlsx') {
-            fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-            fileName = `${this.imageDetails.docName}.xlsx`;
+          fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          fileName = `${this.imageDetails.docName}.xlsx`
         } else if (this.imageDetails.extention === 'xls') {
-            fileType = 'application/vnd.ms-excel';
-            fileName = `${this.imageDetails.docName}.xls`;;
-        }  else if (this.imageDetails.extention == 'docx') {
-          fileType = 'application/msword'; 
-            fileName = `${this.imageDetails.docName}.docx`;
+          fileType = 'application/vnd.ms-excel'
+          fileName = `${this.imageDetails.docName}.xls`
+        } else if (this.imageDetails.extention == 'docx') {
+          fileType = 'application/msword'
+          fileName = `${this.imageDetails.docName}.docx`
         } else {
-            throw new Error('Unsupported file type');
+          throw new Error('Unsupported file type')
         }
 
-
         // Construct a data URL with the base64-encoded file data
-        const linkSource = `data:${fileType};base64,${this.imageDetails.image}`;
+        const linkSource = `data:${fileType};base64,${this.imageDetails.image}`
 
         // Create a new <a> element to act as a download link
-        const downloadLink = document.createElement("a");
+        const downloadLink = document.createElement('a')
 
         // Set the href attribute of the download link to the data URL
-        downloadLink.href = linkSource;
+        downloadLink.href = linkSource
 
         // Set the download attribute to specify the filename for the downloaded file
-        downloadLink.download = fileName;
+        downloadLink.download = fileName
 
         // Programmatically click the download link to initiate the download
-        downloadLink.click();
-    } catch (error) {
-        console.error('Error downloading file:', error);
-    }
-    
+        downloadLink.click()
+      } catch (error) {
+        console.error('Error downloading file:', error)
+      }
+    },
 
-
-   
-},
-
-async sendDocId(event){  
-  axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-  // event.preventDefault();
+    async sendDocId(event) {
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+      // event.preventDefault();
       await axios
         .post(
           `http://localhost:61050/dms/file/downloadHistory/${this.selectedDocId}`,
@@ -242,27 +265,25 @@ async sendDocId(event){
           }
         )
         .then((response) => {
-          console.log("dowload status", response.data.status);
-          this.downloadFile(event)        
+          console.log('dowload status', response.data.status)
+          this.downloadFile(event)
         })
-        .catch((error) => console.error("Error occured by", error));
-     
-
-},
-getFieldType(fieldType) {
-      return fieldType === "integer"? "number"
-        : fieldType === "date"
-          ? "datetime-local"
-          : "text";
+        .catch((error) => console.error('Error occured by', error))
     },
-
+    getFieldType(fieldType) {
+      return fieldType === 'integer'
+        ? 'number'
+        : fieldType === 'date'
+          ? 'datetime-local'
+          : 'text'
+    },
   },
-};
+}
 </script>
 
 <style scoped>
-.card-body{
-    width: 100%;
+.card-body {
+  width: 100%;
 }
 .mb-3 > input {
   display: block;
@@ -314,11 +335,7 @@ input {
   text-transform: uppercase;
   background-size: 150%;
   background-position-x: 25%;
-  background-image:linear-gradient(
-    310deg,
-    #82d616,
-    #5CC06E
-  ) !important;
+  background-image: linear-gradient(310deg, #82d616, #5cc06e) !important;
   margin-top: 16px !important;
   border-radius: 1rem;
   padding: 8px 0px;
@@ -373,28 +390,26 @@ input {
 
 /* Adjust styles for labels and inputs as needed */
 
-
 .newButton {
   display: flex;
   justify-content: flex-end;
   margin: 1% 0px;
   margin-right: 2%;
-
 }
 .newButton > span {
-    display: flex !important;
-    border-radius: 4px;
-    font-size: 25px;
-    display: flex;
-    border-style: solid;
-    border-width: 0;
-    background: #5CC06E;
-    transition: 0.5s ease;
-    color: #fff;
-    height: 30px;
-    align-items: center;
-    justify-content: center;
-    width: 8%;
+  display: flex !important;
+  border-radius: 4px;
+  font-size: 25px;
+  display: flex;
+  border-style: solid;
+  border-width: 0;
+  background: #5cc06e;
+  transition: 0.5s ease;
+  color: #fff;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  width: 8%;
 }
 .newButton > span:hover {
   cursor: pointer;
@@ -412,12 +427,11 @@ input {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #5CC06E; /* color of the handle */
+  background: #5cc06e; /* color of the handle */
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #d2d6da; /* color of the handle on hover */
 }
-
 </style>

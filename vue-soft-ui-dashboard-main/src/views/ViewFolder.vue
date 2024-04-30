@@ -118,7 +118,69 @@
                             </div>
                           </template>
                           <template v-if="header.key == 'bookmarking'">
-                            <div
+                            <v-menu
+                              v-model="menus[rowIndex]"
+                              :close-on-content-click="false"
+                              location="end"
+                            >
+                              <template v-slot:activator="{ props }">
+                                <div v-bind="props">
+                                  <i
+                                    class="mdi mdi-dots-vertical"
+                                    style="
+                                      font-size: 1.8rem;
+                                      cursor: pointer;
+                                      color: #234375;
+                                    "
+                                  ></i>
+                                </div>
+                              </template>
+                              <v-card min-width="200">
+                                <v-list>
+                                  <v-list-item
+                                    title="Bookmark"
+                                    @click="toggleBookmark(data)"
+                                  >
+                                    <template v-slot:append>
+                                      <i
+                                        :class="[
+                                          'mdi',
+                                          data.bookmark === 'YES'
+                                            ? 'mdi-bookmark'
+                                            : 'mdi-bookmark-outline',
+                                        ]"
+                                        style="
+                                          font-size: 1.8rem;
+                                          cursor: pointer;
+                                          color: #234375;
+                                        "
+                                      ></i>
+                                    </template>
+                                  </v-list-item>
+                                  <v-list-item
+                                    title="Delete"
+                                    @click="openDeleteOption(data)"
+                                  >
+                                    <template v-slot:append>
+                                      <i
+                                        :class="[
+                                          'mdi',
+                                          data.bookmark === 'YES'
+                                            ? 'mdi-delete'
+                                            : 'mdi-delete-outline',
+                                        ]"
+                                        style="
+                                          font-size: 1.8rem;
+                                          cursor: pointer;
+                                          color: red;
+                                        "
+                                      ></i>
+                                    </template>
+                                  </v-list-item>
+                                </v-list>
+                              </v-card>
+                            </v-menu>
+                            <!-- <div
                               style="height: 2.5rem !important"
                               @click="toggleBookmark(data)"
                             >
@@ -135,7 +197,7 @@
                                   color: #234375;
                                 "
                               ></i>
-                            </div>
+                            </div> -->
                           </template>
                           <template v-if="header.key === 'send'">
                             <div
@@ -366,6 +428,7 @@ export default {
           title: 'Bookmark',
         },
       ],
+      menus: [],
     }
   },
   props: ['id', 'view', 'write', 'folderName', 'metaId'],
@@ -393,11 +456,12 @@ export default {
   },
   methods: {
     async toggleBookmark(data) {
-      data.bookmark = !data.bookmark
+      data.bookmark = data.bookmark === 'YES' ? 'NO' : 'YES'
 
       const bookMarkDetails = {
         fileId: data.id,
         fileName: data.docName,
+        bookmark: data.bookmark,
       }
       const apiUrl = 'http://localhost:61050/dms/home/saveFileBookmark'
       const token = this.$store.getters.getUserToken
@@ -424,7 +488,29 @@ export default {
       this.displayedData = this.files.slice(start, end)
     },
 
+    async postRecentFolders() {
+      const apiUrl = 'http://localhost:61050/dms/home/saveRecentFolders'
+      const token = this.$store.getters.getUserToken
+
+      const recentDetails = {
+        folderName: this.folderName,
+        folderId: this.id,
+      }
+      console.log('recentdetails', recentDetails)
+      await axios
+        .post(apiUrl, recentDetails, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) => {
+          console.log('API response:', response.data) // Log the response
+        })
+        .catch((error) => console.log('Error occurred:', error))
+    },
+
     async getAllFiles() {
+      this.postRecentFolders()
       axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
       const apiUrl = `http://localhost:61050/dms/folder/getById/${this.id}`
       const token = this.$store.getters.getUserToken
@@ -560,6 +646,49 @@ export default {
           text: 'Failed to send email',
         })
       }
+    },
+
+    openDeleteOption(value) {
+      console.log('Valueeee', value)
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.toMakeDeleteData(value)
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Your file has been deleted.',
+            icon: 'success',
+          })
+        }
+      })
+    },
+    async toMakeDeleteData(value, event) {
+      const apiUrl = `
+      http://localhost:61050/dms/home/updateInactiveFile?id=${value.id}&status=I `
+
+      const token = this.$store.getters.getUserToken
+      console.log(token)
+      await axios
+        .put(
+          apiUrl,
+          {},
+          {
+            headers: {
+              token: token,
+            },
+          }
+        )
+        .then((response) => {
+          this.getAllFiles()
+        })
+        .catch((error) => console.log('error occured by', error))
     },
   },
 }

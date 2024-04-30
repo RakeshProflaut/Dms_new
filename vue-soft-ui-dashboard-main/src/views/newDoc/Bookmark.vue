@@ -233,10 +233,7 @@ export default {
 .filter-select {
   width: 13rem; /* Adjust the width as needed */
 }
-.search-container {
-  display: flex;
-  align-items: center;
-}
+
 
 .search-input {
   width: 300px; /* Adjust the width as needed */
@@ -247,20 +244,7 @@ export default {
   margin: 1% 0px;
   margin-left: 1%;
 }
-.search-container > .v-btn {
-  margin-left: 0.5rem;
-  background-image: linear-gradient(
-    310deg,
-    #82d616 0%,
-    #82d616 360%
-  ) !important;
-  transition: 0.5s ease;
-  font-weight: bold;
-  color: #fff;
-  font-weight: bold;
-  font-size: 0.7rem !important;
-  height: 2rem !important;
-}
+
 .search-container > .v-btn:hover {
   cursor: pointer;
 }

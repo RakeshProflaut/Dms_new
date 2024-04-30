@@ -11,7 +11,7 @@
       >
         <span class="mask bg-gradient-success opacity-6"></span>
       </div> -->
-      <!-- <div class="mx-4 overflow-hidden card card-body blur shadow-blur mt-n6">
+    <!-- <div class="mx-4 overflow-hidden card card-body blur shadow-blur mt-n6">
         <div class="row gx-4">
           <div class="col-auto">
             <div class="avatar avatar-xl position-relative">
@@ -36,7 +36,7 @@
   -->
     <div class="mt-3 row"></div>
     <div class="container-fluid">
-      <div class="row"  style="margin-top: .2rem !important;">
+      <div class="row" style="margin-top: 0.2rem !important">
         <div class="col-12">
           <div class="card" style="height: 507px !important">
             <div class="card-header text-center pb-0 text-uppercase">
@@ -44,120 +44,202 @@
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="upperBody">
-                <div style="flex-basis: 30%;">
-                  <div style="">
-                    <label>Metadata*</label>
-                    <v-select
-                      variant="outlined"
-                      style="width: 80%; font-size: 10px"
-                      v-model="selectedMetadata"
-                      :items="metaTables"
-                      item-title="tableName"
-                      item-value="metaId"
-                      label="Select items"
-                      chipstabelName
-                      small-chips
-                      clearable
-                      class="custom-select"
-                    >
-                    </v-select>
+                <div style="width: 25%; margin-right: 5%">
+                  <label>Select Your Search Option*</label>
+                  <v-select
+                    variant="outlined"
+                    style="width: 100%; font-size: 10px"
+                    v-model="selectedSearchOption"
+                    :items="searchOptions"
+                    item-title="tableName"
+                    item-value="metaId"
+                    label="Select items"
+                    chipstabelName
+                    small-chips
+                    clearable
+                  >
+                  </v-select>
+                </div>
+                <div class="fieldContainer">
+                  <div
+                    v-if="selectedSearchOption === 'Meta Data'"
+                    style="width: 100%"
+                  >
+                    <div style="width: 100%">
+                      <label>Metadata*</label>
+                      <v-select
+                        variant="outlined"
+                        style="font-size: 10px; width: 100%"
+                        v-model="selectedMetadata"
+                        :items="metaTables"
+                        item-title="tableName"
+                        item-value="metaId"
+                        chipstabelName
+                        small-chips
+                        clearable
+                      >
+                      </v-select>
+                    </div>
+                    <div class="newButton">
+                      <v-btn @click="checkAndgetTable"> Search </v-btn>
+                    </div>
                   </div>
-                  <div class="newButton">
-                    <v-btn @click="checkAndgetTable"> Search </v-btn>
+
+                  <!-- <div v-else-if="selectedSearchOption === 'Id'">
+                    <div>
+                      <label>Enter Document Id*</label>
+                      <v-text-field
+                        v-model="searchQuery"
+                        type="number"
+                        variant="outlined"
+                        dense
+                        hide-details
+                        filled
+                        class="search-input"
+                        :rules="[validateSearchQuery]"
+                      ></v-text-field>
+                    </div>
+                    <div class="newButton">
+                      <v-btn @click="checkAndgetTable"> Search Id </v-btn>
+                    </div>
+                  </div> -->
+                  <div v-else-if="selectedSearchOption === 'File Name'">
+                    <div>
+                      <label>Enter File Name*</label>
+                      <v-text-field
+                        v-model="enteredFileName"
+                        variant="outlined"
+                        dense
+                        hide-details
+                        filled
+                        class="search-input"
+                      ></v-text-field>
+                    </div>
+                    <div class="newButton">
+                      <v-btn @click="checkFiles"> Search File Name </v-btn>
+                    </div>
+                  </div>
+                  <div v-else-if="selectedSearchOption === 'Folder Name'">
+                    <div>
+                      <label>Enter Folder Name*</label>
+                      <v-text-field
+                        v-model="enteredFolderName"
+                        variant="outlined"
+                        dense
+                        hide-details
+                        filled
+                        class="search-input"
+                      ></v-text-field>
+                    </div>
+                    <div class="newButton">
+                      <v-btn @click="checkFolders"> Search Folder Name </v-btn>
+                    </div>
                   </div>
                 </div>
                 <div class="textFields">
-                  <div v-for="(fieldNam, index) in fieldNames" :key="index">
+                  <div
+                    v-show="selectedSearchOption == 'Meta Data'"
+                    v-for="(fieldNam, index) in fieldNames"
+                    :key="index"
+                  >
                     <label :for="fieldNam.fieldName">{{
                       fieldNam.fieldName
                     }}</label>
                     <input
-                    :type="getFieldType(fieldNam.fieldType)"
+                      :type="getFieldType(fieldNam.fieldType)"
                       :id="fieldNam.fieldName"
                       v-model="fieldNam.value"
                       style="width: 100% !important"
                       :required="true"
                       :readonly="showFirstPane"
                       :pattern="getFieldPattern(fieldNam)"
-                       @input="validateField(fieldNam)"
+                      @input="validateField(fieldNam)"
                     />
                     <div class="warning-text">
-                    {{ warnings[fieldNam.fieldName] }}
+                      {{ warnings[fieldNam.fieldName] }}
                     </div>
                   </div>
                 </div>
               </div>
               <div class="table-responsive" v-if="openSearchTable">
                 <div class="tableContaier">
-                <table class="table align-items-center mb-0">
-                  <thead class="table-header">
-                    <tr>
-                      <th
-                        v-for="header in headers"
-                        :key="header.key"
-                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
-                      >
-                        {{ header.title }}
-                      </th>
-                    </tr>
-                  </thead>
-                  
-                  <tbody>
-                    <tr
-                      v-for="(data, rowIndex) in listrecords"
-                      :key="rowIndex"
-                    >
-                      <td
-                        :class="{
-                          'font-weight-bolder text-uppercase':
-                            header.key === 'folderName',
-                        }"
-                        v-for="(header, index) in headers"
-                        :key="index"
-                        style="text-align: center"
-                      >
-                        <template v-if="header.key === 'action'">
-                          <v-btn
-                            @click="openDocViewBox(data.document_details['id'])"
-                            class="text-secondary font-weight-bold text-xs"
-                            >View</v-btn
-                          >
-                        </template>
+                  <table class="table align-items-center mb-0">
+                    <thead class="table-header">
+                      <tr>
+                        <th
+                          v-for="header in headers"
+                          :key="header.key"
+                          class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-10"
+                        >
+                          {{ header.title }}
+                        </th>
+                      </tr>
+                    </thead>
 
-                        <template v-if="header.key === 'sno'">
-                          {{ rowIndex+1 }}
-                        </template>                   
-                        <template v-else>
-                          {{ data.document_details[header.key] }}
-                        </template>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                    <tbody>
+                      <tr
+                        v-for="(data, rowIndex) in listrecords"
+                        :key="rowIndex"
+                      >
+                        <td
+                          :class="{
+                            'font-weight-bolder text-uppercase':
+                              header.key === 'docName',
+                          }"
+                          v-for="(header, index) in headers"
+                          :key="index"
+                          style="text-align: center"
+                        >
+                          <template v-if="header.key === 'action'">
+                            <v-btn
+                              @click="
+                                openDocViewBox(
+                                  data.document_details['id'] && data['id']
+                                )
+                              "
+                              class="text-secondary font-weight-bold text-xs"
+                              >View</v-btn
+                            >
+                          </template>
+
+                          <template v-if="header.key === 'sno'">
+                            {{ rowIndex + 1 }}
+                          </template>
+                          <template v-else>
+                            {{
+                              data.document_details
+                                ? data.document_details[header.key]
+                                : data[header.key]
+                            }}
+                          </template>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
                 <div>
                   <v-pagination
-                  v-model="page"
-                  :length="pages"
-                  @input="updateDisplayedData"
-                  ></v-pagination>                
+                    v-model="page"
+                    :length="pages"
+                    @input="updateDisplayedData"
+                  ></v-pagination>
                 </div>
               </div>
-              </div>
-            <v-dialog v-model="docViewBox"  style=" z-index: 1001">
+            </div>
+            <v-dialog v-model="docViewBox" style="z-index: 1001">
               <div style="position: relative; left: 67%">
-        <button class="closebtn" @click="docViewBox = false">
-          <i class="bx bx-x" style="position: relative; top: 20%"></i>
-        </button>
-      </div>
-        <v-card style="width: 35%;margin: 0 auto; border-radius: 3%">
-          <view-file-vue
-          :selectedDocId="selectedDocId"
-          v-on:closeDocViewBox="closeDocViewBox"
-          />
-        </v-card>
-      </v-dialog>      
-      <!-- <v-dialog v-model="openUploadDialogeBox" 
+                <button class="closebtn" @click="docViewBox = false">
+                  <i class="bx bx-x" style="position: relative; top: 20%"></i>
+                </button>
+              </div>
+              <v-card style="width: 35%; margin: 0 auto; border-radius: 3%">
+                <view-file-vue
+                  :selectedDocId="selectedDocId"
+                  v-on:closeDocViewBox="closeDocViewBox"
+                />
+              </v-card>
+            </v-dialog>
+            <!-- <v-dialog v-model="openUploadDialogeBox" 
         style=" z-index: 1001">
         <v-card style="width: 35%;margin: 0 auto; border-radius: 3%">
           <upload-file
@@ -166,14 +248,14 @@
           />
         </v-card>
       </v-dialog> -->
-    </div>
-  </div>
-</div>
-  <div v-if="showLoader" class="loader-overlay">
-    <div v-if="showLoader" class="loader">
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+      <div v-if="showLoader" class="loader-overlay">
+        <div v-if="showLoader" class="loader">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
           <div class="circle"></div>
           <div class="circle"></div>
         </div>
@@ -184,31 +266,30 @@
 </template>
 
 <script>
-import setTooltip from "@/assets/js/tooltip.js";
-import setNavPills from "@/assets/js/nav-pills.js";
-import axios from "axios";
-import ViewFileVue from './ViewFile.vue';
-import Swal from "sweetalert2";
-
+import setTooltip from '@/assets/js/tooltip.js'
+import setNavPills from '@/assets/js/nav-pills.js'
+import axios from 'axios'
+import ViewFileVue from './ViewFile.vue'
+import Swal from 'sweetalert2'
 
 export default {
-  name: "search",
-  components:{
-    ViewFileVue
+  name: 'search',
+  components: {
+    ViewFileVue,
   },
   mounted() {
-    this.$store.state.isAbsolute = true;
-    setNavPills();
-    setTooltip(this.$store.state.bootstrap);
-    this.getMetaData();
+    this.$store.state.isAbsolute = true
+    setNavPills()
+    setTooltip(this.$store.state.bootstrap)
+    this.getMetaData()
   },
   beforeUnmount() {
-    this.$store.state.isAbsolute = false;
+    this.$store.state.isAbsolute = false
   },
   watch: {
     selectedMetadata(newVal, oldVal) {
       // Call your method here
-      this.getFields();
+      this.getFields()
     },
   },
   data() {
@@ -217,41 +298,49 @@ export default {
       metaTables: [],
       fieldNames: [],
       openSearchTable: false,
-      docViewBox:false,
-      selectedDocId:null,
+      docViewBox: false,
+      selectedDocId: null,
       showLoader: false,
       fieldTypeWarnings: {
-        integer: "Only accept Numbers",
-        string: "Only accept Strings",
+        integer: 'Only accept Numbers',
+        string: 'Only accept Strings',
       },
+      enteredFileName: '',
+      enteredFolderName: '',
       warnings: {},
+      selectedSearchOption: null,
+      searchOptions: ['File Name', 'Folder Name', 'Meta Data'],
       headers: [
         {
-          key: "sno",
-          title: "SNO",
+          key: 'sno',
+          title: 'SNO',
         },
         {
-          key: "docName",
-          title: "FILE NAME",
+          key: 'docName',
+          title: 'FILE NAME',
         },
         {
-          key: "createdBy",
-          title: "CREATED BY",
+          key: 'createdBy',
+          title: 'CREATED BY',
         },
         {
-          key: "uploadTime",
-          title: "CREATED AT",
+          key: 'uploadTime',
+          title: 'CREATED AT',
         },
         {
-          key: "action",
-          title: "Action",
+          key: 'action',
+          title: 'Action',
         },
       ],
-    };
+    }
   },
   methods: {
+    validateSearchQuery(value) {
+      const regex = /^[0-9]+$/
+      return regex.test(value) || 'Invalid input. Please enter only numbers.'
+    },
     async getMetaData() {
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
       await axios
         .get(`http://localhost:61050/dms/meta/getAllAccessMetaTable`, {
           headers: {
@@ -259,15 +348,15 @@ export default {
           },
         })
         .then((response) => {
-          this.metaTables = response.data;
-          console.log("metaaa", this.metaTables);
+          this.metaTables = response.data
+          console.log('metaaa', this.metaTables)
         })
-        .catch((error) => console.error("Error occured by", error));
+        .catch((error) => console.error('Error occured by', error))
     },
 
     async getFields() {
-      console.log("selectedMetaId", this.selectedMetadata);
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      console.log('selectedMetaId', this.selectedMetadata)
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
       await axios
         .get(
           `http://localhost:61050/dms/meta/getAllTables?id=${this.selectedMetadata}`,
@@ -279,161 +368,202 @@ export default {
         )
         .then((response) => {
           const filterdfiledNames = response.data.fieldNames.filter(
-            (ele) => ele.fieldName !== "id" && ele.fieldName !== "doc_id"
-          );
+            (ele) => ele.fieldName !== 'id' && ele.fieldName !== 'doc_id'
+          )
           const removevalues = filterdfiledNames.map((ele) => ({
             ...ele,
             value: null,
-          }));
-          this.fieldNames = removevalues;
-          console.log("fieeldsssss", this.fieldNames);
+          }))
+          this.fieldNames = removevalues
+          console.log('fieeldsssss', this.fieldNames)
         })
-        .catch((error) => console.error("Error occured by", error));
+        .catch((error) => console.error('Error occured by', error))
     },
 
-
-    checkAndgetTable(event){
+    checkAndgetTable(event) {
       const searchObject = Array.from(this.fieldNames).map((ele) => ({
         [ele.fieldName]: ele.value,
-      }));
-      const mergedObject = searchObject.reduce((acc, obj) => {
-        return { ...acc, ...obj };
-      }, {});
+      }))
 
-      const isAtLeastOneValuePresent = Object.values(mergedObject).some(value => {
-  return value !== null && value !== undefined && value !== '';
-});
-const hasWarnings = Object.values(this.warnings).every(
-        (warning) => warning == ""
-      );
+      const mergedObject = searchObject.reduce((acc, obj) => {
+        return { ...acc, ...obj }
+      }, {})
+
+      const isAtLeastOneValuePresent = Object.values(mergedObject).some(
+        (value) => {
+          return value !== null && value !== undefined && value !== ''
+        }
+      )
+
+      const hasWarnings = Object.values(this.warnings).every(
+        (warning) => warning == ''
+      )
       if (hasWarnings) {
-      if(isAtLeastOneValuePresent){
-          this.getTable(event);
-      }else{  
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          customClass: "swal-wide",
-          height: "30px",
-          background: "hsl(0, 43%, 52%)",
-          color: "white",
-          timer: 2000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },
-        });
-        Toast.fire({
-          icon: "warning",
-          title: "Please fill Minimum One Field!",
-        });
-      }
+        if (isAtLeastOneValuePresent) {
+          this.getTable(event)
+        } else {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            customClass: 'swal-wide',
+            height: '30px',
+            background: 'hsl(0, 43%, 52%)',
+            color: 'white',
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer
+              toast.onmouseleave = Swal.resumeTimer
+            },
+          })
+          Toast.fire({
+            icon: 'warning',
+            title: 'Please fill Minimum One Field!',
+          })
+        }
       }
     },
 
     async getTable(event) {
-      event.preventDefault();
-      console.log("getmetafields", this.fieldNames);
-      const token = this.$store.getters.getUserToken;
-
+      event.preventDefault()
+      console.log('getmetafields', this.fieldNames)
+      const token = this.$store.getters.getUserToken
 
       const searchObject = Array.from(this.fieldNames).map((ele) => ({
         [ele.fieldName]: ele.value,
-      }));
+      }))
       const mergedObject = searchObject.reduce((acc, obj) => {
-        return { ...acc, ...obj };
-      }, {});
+        return { ...acc, ...obj }
+      }, {})
 
-      const submitObject={
-        metaData_id:this.selectedMetadata,
-        metaData:mergedObject,
+      const submitObject = {
+        metaData_id: this.selectedMetadata,
+        metaData: mergedObject,
       }
       try {
         const response = await axios.post(
-          "http://localhost:61050/dms/meta/searchDocument",
-          submitObject, {
-          headers: {
-            token: token,
-          },
-        });
-        console.log(response.data.records);
-        this.showLoader = true;
+          'http://localhost:61050/dms/meta/searchDocument',
+          submitObject,
+          {
+            headers: {
+              token: token,
+            },
+          }
+        )
+        console.log(response.data.records)
+        this.showLoader = true
         setTimeout(() => {
-          this.listrecords=response.data.records;
-            this.showLoader = false;
-            this.openSearchTable =true;
-           
-          }, 3000);
+          this.listrecords = response.data.records
+          console.log('listrecoreds', this.listrecords)
+          this.showLoader = false
+          this.openSearchTable = true
+        }, 3000)
       } catch (error) {
         const Toast = Swal.mixin({
           toast: true,
-          position: "top-end",
+          position: 'top-end',
           showConfirmButton: false,
-          customClass: "swal-wide",
-          height: "30px",
-          background: "hsl(0, 43%, 52%)",
-          color: "white",
+          customClass: 'swal-wide',
+          height: '30px',
+          background: 'hsl(0, 43%, 52%)',
+          color: 'white',
           timer: 2000,
           timerProgressBar: true,
           didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
+            toast.onmouseenter = Swal.stopTimer
+            toast.onmouseleave = Swal.resumeTimer
           },
-        });
+        })
         Toast.fire({
-          icon: "warning",
-          title: "Incorrect  Details!",
-        });
-        console.error("API There was an error!", error);
+          icon: 'warning',
+          title: 'Incorrect  Details!',
+        })
+        console.error('API There was an error!', error)
       }
     },
 
-    openDocViewBox(value){
-      this.docViewBox=true;
-      this.selectedDocId=value;
+    openDocViewBox(value) {
+      this.docViewBox = true
+      this.selectedDocId = value
     },
 
     closeDocViewBox(value) {
-      this.docViewBox = value;
+      this.docViewBox = value
     },
 
     getFieldType(fieldType) {
-      return fieldType === "integer"? "number"
-        : fieldType === "date"
-          ? "datetime-local"
-          : "text";
+      return fieldType === 'integer'
+        ? 'number'
+        : fieldType === 'date'
+          ? 'datetime-local'
+          : 'text'
     },
 
     getFieldPattern(fieldNam) {
       switch (fieldNam.fieldType) {
-        case "integer":
-          return "^[0-9]+$";
-        case "string":
-          return "^(?=.*[a-zA-Z])[a-zA-Z0-9: -_]+$";
+        case 'integer':
+          return '^[0-9]+$'
+        case 'string':
+          return '^(?=.*[a-zA-Z])[a-zA-Z0-9: -_]+$'
       }
     },
 
     validateField(fieldNam) {
-      const value = fieldNam.value;
-      const pattern = this.getFieldPattern(fieldNam);
-      const regex = new RegExp(pattern);
+      const value = fieldNam.value
+      const pattern = this.getFieldPattern(fieldNam)
+      const regex = new RegExp(pattern)
       if (regex.test(value)) {
         // Input matches the pattern
-        this.warnings[fieldNam.fieldName] = ""; // Clear warning
+        this.warnings[fieldNam.fieldName] = '' // Clear warning
       } else {
         // Input does not match the pattern
-        const fieldTypeWarning = this.fieldTypeWarnings[fieldNam.fieldType];
-        this.warnings[fieldNam.fieldName] = fieldTypeWarning;
+        const fieldTypeWarning = this.fieldTypeWarnings[fieldNam.fieldType]
+        this.warnings[fieldNam.fieldName] = fieldTypeWarning
       }
     },
+
+    async checkFolders() {
+      const api = `http://localhost:61050/dms/home/getAllSearchFolders/${this.enteredFolderName}`
+      const token = this.$store.getters.getUserToken
+
+      const response = await axios.get(api, {
+        headers: {
+          token: token,
+        },
+      })
+
+      this.showLoader = true
+      setTimeout(() => {
+        this.listrecords = response.data
+        this.showLoader = false
+        this.openSearchTable = true
+      }, 3000)
+    },
+    async checkFiles() {
+      const api = `http://localhost:61050/dms/home/getAllSearchFiles/${this.enteredFileName}`
+      const token = this.$store.getters.getUserToken
+
+      const response = await axios.get(api, {
+        headers: {
+          token: token,
+        },
+      })
+      this.showLoader = true
+      setTimeout(() => {
+        console.log('listrecoreds', this.listrecords)
+        this.showLoader = false
+        this.listrecords = response.data
+        this.openSearchTable = true
+      }, 3000)
+      console.log('resposne', this.listrecords)
+    },
   },
-};
+}
 </script>
 
 <style scoped>
-.min-height-300 {  
+.min-height-300 {
   min-height: 75px !important;
 }
 .card-body {
@@ -446,10 +576,8 @@ const hasWarnings = Object.values(this.warnings).every(
   flex-basis: 30%;
   display: flex;
   width: 100%;
-  justify-content: space-evenly;
+  justify-content: space-between !important;
 }
-
-
 
 /* div.card-body .v-input__control .v-field__field {
     max-height: 30px !important;
@@ -486,7 +614,7 @@ label {
 }
 
 .closebtn:hover {
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .textFields {
@@ -497,8 +625,17 @@ label {
   overflow-y: auto;
   width: 40%;
   height: 200px;
+  background: 'orange';
+}
+.fieldContainer {
+  display: flex;
+  width: 25%;
+  margin-right: 5%;
 }
 
+.fieldContainer > div {
+  width: 100%;
+}
 
 .newButton {
   display: flex;
@@ -516,7 +653,7 @@ label {
   color: #fff;
   font-weight: bold;
   font-size: 0.7rem !important;
-  height: 2rem !important;  
+  height: 2rem !important;
 }
 .newButton > .v-btn:hover {
   cursor: pointer;
@@ -537,6 +674,12 @@ label {
   top: 0;
   z-index: 1;
   background: #fff;
+}
+
+.search-container {
+  display: flex;
+  margin: 1% 0px;
+  margin-left: 1%;
 }
 
 .loader-overlay {
@@ -577,7 +720,7 @@ label {
   animation-duration: 5.5s;
 }
 .loader .circle:after {
-  content: "";
+  content: '';
   position: absolute;
   width: 6px;
   height: 6px;
@@ -660,12 +803,11 @@ label {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #87D81F; /* color of the handle */
+  background: #87d81f; /* color of the handle */
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #d2d6da; /* color of the handle on hover */
 }
-
 </style>

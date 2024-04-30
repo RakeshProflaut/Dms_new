@@ -85,7 +85,88 @@
                           }"
                         >
                           <template v-if="header.key == 'bookmarking'">
-                            <div
+                            <v-menu
+                              v-model="menus[rowIndex]"
+                              :close-on-content-click="false"
+                              location="end"
+                            >
+                              <template v-slot:activator="{ props }">
+                                <div v-bind="props">
+                                  <i
+                                    class="mdi mdi-dots-vertical"
+                                    style="
+                                      font-size: 1.8rem;
+                                      cursor: pointer;
+                                      color: #234375;
+                                    "
+                                  ></i>
+                                </div>
+                              </template>
+                              <v-card min-width="200">
+                                <v-list>
+                                  <v-list-item
+                                    title="Bookmark"
+                                    @click="toggleBookmark(data)"
+                                  >
+                                    <template v-slot:append>
+                                      <i
+                                        :class="[
+                                          'mdi',
+                                          data.bookmark === 'YES'
+                                            ? 'mdi-bookmark'
+                                            : 'mdi-bookmark-outline',
+                                        ]"
+                                        style="
+                                          font-size: 1.8rem;
+                                          cursor: pointer;
+                                          color: #234375;
+                                        "
+                                      ></i>
+                                    </template>
+                                  </v-list-item>
+                                  <v-list-item
+                                    title="Delete"
+                                    @click="openDeleteOption(data)"
+                                  >
+                                    <template v-slot:append>
+                                      <i
+                                        :class="[
+                                          'mdi',
+                                          data.bookmark === 'YES'
+                                            ? 'mdi-delete'
+                                            : 'mdi-delete-outline',
+                                        ]"
+                                        style="
+                                          font-size: 1.8rem;
+                                          cursor: pointer;
+                                          color: red;
+                                        "
+                                      ></i>
+                                    </template>
+                                  </v-list-item>
+                                  <v-list-item
+                                    :title="getActionTitle(data)"
+                                    @click="toggleCheckInOut(data)"
+                                  >
+                                    <template v-slot:append>
+                                      <i
+                                        :class="[
+                                          'mdi',
+                                          checkInOutIconClass(data),
+                                        ]"
+                                        style="
+                                          font-size: 1.8rem;
+                                          cursor: pointer;
+                                          color: red;
+                                        "
+                                      ></i>
+                                    </template>
+                                  </v-list-item>
+                                </v-list>
+                              </v-card>
+                            </v-menu>
+
+                            <!-- <div
                               style="height: 2.5rem !important"
                               @click="toggleBookmark(data)"
                             >
@@ -102,7 +183,7 @@
                                   color: #234375;
                                 "
                               ></i>
-                            </div>
+                            </div> -->
                           </template>
                           <template v-if="header.key === 'files'">
                             <div
@@ -129,7 +210,7 @@
                                 font-size: 0.7rem !important;
                                 height: 2rem !important;
                               "
-                              @click="getSubFolders(data['folderID'])"
+                              @click="callSubFoldersAndRecentView(data)"
                               class="text-secondary font-weight-bold text-xs"
                             >
                               <span
@@ -337,12 +418,13 @@ export default {
         },
         {
           key: 'bookmarking',
-          title: 'Bookmark',
+          title: 'Options',
         },
       ],
       folders: [],
       secondaryFolders: [],
       mountData: [],
+      menus: [],
     }
   },
 
@@ -368,15 +450,46 @@ export default {
     pages() {
       return Math.ceil(this.folders.length / this.itemsPerPage)
     },
+    checkInOutIconClass() {
+      return function (item) {
+        console.log('Itemmvjhgbsh', item.checkIn)
+        return item.checkIn === 'YES' ? 'mdi-check' : 'mdi-check-outline'
+      }
+    },
   },
 
   methods: {
+    async postRecentFolders(value) {
+      const apiUrl = 'http://localhost:61050/dms/home/saveRecentFolders'
+      const token = this.$store.getters.getUserToken
+
+      const recentDetails = {
+        folderName: value.folderName,
+        folderId: value.folderID,
+      }
+      console.log('recentdetails', recentDetails)
+      await axios
+        .post(apiUrl, recentDetails, {
+          headers: {
+            token: token,
+          },
+        })
+        .then((response) => {
+          console.log('API response:', response.data) // Log the response
+        })
+        .catch((error) => console.log('Error occurred:', error))
+    },
     async toggleBookmark(data) {
-      data.bookmark = !data.bookmark
+      // Toggle the bookmark value
+
+      // Convert the boolean bookmark value to 'YES' or 'NO'
+      data.bookmark = data.bookmark === 'YES' ? 'NO' : 'YES'
+      console.log('Updated Bookmark', data.bookmark)
 
       const bookMarkDetails = {
         folderId: data.folderID,
         folderName: data.folderName,
+        bookmark: data.bookmark,
       }
       const apiUrl = 'http://localhost:61050/dms/home/saveFolderBookmark'
       const token = this.$store.getters.getUserToken
@@ -402,13 +515,13 @@ export default {
             token: token,
           },
         })
-
         this.folders = response.data.folder.filter(
           (ele) => ele.write !== 'No' || ele.view !== 'No'
         )
         this.secondaryFolders = response.data.folder.filter(
           (ele) => ele.write !== 'No' || ele.view !== 'No'
         )
+        console.log('folcsjnbcjsvb', this.folders)
       } catch (error) {
         console.error('Error occured by', error)
       }
@@ -432,16 +545,62 @@ export default {
     sendTableNameAndToggle(value) {
       console.log('selectedtoViewfodler', value)
       this.openDialogeBox = true
-      this.$router.push({
-        name: 'ViewFolder',
-        query: {
-          id: value.folderID,
-          view: value.view,
-          write: value.write,
-          folderName: value.folderName,
-          metaId: value.metaId,
-        },
-      })
+      console.log('checkInnnSubFile', value.checkIn)
+      if (value.checkIn === 'YES') {
+        this.$router.push({
+          name: 'ViewFolder',
+          query: {
+            id: value.folderID,
+            view: value.view,
+            write: value.write,
+            folderName: value.folderName,
+            metaId: value.metaId,
+          },
+        })
+      } else {
+        Swal.fire({
+          title: 'No Check In to this Folder',
+          showClass: {
+            popup: `
+     animate__animated
+     animate__fadeInUp
+     animate__faster
+   `,
+          },
+          hideClass: {
+            popup: `
+     animate__animated
+     animate__fadeOutDown
+     animate__faster
+   `,
+          },
+        })
+      }
+    },
+
+    callSubFoldersAndRecentView(value) {
+      this.postRecentFolders(value)
+      if (value.checkIn === 'YES') {
+        this.getSubFolders(value.folderID)
+      } else {
+        Swal.fire({
+          title: 'No Check In to this Folder',
+          showClass: {
+            popup: `
+     animate__animated
+     animate__fadeInUp
+     animate__faster
+   `,
+          },
+          hideClass: {
+            popup: `
+     animate__animated
+     animate__fadeOutDown
+     animate__faster
+   `,
+          },
+        })
+      }
     },
     async getSubFolders(value) {
       this.viewFolderButton = true
@@ -456,7 +615,9 @@ export default {
           },
         })
         console.log('subbFodler', response.data)
+
         this.folders = response.data.subFolderPath
+
         // const currentfolderName=this.secondaryFolders.find(ele=>ele.folderID ===this.selectedFolderId);
         // console.log("currentFolderrr",currentfolderName.folderName);
         // this.currentFolderName=renderFolderName[0].folderName;
@@ -513,9 +674,9 @@ export default {
             this.openFolderDialogeBox = false
             this.showLoader = true
             setTimeout(() => {
+              this.getSubFolders(this.selectedFolderId)
               this.showLoader = false
-              ;(this.enteredFolderName = ''),
-                this.getSubFolders(this.selectedFolderId)
+              this.enteredFolderName = ''
               const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -576,6 +737,78 @@ export default {
           console.log('mountData', this.mountData)
         })
         .catch((error) => console.error('Error occured by', error))
+    },
+
+    openDeleteOption(value) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.toMakeDeleteData(value)
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Your file has been deleted.',
+            icon: 'success',
+          })
+        }
+      })
+    },
+    async toMakeDeleteData(value, event) {
+      console.log('folderId', value.folderID)
+      const apiUrl = `http://localhost:61050/dms/home/updateInactiveFolder?id=${value.folderID}&status=I `
+      const token = this.$store.getters.getUserToken
+      console.log(token)
+      await axios
+        .put(
+          apiUrl,
+          {},
+          {
+            headers: {
+              token: token,
+            },
+          }
+        )
+        .then((response) => {
+          this.getSubFolders(this.selectedFolderId)
+        })
+        .catch((error) => console.log('error occured by', error))
+    },
+
+    async toggleCheckInOut(item) {
+      // Assuming item.bookmark represents the check-in/out state
+      item.checkIn = item.checkIn === 'YES' ? 'NO' : 'YES'
+
+      console.log('item.checkIn', item.checkIn)
+      const api =
+        item.checkIn === 'YES'
+          ? `http://localhost:61050/dms/home/saveCheckIn?id=${item.folderID}&folderName=${item.folderName}`
+          : `http://localhost:61050/dms/home/saveCheckOut?id=${item.folderID}&folderName=${item.folderName}`
+      const token = this.$store.getters.getUserToken
+
+      await axios
+        .post(
+          api,
+          {},
+          {
+            headers: {
+              token: token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log('resposnevfdgvfh', response)
+        })
+        .catch((error) => console.log('error occured by', error))
+    },
+    getActionTitle(item) {
+      console.log('ItemmTitle', item.checkIn)
+      return item.checkIn === 'YES' ? 'Check Out' : 'Check In'
     },
   },
 }
