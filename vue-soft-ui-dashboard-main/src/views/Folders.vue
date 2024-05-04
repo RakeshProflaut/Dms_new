@@ -697,7 +697,28 @@ export default {
               })
             }, 3000)
           })
-          .catch((error) => console.log('error occured by', error))
+          .catch((error) => {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              customClass: 'swal-wide',
+              height: '30px',
+              background: 'hsl(0, 43%, 52%)',
+              color: 'white',
+              timer: 2000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer
+                toast.onmouseleave = Swal.resumeTimer
+              },
+            })
+            Toast.fire({
+              icon: 'warning',
+              title: error.response.data.errorMessage,
+            })
+            console.error('API There was an error!', error)
+          })
       } else {
         const Toast = Swal.mixin({
           toast: true,

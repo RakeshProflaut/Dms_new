@@ -84,7 +84,6 @@
                       <v-btn @click="checkAndgetTable"> Search </v-btn>
                     </div>
                   </div>
-
                   <!-- <div v-else-if="selectedSearchOption === 'Id'">
                     <div>
                       <label>Enter Document Id*</label>
@@ -190,7 +189,7 @@
                           :key="index"
                           style="text-align: center"
                         >
-                          <template v-if="header.key === 'action'">
+                          <!-- <template v-if="header.key === 'action'">
                             <v-btn
                               @click="
                                 openDocViewBox(
@@ -200,7 +199,7 @@
                               class="text-secondary font-weight-bold text-xs"
                               >View</v-btn
                             >
-                          </template>
+                          </template> -->
 
                           <template v-if="header.key === 'sno'">
                             {{ rowIndex + 1 }}
@@ -327,10 +326,10 @@ export default {
           key: 'uploadTime',
           title: 'CREATED AT',
         },
-        {
-          key: 'action',
-          title: 'Action',
-        },
+        // {
+        //   key: 'action',
+        //   title: 'Action',
+        // },
       ],
     }
   },
@@ -455,7 +454,7 @@ export default {
         this.showLoader = true
         setTimeout(() => {
           this.listrecords = response.data.records
-          console.log('listrecoreds', this.listrecords)
+          console.log('listrecoreds', this.listrecords.records)
           this.showLoader = false
           this.openSearchTable = true
         }, 3000)
@@ -538,6 +537,7 @@ export default {
         this.listrecords = response.data
         this.showLoader = false
         this.openSearchTable = true
+        console.log('listrecoreds', this.listrecords)
       }, 3000)
     },
     async checkFiles() {
@@ -551,9 +551,9 @@ export default {
       })
       this.showLoader = true
       setTimeout(() => {
-        console.log('listrecoreds', this.listrecords)
         this.showLoader = false
         this.listrecords = response.data
+        console.log('listrecoreds', this.listrecords)
         this.openSearchTable = true
       }, 3000)
       console.log('resposne', this.listrecords)

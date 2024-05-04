@@ -49,7 +49,6 @@ export default {
           icon: 'mdi mdi-view-dashboard',
         },
         { text: 'Directory', to: { name: 'Folders' }, icon: 'mdi mdi-folder' },
-        { text: 'Browse', to: { name: 'Browse' }, icon: 'mdi mdi-folder' },
         { text: 'Search', to: { name: 'Search' }, icon: 'mdi mdi-magnify' },
         { text: 'Admin', to: { name: 'Admin' }, icon: 'mdi mdi-cog' },
         { text: 'Recent', to: { name: 'Recent' }, icon: 'mdi mdi-history' },

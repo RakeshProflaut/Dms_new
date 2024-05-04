@@ -2,6 +2,8 @@
   <div>
     <div class="mt-3 row"></div>
     <div class="container-fluid">
+
+      
       <div class="row">
         <div class="col-12">
           <div class="card" style="height: 510px !important">
@@ -163,6 +165,7 @@ export default {
 
       const token = this.$store.getters.getUserToken
       console.log(apiUrl, 'apiUrl')
+      this.recentDocDetails = []
       await axios
         .get(apiUrl, {
           headers: {
@@ -170,9 +173,8 @@ export default {
           },
         })
         .then((response) => {
-          console.log('API response:', response.data) // Log the response
-
           this.recentDocDetails = response.data
+          console.log(' this.recentDocDetails:', this.recentDocDetails) // Log the response
         })
         .catch((error) => console.log('Error occurred:', error))
     },

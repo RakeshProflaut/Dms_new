@@ -8,7 +8,7 @@
             <div
               v-for="(rowIcons, rowIndex) in iconRows"
               :key="rowIndex"
-              style="padding: 1rem 1rem 0 0.8rem"
+              style="padding: 1.7rem 1rem 0 0.8rem"
               class="row"
             >
               <!-- Loop through each row's icons -->
@@ -41,54 +41,62 @@ export default {
       icons: [
         {
           class: 'mdi mdi-folder',
-          title: 'Browse',
-          route: '/browse',
+          title: 'Directory',
+          route: '/folders',
           subtitle: 'Browse your Files/Folder',
         },
         {
           class: 'mdi mdi-magnify',
           title: 'Search',
+          animation: 'fa-solid fa-circle-info fa-beat-fade',
           route: '/search',
           subtitle: 'Search uploaded Files/Folder',
         },
         {
-          class: 'mdi mdi-cog',
+          class: 'fas fa-cog',
           title: 'Admin',
           route: '/admin',
+          animation: 'fa-solid fa-cog fa-spin',
           subtitle: 'Manage user & group Metadata Definition',
         },
         {
           class: 'mdi mdi-history',
           title: 'Recent',
+          animation: 'fa-solid fa-poo-bolt fa-beat-fade',
           route: '/recent',
           subtitle: 'Show recently opened Folders and Documents',
         },
         {
           class: 'mdi mdi-bookmark-outline',
           title: 'Bookmark',
+          animation: 'fa-solid fa-desktop-arrow-down fa-fade',
           route: '/bookmark',
           subtitle: 'Show Bookmarked Folders and Documents',
         },
         {
           class: 'mdi mdi-recycle',
           title: 'Recycle Bin',
+          animation: 'fa-solid fa-cog fa-spin',
           route: '/recycleBin',
           subtitle: 'Show Recycled Documents',
         },
         {
           class: 'mdi mdi-share',
           title: 'Shared docs to you',
+          animation: 'fa-solid fa-money-check-dollar fa-flip',
           route: '/sharedToYou',
           subtitle: 'Show Shared Documents to You',
         },
         {
           class: 'mdi mdi-share',
           title: 'Shared docs by you',
+          animation: 'fa-solid fa-money-check-dollar fa-flip',
           route: '/sharedByYou',
           subtitle: 'Show Shared Documents by You',
         },
         // Add more icons as needed
       ],
+      isHovered: {},
     }
   },
   computed: {
@@ -110,6 +118,14 @@ export default {
   methods: {
     setActiveTab(tabName) {
       this.$store.commit('setActiveTab', tabName)
+    },
+    startAnimation(index) {
+      // Set isHovered[index] to true
+      this.isHovered[index] = true
+    },
+    stopAnimation(index) {
+      // Set isHovered[index] to false
+      this.isHovered[index] = false
     },
   },
 }
@@ -158,4 +174,7 @@ export default {
   font-size: 15px;
   text-align: center;
 }
+/* .icons:hover > i {
+  animation: spin 2s linear infinite;
+} */
 </style>
